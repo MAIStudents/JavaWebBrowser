@@ -8,18 +8,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="906.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.Controller">
     <children>
         <WebView fx:id="webView" layoutY="88.0" prefHeight="500.0" prefWidth="906.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="88.0" />
-        <VBox prefHeight="90.0" prefWidth="906.0">
+        <VBox prefHeight="90.0" prefWidth="900.0">
             <children>
                 <TextField fx:id="textField">
                     <VBox.margin>
                         <Insets left="20.0" right="20.0" top="10.0" />
                     </VBox.margin>
                 </TextField>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0">
                     <children>
                         <Button fx:id="loadButton" mnemonicParsing="false" onAction="#loadPage" text="load">
                             <HBox.margin>
