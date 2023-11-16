@@ -4,6 +4,7 @@ module ru.mai.lessons.rpks {
     requires javafx.web;
     requires json.simple;
     requires com.google.gson;
+    requires org.apache.commons.lang3;
 
 
     opens ru.mai.lessons.rpks to javafx.fxml;
