@@ -37,11 +37,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import ru.mai.lessons.rpks.factory.TabFactory;
 
 public class ControllerApplication implements Initializable {
     @FXML
     private TabPane tabPane;
-    private TabBuilder tabBuilder;
     private boolean isEnableHistory;
     private List<String> untrackedSites;
     private List<String> favoriteSites;
@@ -52,16 +52,16 @@ public class ControllerApplication implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tabBuilder = new TabBuilder(
+        untrackedSites = new ArrayList<>();
+        favoriteSites = new ArrayList<>();
+        isEnableHistory = true;
+        Tab mainTab = TabFactory.create(
                 actionEvent -> backOnHistory(),
                 actionEvent -> forwardOnHistory(),
                 actionEvent -> reloadPage(),
                 actionEvent -> loadPage(),
-                actionEvent -> onCloseTab());
-        untrackedSites = new ArrayList<>();
-        favoriteSites = new ArrayList<>();
-        isEnableHistory = true;
-        Tab mainTab = tabBuilder.build();
+                actionEvent -> onCloseTab()
+        );
         Tab toAddTab = new Tab("+");
 
         toAddTab.setOnSelectionChanged(event -> {
@@ -120,7 +120,13 @@ public class ControllerApplication implements Initializable {
     }
 
     public void addTab() {
-        Tab newTab = tabBuilder.build();
+        Tab newTab = TabFactory.create(
+                actionEvent -> backOnHistory(),
+                actionEvent -> forwardOnHistory(),
+                actionEvent -> reloadPage(),
+                actionEvent -> loadPage(),
+                actionEvent -> onCloseTab()
+        );
         tabPane.getTabs().add(tabPane.getTabs().size() - 1, newTab);
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
     }
