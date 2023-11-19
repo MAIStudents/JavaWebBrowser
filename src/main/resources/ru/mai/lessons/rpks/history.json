@@ -1,18 +1,5 @@
 {
     "history": [
-        {
-            "tab name": "tab #0",
-            "website": "https://www.google.com",
-            "time spent on website": "214 sec",
-            "time begin": "2023-11-19T19:03:44.442165109",
-            "time end": "2023-11-19T19:07:18.496694508"
-        },
-        {
-            "tab name": "tab #0",
-            "website": "https://www.google.com",
-            "time spent on website": "",
-            "time begin": "2023-11-19T19:07:18.496694508",
-            "time end": ""
-        }
+
     ]
 }

@@ -524,5 +524,34 @@ public class ControllerApplication implements Initializable {
         } catch (InterruptedException e) {
             service.shutdownNow();
         }
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+        } catch (ParseException e) {
+            System.err.println("ParseException");
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        } catch (IOException e) {
+            System.err.println("IOException");
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+
+        JSONArray jsonHistory = (JSONArray) jsonObject.get("history");
+        jsonHistory.clear();
+        jsonObject.put("history", jsonHistory);
+
+        JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+             JsonWriter jsonWriter = new JsonWriter(writer)) {
+            jsonWriter.setIndent("    ");
+            gson.toJson(jsonString, jsonWriter);
+        } catch (IOException e) {
+            System.err.println("IOException");
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
     }
 }
