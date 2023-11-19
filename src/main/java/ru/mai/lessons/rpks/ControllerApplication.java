@@ -490,30 +490,30 @@ public class ControllerApplication implements Initializable {
     }
 
     public void editHTML() throws IOException {
+        String html = "";
+
         if (getCurrentWebView().getEngine().getLoadWorker().getState().equals(Worker.State.RUNNING)) {
             WebEngine webEngine = getCurrentWebView().getEngine();
-            String html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
-
-            File file = new File(EDIT_HTML_FILE);
-            file.createNewFile();
-
-            try (FileWriter editHTMLFile = new FileWriter(file)) {
-                editHTMLFile.write(html);
-            }
-
-            Stage htmlStage = new Stage();
-            htmlStage.setOnCloseRequest(event -> {
-                file.delete();
-            });
-            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("html-editor.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 900, 590);
-            ControllerHTMLEditor controllerHTMLEditor = fxmlLoader.getController();
-            controllerHTMLEditor.setControllerApplication(this);
-            htmlStage.setResizable(false);
-            htmlStage.setTitle("HTML creator");
-            htmlStage.setScene(scene);
-            htmlStage.show();
+            html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
         }
+
+        File file = new File(EDIT_HTML_FILE);
+        file.createNewFile();
+
+        try (FileWriter editHTMLFile = new FileWriter(file)) {
+            editHTMLFile.write(html);
+        }
+
+        Stage htmlStage = new Stage();
+        htmlStage.setOnCloseRequest(event -> file.delete());
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("html-editor.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+        ControllerHTMLEditor controllerHTMLEditor = fxmlLoader.getController();
+        controllerHTMLEditor.setControllerApplication(this);
+        htmlStage.setResizable(false);
+        htmlStage.setTitle("HTML editor");
+        htmlStage.setScene(scene);
+        htmlStage.show();
     }
 
     public void loadContent(String html) {
