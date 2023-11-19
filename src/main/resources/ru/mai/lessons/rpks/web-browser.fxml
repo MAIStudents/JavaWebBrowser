@@ -13,19 +13,19 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Create" />
-                  <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Save as" />
+                  <MenuItem mnemonicParsing="false" onAction="#createHTML" text="Create html" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadHTML" text="Load html" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#editHTML" text="Edit html" />
+               </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Settings">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#addToFavorites" text="Add to favorites" />
+                  <MenuItem mnemonicParsing="false" onAction="#showFavorites" text="Show favorites" />
                   <MenuItem mnemonicParsing="false" onAction="#disableHistoryForSite" text="Disable history for site" />
                   <MenuItem mnemonicParsing="false" onAction="#enableHistoryForSite" text="Enable history for site" />
                   <MenuItem mnemonicParsing="false" onAction="#disableHistory" text="Disable history" />
@@ -34,11 +34,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#saveZipPage" text="Save zip page" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
         </menus>
       </MenuBar>
    </children>

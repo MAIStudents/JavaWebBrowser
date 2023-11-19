@@ -5,16 +5,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,28 +27,41 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ControllerApplication implements Initializable {
     @FXML
     private TabPane tabPane;
-    private List<Tab> tabs;
+    private TabBuilder tabBuilder;
     private boolean isEnableHistory;
     private List<String> untrackedSites;
-    private long idTab;
+    private List<String> favoriteSites;
     private final static String PATH_DOWNLOADS = "/home/alexandr/MAI/5-semestr/RPKS/JavaLabs/JavaWebBrowser/src/main/resources/ru/mai/lessons/rpks/downloads/";
+    private final static String EDIT_HTML_FILE = PATH_DOWNLOADS + "editHTML.html";
     private final static String PATH_JSON_HISTORY = "/home/alexandr/MAI/5-semestr/RPKS/JavaLabs/JavaWebBrowser/src/main/resources/ru/mai/lessons/rpks/history.json";
+    private final ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tabBuilder = new TabBuilder(
+                actionEvent -> backOnHistory(),
+                actionEvent -> forwardOnHistory(),
+                actionEvent -> reloadPage(),
+                actionEvent -> loadPage(),
+                actionEvent -> onCloseTab());
         untrackedSites = new ArrayList<>();
-        tabs = new ArrayList<>();
+        favoriteSites = new ArrayList<>();
         isEnableHistory = true;
-        Tab mainTab = createTab();
+        Tab mainTab = tabBuilder.build();
         Tab toAddTab = new Tab("+");
 
         toAddTab.setOnSelectionChanged(event -> {
@@ -54,11 +71,7 @@ public class ControllerApplication implements Initializable {
         });
 
         mainTab.setText("JavaWebBrowser");
-
-        tabPane.getTabs().add(mainTab);
-        tabPane.getTabs().add(toAddTab);
-
-        tabs.add(mainTab);
+        tabPane.getTabs().addAll(mainTab, toAddTab);
     }
 
     private WebView getCurrentWebView() {
@@ -93,13 +106,12 @@ public class ControllerApplication implements Initializable {
             requestTextWithHTTPS = requestText;
         }
 
-        String beforeWebsite = getCurrentWebsite();
         tabPane.getSelectionModel().getSelectedItem().setText(requestTextWithHTTPS);
-        getCurrentWebView().getEngine().load(requestTextWithHTTPS);
-        String afterWebsite = getCurrentWebsite();
+        String finalRequestTextWithHTTPS = requestTextWithHTTPS;
+        service.submit(() -> Platform.runLater(() -> getCurrentWebView().getEngine().load(finalRequestTextWithHTTPS)));
 
         if (isEnableHistory && !untrackedSites.contains(requestTextWithHTTPS)) {
-            addNoteHistory(beforeWebsite, afterWebsite, java.time.LocalDateTime.now());
+            addNoteHistory(getCurrentTab().getText(), requestTextWithHTTPS, java.time.LocalDateTime.now());
         }
     }
 
@@ -108,9 +120,7 @@ public class ControllerApplication implements Initializable {
     }
 
     public void addTab() {
-        Tab newTab = createTab();
-        tabs.add(newTab);
-
+        Tab newTab = tabBuilder.build();
         tabPane.getTabs().add(tabPane.getTabs().size() - 1, newTab);
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
     }
@@ -261,10 +271,49 @@ public class ControllerApplication implements Initializable {
 
     public void enableHistory() {
         isEnableHistory = true;
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Enable history");
+
+        alert.setHeaderText(null);
+        alert.setContentText("History for all sites successfully enable");
+
+        alert.showAndWait();
     }
 
     public void addToFavorites() {
+        String currentSite = getCurrentWebsite();
 
+        if (currentSite != null) {
+            favoriteSites.add(getCurrentWebsite());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Add to favorites");
+
+            alert.setHeaderText(null);
+            alert.setContentText("The current site has added to the favorites list");
+
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Add to favorites");
+
+            alert.setHeaderText(null);
+            alert.setContentText("Can't add empty site to the favorites list");
+
+            alert.showAndWait();
+        }
+    }
+
+    public void showFavorites() {
+        Stage favoritesStage = new Stage();
+        VBox favoritesBox = new VBox();
+        ListView<String> listView = new ListView<>();
+        listView.getItems().setAll(favoriteSites);
+        favoritesBox.getChildren().addAll(new Label("Favorite sites"), listView);
+
+        Scene favoritesScene = new Scene(favoritesBox, 300, 200);
+        favoritesStage.setScene(favoritesScene);
+        favoritesStage.setTitle("Favorite sites");
+        favoritesStage.show();
     }
 
     public void savePage() throws IOException {
@@ -404,139 +453,76 @@ public class ControllerApplication implements Initializable {
                 }
             }
         }
-
-        tabs.remove(getCurrentTab());
     }
 
-    private Tab createTab() {
-        AnchorPane newAnchorPane = createAnchorPane();
-        WebView mewWebView = createWebView();
-        HBox newHBox = createHBox();
-
-        newHBox.getChildren().add(createButtonBackOnHistory());
-        newHBox.getChildren().add(createButtonForwardOnHistory());
-        newHBox.getChildren().add(createButtonReloadPage());
-        newHBox.getChildren().add(createTextField());
-        newHBox.getChildren().add(createButtonLoadPage());
-
-        newAnchorPane.getChildren().add(mewWebView);
-        newAnchorPane.getChildren().add(newHBox);
-
-        Tab newTab = new Tab("New Tab");
-        newTab.setId("tab #" + idTab++);
-        newTab.setContent(newAnchorPane);
-        newTab.setOnCloseRequest(event -> onCloseTab());
-
-        return newTab;
+    public void createHTML() throws IOException {
+        Stage htmlStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("html-creator.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+        htmlStage.setResizable(false);
+        htmlStage.setTitle("HTML creator");
+        htmlStage.setScene(scene);
+        htmlStage.show();
     }
 
-    private AnchorPane createAnchorPane() {
-        AnchorPane anchorPane = new AnchorPane();
+    public void loadHTML() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select HTML File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
 
-        anchorPane.prefWidth(900);
-        anchorPane.prefHeight(600);
+        File selectedFile = fileChooser.showOpenDialog(null);
 
-        return anchorPane;
+        if (selectedFile != null) {
+            try {
+                String htmlContent = Files.readString(Path.of(selectedFile.getPath()));
+                getCurrentWebView().getEngine().loadContent(htmlContent);
+            } catch (IOException e) {
+                System.out.println("IOException");
+                System.out.println(Arrays.toString(e.getStackTrace()));
+            }
+        }
     }
 
-    private HBox createHBox() {
-        HBox hBox = new HBox();
+    public void editHTML() throws IOException {
+        if (getCurrentWebView().getEngine().getLoadWorker().getState().equals(Worker.State.RUNNING)) {
+            WebEngine webEngine = getCurrentWebView().getEngine();
+            String html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
 
-        hBox.prefWidth(900);
-        hBox.prefHeight(50);
-        VBox.setMargin(hBox, new Insets(0, 0, 0, 0));
+            File file = new File(EDIT_HTML_FILE);
+            file.createNewFile();
 
-        return hBox;
+            try (FileWriter editHTMLFile = new FileWriter(file)) {
+                editHTMLFile.write(html);
+            }
+
+            Stage htmlStage = new Stage();
+            htmlStage.setOnCloseRequest(event -> {
+                file.delete();
+            });
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("html-editor.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+            ControllerHTMLEditor controllerHTMLEditor = fxmlLoader.getController();
+            controllerHTMLEditor.setControllerApplication(this);
+            htmlStage.setResizable(false);
+            htmlStage.setTitle("HTML creator");
+            htmlStage.setScene(scene);
+            htmlStage.show();
+        }
     }
 
-    private WebView createWebView() {
-        WebView webView = new WebView();
-
-        webView.prefWidth(900);
-        webView.prefHeight(550);
-        AnchorPane.setTopAnchor(webView, 45.0);
-        AnchorPane.setRightAnchor(webView, 0.0);
-        AnchorPane.setBottomAnchor(webView, 0.0);
-        AnchorPane.setLeftAnchor(webView, 0.0);
-        webView.setId("webView");
-
-        return webView;
+    public void loadContent(String html) {
+        getCurrentWebView().getEngine().loadContent(html);
     }
 
-    private TextField createTextField() {
-        TextField newTextField = new TextField();
+    public void onClose() {
+        service.shutdown();
 
-        newTextField.setMinWidth(559.2);
-        newTextField.setMaxWidth(559.2);
-        newTextField.setMinHeight(24);
-        newTextField.setMaxHeight(24);
-        newTextField.setId("textField");
-        HBox.setMargin(newTextField, new Insets(10, 10, 10, 0));
-
-        return newTextField;
-    }
-
-    private Button createButtonBackOnHistory() {
-        Button buttonBackOnHistory = new Button();
-
-        buttonBackOnHistory.setText("back");
-        buttonBackOnHistory.setMinWidth(52);
-        buttonBackOnHistory.setMaxWidth(52);
-        buttonBackOnHistory.setMinHeight(24);
-        buttonBackOnHistory.setMaxHeight(24);
-        buttonBackOnHistory.setId("buttonBackOnHistory");
-        HBox.setMargin(buttonBackOnHistory, new Insets(10, 0, 10, 20));
-
-        buttonBackOnHistory.setOnAction(actionEvent -> backOnHistory());
-
-        return buttonBackOnHistory;
-    }
-
-    private Button createButtonForwardOnHistory() {
-        Button buttonForwardOnHistory = new Button();
-
-        buttonForwardOnHistory.setText("forward");
-        buttonForwardOnHistory.setMinWidth(68);
-        buttonForwardOnHistory.setMaxWidth(68);
-        buttonForwardOnHistory.setMinHeight(24);
-        buttonForwardOnHistory.setMaxHeight(24);
-        buttonForwardOnHistory.setId("buttonForwardOnHistory");
-        HBox.setMargin(buttonForwardOnHistory, new Insets(10, 10, 10, 10));
-
-        buttonForwardOnHistory.setOnAction(actionEvent -> forwardOnHistory());
-
-        return buttonForwardOnHistory;
-    }
-
-    private Button createButtonReloadPage() {
-        Button buttonReloadPage = new Button();
-
-        buttonReloadPage.setText("reload");
-        buttonReloadPage.setMinWidth(77.6);
-        buttonReloadPage.setMaxWidth(77.6);
-        buttonReloadPage.setMinHeight(24);
-        buttonReloadPage.setMaxHeight(24);
-        buttonReloadPage.setId("buttonReloadPage");
-        HBox.setMargin(buttonReloadPage, new Insets(10, 10, 10, 0));
-
-        buttonReloadPage.setOnAction(actionEvent -> reloadPage());
-
-        return buttonReloadPage;
-    }
-
-    private Button createButtonLoadPage() {
-        Button buttonLoadPage = new Button();
-
-        buttonLoadPage.setText("load");
-        buttonLoadPage.setMinWidth(71.2);
-        buttonLoadPage.setMaxWidth(71.2);
-        buttonLoadPage.setMinHeight(24);
-        buttonLoadPage.setMaxHeight(24);
-        buttonLoadPage.setId("buttonLoadPage");
-        HBox.setMargin(buttonLoadPage, new Insets(10, 10, 10, 0));
-
-        buttonLoadPage.setOnAction(actionEvent -> loadPage());
-
-        return buttonLoadPage;
+        try {
+            if (!service.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+                service.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            service.shutdownNow();
+        }
     }
 }
