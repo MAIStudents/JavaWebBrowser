@@ -337,9 +337,9 @@ public class Controller {
 
         singleTab = new SingleTab(browserTabs);
 
-        try(Reader favouritesReader = new FileReader((Main.class.getResource("favourites_save.json") + "").substring(6));
-                Reader historyReader = new FileReader((Main.class.getResource("history_save.json") + "").substring(6));
-                Reader blacklistReader = new FileReader((Main.class.getResource("blacklist_save.json") + "").substring(6))) {
+        try(Reader favouritesReader = new FileReader(new File(Main.class.getResource("favourites_save.json").toURI()));
+            Reader historyReader = new FileReader(new File(Main.class.getResource("history_save.json").toURI()));
+            Reader blacklistReader = new FileReader(new File(Main.class.getResource("blacklist_save.json").toURI()))) {
             Gson gson = new Gson();
 
             LinkedList<Website> favourites = gson.fromJson(favouritesReader, new TypeToken<LinkedList<Website>>() {}.getType());
@@ -354,6 +354,8 @@ public class Controller {
             } else {
                 historyWebsites = new HistoryModel(settingsContainer.getDisabledHistoryCheckBox(), settingsContainer.getSitesToDisableArea(), history == null ? new LinkedList<>() : history, blacklist.getDisabledWebsites(), blacklist.getIsHistoryDisabled());
             }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
         webModule = new WebModule();

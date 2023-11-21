@@ -7,9 +7,11 @@ import javafx.stage.Stage;
 import ru.mai.lessons.rpks.javawebbrowser.web_browser.controller.Controller;
 import ru.mai.lessons.rpks.javawebbrowser.web_browser.model.save_module.SaveBlacklistModel;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -38,9 +40,9 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void stop() {
-        try (Writer favouritesWriter = new FileWriter((Main.class.getResource("favourites_save.json") + "").substring(6));
-             Writer historyWriter = new FileWriter((Main.class.getResource("history_save.json") + "").substring(6));
-             Writer blacklistWriter = new FileWriter((Main.class.getResource("blacklist_save.json") + "").substring(6))) {
+        try (Writer favouritesWriter = new FileWriter(new File(Main.class.getResource("favourites_save.json").toURI()));
+             Writer historyWriter = new FileWriter(new File(Main.class.getResource("history_save.json").toURI()));
+             Writer blacklistWriter = new FileWriter(new File(Main.class.getResource("blacklist_save.json").toURI()))) {
             Gson gson = new Gson();
 
             gson.toJson(controller.getFavouriteWebsites(), favouritesWriter);
@@ -52,7 +54,7 @@ public class Main extends javafx.application.Application {
             favouritesWriter.flush();
             historyWriter.flush();
             blacklistWriter.flush();
-        } catch (IOException error) {
+        } catch (IOException | URISyntaxException error) {
             error.printStackTrace();
         }
     }
