@@ -1,4 +1,4 @@
-package ru.mai.lessons.rpks;
+package ru.mai.lessons.rpks.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -1,4 +1,4 @@
-package ru.mai.lessons.rpks;
+package ru.mai.lessons.rpks.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,6 +37,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import ru.mai.lessons.rpks.Application;
 import ru.mai.lessons.rpks.factory.TabFactory;
 
 public class ControllerApplication implements Initializable {

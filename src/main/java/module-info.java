@@ -10,5 +10,7 @@ module ru.mai.lessons.rpks {
 
 
     opens ru.mai.lessons.rpks to javafx.fxml;
+    exports ru.mai.lessons.rpks.controller;
+    opens ru.mai.lessons.rpks.controller to javafx.fxml;
     exports ru.mai.lessons.rpks;
 }

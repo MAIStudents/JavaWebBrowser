@@ -3,6 +3,7 @@ package ru.mai.lessons.rpks;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.mai.lessons.rpks.controller.ControllerApplication;
 
 import java.io.IOException;
 
