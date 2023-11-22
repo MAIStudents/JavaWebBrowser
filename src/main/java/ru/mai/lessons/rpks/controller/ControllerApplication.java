@@ -47,9 +47,8 @@ public class ControllerApplication implements Initializable {
     private boolean isEnableHistory;
     private List<String> untrackedSites;
     private List<String> favoriteSites;
-    private final static String PATH_DOWNLOADS = "/home/alexandr/MAI/5-semestr/RPKS/JavaLabs/JavaWebBrowser/src/main/resources/ru/mai/lessons/rpks/downloads/";
+    private final static String PATH_DOWNLOADS = Application.class.getResource("").getPath() + "downloads/";
     private final static String EDIT_HTML_FILE = PATH_DOWNLOADS + "editHTML.html";
-    private final static String PATH_JSON_HISTORY = "/home/alexandr/MAI/5-semestr/RPKS/JavaLabs/JavaWebBrowser/src/main/resources/ru/mai/lessons/rpks/history.json";
     private final ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
@@ -83,7 +82,7 @@ public class ControllerApplication implements Initializable {
     private String getCurrentWebsite() {
         String website = getCurrentWebView().getEngine().getLocation();
 
-        if (website == null) {
+        if (website == null || website.isEmpty()) {
             return null;
         }
 
@@ -182,7 +181,7 @@ public class ControllerApplication implements Initializable {
         JSONObject jsonObject = null;
 
         try {
-            jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+            jsonObject = (JSONObject) parser.parse(new FileReader(Application.class.getResource("history.json").getPath()));
         } catch (ParseException e) {
             System.err.println("ParseException");
             System.err.println(Arrays.toString(e.getStackTrace()));
@@ -204,7 +203,7 @@ public class ControllerApplication implements Initializable {
         JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+        try (FileWriter writer = new FileWriter(Application.class.getResource("history.json").getPath());
              JsonWriter jsonWriter = new JsonWriter(writer)) {
             jsonWriter.setIndent("    ");
             gson.toJson(jsonString, jsonWriter);
@@ -251,7 +250,7 @@ public class ControllerApplication implements Initializable {
         JSONObject jsonObject = null;
 
         try {
-            jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+            jsonObject = (JSONObject) parser.parse(new FileReader(Application.class.getResource("history.json").getPath()));
         } catch (ParseException e) {
             System.err.println("ParseException");
             System.err.println(Arrays.toString(e.getStackTrace()));
@@ -267,7 +266,7 @@ public class ControllerApplication implements Initializable {
         JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+        try (FileWriter writer = new FileWriter(Application.class.getResource("history.json").getPath());
              JsonWriter jsonWriter = new JsonWriter(writer)) {
             jsonWriter.setIndent("    ");
             gson.toJson(jsonString, jsonWriter);
@@ -330,6 +329,7 @@ public class ControllerApplication implements Initializable {
 
         if (currentWebsite != null) {
             String filename = currentWebsite.substring("https://".length());
+            System.out.println(Application.class.getResource("").getPath() + "downloads");
             File file = new File(PATH_DOWNLOADS + filename + ".html");
             URL url = new URL(currentWebView.getEngine().getLocation());
             FileUtils.copyURLToFile(url, file);
@@ -366,8 +366,10 @@ public class ControllerApplication implements Initializable {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = null;
 
+        System.out.println();
+
         try {
-            jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+            jsonObject = (JSONObject) parser.parse(new FileReader(Application.class.getResource("history.json").getPath()));
         } catch (ParseException e) {
             System.err.println("ParseException");
             System.err.println(Arrays.toString(e.getStackTrace()));
@@ -404,7 +406,7 @@ public class ControllerApplication implements Initializable {
         JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+        try (FileWriter writer = new FileWriter(Application.class.getResource("history.json").getPath());
              JsonWriter jsonWriter = new JsonWriter(writer)) {
             jsonWriter.setIndent("    ");
             gson.toJson(jsonString, jsonWriter);
@@ -424,7 +426,7 @@ public class ControllerApplication implements Initializable {
                 JSONObject jsonObject = null;
 
                 try {
-                    jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+                    jsonObject = (JSONObject) parser.parse(new FileReader(Application.class.getResource("history.json").getPath()));
                 } catch (ParseException e) {
                     System.err.println("ParseException");
                     System.err.println(Arrays.toString(e.getStackTrace()));
@@ -451,7 +453,7 @@ public class ControllerApplication implements Initializable {
                 JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-                try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+                try (FileWriter writer = new FileWriter(Application.class.getResource("history.json").getPath());
                      JsonWriter jsonWriter = new JsonWriter(writer)) {
                     jsonWriter.setIndent("    ");
                     gson.toJson(jsonString, jsonWriter);
@@ -537,7 +539,7 @@ public class ControllerApplication implements Initializable {
         JSONObject jsonObject = null;
 
         try {
-            jsonObject = (JSONObject) parser.parse(new FileReader(PATH_JSON_HISTORY));
+            jsonObject = (JSONObject) parser.parse(new FileReader(Application.class.getResource("history.json").getPath()));
         } catch (ParseException e) {
             System.err.println("ParseException");
             System.err.println(Arrays.toString(e.getStackTrace()));
@@ -553,7 +555,7 @@ public class ControllerApplication implements Initializable {
         JsonElement jsonString = new JsonParser().parse(jsonObject.toJSONString());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (FileWriter writer = new FileWriter(PATH_JSON_HISTORY);
+        try (FileWriter writer = new FileWriter(Application.class.getResource("history.json").getPath());
              JsonWriter jsonWriter = new JsonWriter(writer)) {
             jsonWriter.setIndent("    ");
             gson.toJson(jsonString, jsonWriter);
