@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.web.WebView?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.javawebbrowser.WebBrowserController">
    <children>
-      <Button ellipsisString="&lt;" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageBack" prefHeight="32.0" prefWidth="32.0" text="&lt;" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="4.0" />
-      <Button ellipsisString="&gt;" layoutX="114.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageForward" prefHeight="32.0" prefWidth="32.0" text="&gt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="4.0" />
-      <Button fx:id="reloadBtn" ellipsisString="R" layoutX="207.0" layoutY="24.0" mnemonicParsing="false" onAction="#reloadPage" prefHeight="32.0" prefWidth="32.0" text="R" AnchorPane.leftAnchor="76.0" AnchorPane.topAnchor="4.0" />
-      <TextField fx:id="textField" layoutX="130.0" layoutY="22.0" onAction="#loadPage" prefHeight="32.0" prefWidth="447.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="4.0" />
-      <VBox fx:id="boxWeb" layoutX="4.0" layoutY="40.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="40.0">
-         <children>
-            <WebView fx:id="currentWebView" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onEnter" onMouseClicked="#onMouseClicked" prefHeight="233.0" prefWidth="592.0" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </WebView>
-         </children>
-      </VBox>
-      <Button ellipsisString="H" layoutX="560.0" layoutY="8.0" mnemonicParsing="false" onAction="#displayHistory" prefHeight="32.0" prefWidth="32.0" text="H" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
-      <Button ellipsisString="F" layoutX="570.0" layoutY="18.0" mnemonicParsing="false" onAction="#loadPage" prefHeight="32.0" prefWidth="32.0" text="Find" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
-      <Button fx:id="newPage" ellipsisString="N" layoutX="472.0" layoutY="8.0" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" onAction="#newPage" prefHeight="32.0" prefWidth="32.0" text="N" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="4.0" />
+      <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="577.0" tabMaxWidth="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <Blend />
+         </effect>
+      </TabPane>
+      <Button ellipsisString="&lt;" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageBack" prefHeight="32.0" prefWidth="32.0" text="&lt;" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="34.0" />
+      <Button ellipsisString="&gt;" layoutX="114.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageForward" prefHeight="32.0" prefWidth="32.0" text="&gt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="34.0" />
+      <Button fx:id="reloadBtn" ellipsisString="R" layoutX="207.0" layoutY="24.0" mnemonicParsing="false" onAction="#reloadPage" prefHeight="32.0" prefWidth="32.0" text="R" AnchorPane.leftAnchor="76.0" AnchorPane.topAnchor="34.0" />
+      <TextField fx:id="textField" layoutX="130.0" layoutY="22.0" onAction="#loadPage" prefHeight="32.0" prefWidth="447.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="34.0" />
+      <Button ellipsisString="H" layoutX="560.0" layoutY="8.0" mnemonicParsing="false" onAction="#displayHistory" prefHeight="32.0" prefWidth="32.0" text="H" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="34.0" />
+      <Button ellipsisString="F" layoutX="570.0" layoutY="18.0" mnemonicParsing="false" onAction="#loadPage" prefHeight="32.0" prefWidth="32.0" text="Find" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="34.0" />
+      <Button fx:id="newPage" ellipsisString="N" layoutX="472.0" layoutY="8.0" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" onAction="#newPage" prefHeight="32.0" prefWidth="32.0" text="N" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="34.0" />
    </children>
 </AnchorPane>

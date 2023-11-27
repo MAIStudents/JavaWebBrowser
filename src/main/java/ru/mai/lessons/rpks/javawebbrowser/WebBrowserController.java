@@ -5,14 +5,20 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
+import javafx.geometry.Insets;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,7 +28,7 @@ import java.util.ResourceBundle;
 public class WebBrowserController implements Initializable {
 
     @FXML
-    private VBox boxWeb;
+    private TabPane tabPane;
     @FXML
     private WebView currentWebView;
     private List<WebView> webViewList;
@@ -32,6 +38,7 @@ public class WebBrowserController implements Initializable {
     private String homePage;
     private WebHistory history;
 
+    private final int TAB_WIDTH = 150;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,33 +49,44 @@ public class WebBrowserController implements Initializable {
         ++currentWebViewIndex;
         webViewList.add(currentWebView);
 
-        currentWebView.prefHeightProperty().bind(boxWeb.heightProperty());
-        currentWebView.prefWidthProperty().bind(boxWeb.widthProperty());
-
-
         homePage = "www.duckduckgo.com";
-        textField.setText(homePage);
+
+        changeTabPaneWidth();
+        initNewPage();
         loadPage();
     }
 
     private void initNewPage() {
 
-        currentWebView.setManaged(false);
-        currentWebView.setVisible(false);
+        Tab newTab = new Tab("New Tab");
+        tabPane.getTabs().add(newTab);
+
+        newTab.setOnSelectionChanged((val) -> onTabSelected());
+
+
+        HBox box = new HBox();
+
+        box.prefHeightProperty().bind(tabPane.heightProperty());
+        box.prefWidthProperty().bind(tabPane.widthProperty());
+
+        box.setPadding(new Insets(40, 4, 4, 4));
+        newTab.setContent(box);
+
 
         currentWebView = new WebView();
+
         currentWebView.setOnKeyPressed((ae) -> onEnter(ae));
         currentWebView.setOnMouseClicked((me) -> onMouseClicked(me));
 
         ++currentWebViewIndex;
         webViewList.add(currentWebView);
-        loadPage();
 
+        currentWebView.prefHeightProperty().bind(box.heightProperty());
+        currentWebView.prefWidthProperty().bind(box.widthProperty());
 
-        currentWebView.prefHeightProperty().bind(boxWeb.heightProperty());
-        currentWebView.prefWidthProperty().bind(boxWeb.widthProperty());
+        box.getChildren().add(currentWebView);
 
-        boxWeb.getChildren().add(currentWebView);
+        textField.setText(homePage);
     }
 
     public void loadPage() {
@@ -157,12 +175,38 @@ public class WebBrowserController implements Initializable {
         System.out.println("refreshing textField");
         history = currentWebView.getEngine().getHistory();
         ObservableList<WebHistory.Entry> historyEntries = history.getEntries();
-        textField.setText(historyEntries.get(history.getCurrentIndex()).getUrl());
+        if (historyEntries.size() != 0) {
+            textField.setText(historyEntries.get(history.getCurrentIndex()).getUrl());
+        }
     }
 
     public void newPage() {
         System.out.println("New page");
         initNewPage();
+        loadPage();
+        changeTabPaneWidth();
     }
 
+    private void onTabSelected() {
+        currentWebView = (WebView) ((HBox) tabPane.getSelectionModel().getSelectedItem()
+                .getContent()).getChildren().get(0);
+
+        refreshTextField();
+
+        Tab tab = tabPane.getSelectionModel().getSelectedItem();
+        tab.setText(currentWebView.getEngine().getTitle());
+    }
+
+    private void changeTabPaneWidth() {
+
+        if (tabPane.getTabs().isEmpty()) {
+            tabPane.tabMaxWidthProperty().set(TAB_WIDTH);
+        } else {
+            tabPane.tabMaxWidthProperty().set(
+                Math.min(tabPane.getWidth() / tabPane.getTabs().size(), TAB_WIDTH)
+            );
+        }
+
+        tabPane.tabMinWidthProperty().set(tabPane.getTabMaxWidth());
+    }
 }
