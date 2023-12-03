@@ -6,9 +6,6 @@ import javafx.stage.Stage;
 import ru.mai.lessons.rpks.controller.ApplicationController;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 
 public class Application extends javafx.application.Application {
