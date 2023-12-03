@@ -19,11 +19,6 @@ public class Application extends javafx.application.Application {
         FXMLLoader loader = new FXMLLoader(Application.class.getResource("browser.fxml"));
         Scene scene = new Scene(loader.load(), 1200, 750);
 
-        scene.getStylesheets().add(
-                URLDecoder.decode(
-                        Objects.requireNonNull(
-                                Application.class.getResource("browser.css"))
-                                .toExternalForm(), StandardCharsets.UTF_8));
         ApplicationController = loader.getController();
         stage.setResizable(false);
         stage.setTitle("Web Browser");
