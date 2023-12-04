@@ -459,7 +459,6 @@ public class WebBrowserController implements Initializable {
         applyHTML.setOnAction((val) -> applyHTMLAction());
 
         htmlEditor.setTextArea(textArea);
-        htmlEditor.setActionButton(applyHTML);
 
         try {
             htmlEditor.setText(documentToString(currentWebView.getEngine().getDocument()));
