@@ -7,10 +7,9 @@ module ru.mai.lessons.rpks.javawebbrowser {
     requires com.dlsc.formsfx;
     requires validatorfx;
     requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
 
     requires com.google.gson;
+
     requires log4j;
     opens ru.mai.lessons.rpks.javawebbrowser.history to com.google.gson;
 

@@ -200,6 +200,8 @@ public class WebBrowserController implements Initializable {
         currentWebView = (WebView) (tabBox).getChildren().get(0);
 
         refreshTextField();
+        changeStarButton();
+        changeBlockedHistoryButton();
         refreshTabText();
     }
     private void onTabClosed(Event e, Tab tab) {
@@ -230,7 +232,6 @@ public class WebBrowserController implements Initializable {
 
     private void loadEnvironment() {
         waitAndRefreshTextField();
-        refreshTabText();
     }
     private void changeStarButton() {
         isCurrentPageFavorite = favorites.isPagePresent(textField.getText());
@@ -253,6 +254,9 @@ public class WebBrowserController implements Initializable {
                     }
 
                     refreshTextField();
+                    changeStarButton();
+                    changeBlockedHistoryButton();
+
                     refreshTabText();
                 });
     }
@@ -267,9 +271,6 @@ public class WebBrowserController implements Initializable {
         if (historyEntries.size() != 0) {
             textField.setText(historyEntries.get(history.getCurrentIndex()).getUrl());
         }
-
-        changeStarButton();
-        changeBlockedHistoryButton();
     }
     private void refreshTabText() {
         String title = currentWebView.getEngine().getTitle();
