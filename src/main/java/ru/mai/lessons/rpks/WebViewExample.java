@@ -21,7 +21,7 @@ public class WebViewExample extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/web-browser.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(WebViewExample.class.getResource("/web-browser.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 590);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Browser");

@@ -9,5 +9,9 @@
       <WebView fx:id="webView" layoutX="4.0" layoutY="93.0" prefHeight="337.0" prefWidth="592.0" />
       <TextField fx:id="textField" layoutX="52.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="512.0" />
       <Button layoutX="4.0" layoutY="41.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
+      <Button layoutX="43.0" layoutY="41.0" mnemonicParsing="false" onAction="#refreshPage" text="refresh" />
+      <Button layoutX="96.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomPage" text="+" />
+      <Button layoutX="121.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomOut" text="-" />
+      <Button layoutX="142.0" layoutY="41.0" mnemonicParsing="false" onAction="#displayHistory" text="History" />
    </children>
 </AnchorPane>
