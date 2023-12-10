@@ -10,8 +10,10 @@
       <TextField fx:id="textField" layoutX="52.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="512.0" />
       <Button layoutX="4.0" layoutY="41.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
       <Button layoutX="43.0" layoutY="41.0" mnemonicParsing="false" onAction="#refreshPage" text="refresh" />
-      <Button layoutX="96.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomPage" text="+" />
+      <Button layoutX="96.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
       <Button layoutX="121.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomOut" text="-" />
       <Button layoutX="142.0" layoutY="41.0" mnemonicParsing="false" onAction="#displayHistory" text="History" />
+      <Button layoutX="196.0" layoutY="41.0" mnemonicParsing="false" onAction="#back" text="&lt;" />
+      <Button layoutX="221.0" layoutY="41.0" mnemonicParsing="false" text="&gt;" />
    </children>
 </AnchorPane>

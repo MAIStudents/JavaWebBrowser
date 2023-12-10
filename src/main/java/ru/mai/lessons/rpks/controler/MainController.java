@@ -3,16 +3,12 @@ package ru.mai.lessons.rpks.controler;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -27,6 +23,7 @@ public class MainController implements Initializable {
     private String homePage;
 
     private double webZoom;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engine = webView.getEngine();
@@ -48,8 +45,9 @@ public class MainController implements Initializable {
         webZoom += 0.25;
         webView.setZoom(webZoom);
     }
+
     public void zoomOut() {
-        webZoom -=0.25;
+        webZoom -= 0.25;
         webView.setZoom(webZoom);
     }
 
@@ -57,10 +55,22 @@ public class MainController implements Initializable {
         history = engine.getHistory();
         ObservableList<WebHistory.Entry> entries = history.getEntries();
 
-        for(WebHistory.Entry entry : entries) {
-            System.out.println(entry);
+        for (WebHistory.Entry entry : entries) {
+            System.out.println(entry.getUrl() + " " + entry.getLastVisitedDate());
         }
     }
 
+    public void back() {
+        history = engine.getHistory();
+        ObservableList<WebHistory.Entry> entries = history.getEntries();
+        history.go(-1);
+        textField.setText(entries.get(history.getCurrentIndex()).getUrl());
+    }
 
+    public void forward() {
+        history = engine.getHistory();
+        ObservableList<WebHistory.Entry> entries = history.getEntries();
+        history.go(1);
+        textField.setText(entries.get(history.getCurrentIndex()).getUrl());
+    }
 }
