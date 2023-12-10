@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane prefHeight="459.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controler.MainController">
+   <children>
+      <WebView fx:id="webView" layoutX="4.0" layoutY="93.0" prefHeight="337.0" prefWidth="592.0" />
+      <TextField fx:id="textField" layoutX="52.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="512.0" />
+      <Button layoutX="4.0" layoutY="41.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
+   </children>
+</AnchorPane>
