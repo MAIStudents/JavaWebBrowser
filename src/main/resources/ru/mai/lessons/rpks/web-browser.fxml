@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPain" prefHeight="590.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controller.ControllerApplication">
+   <children>
+      <TabPane fx:id="tabPane" AnchorPane.topAnchor="27.0" />
+      <MenuBar fx:id="menuBar" prefWidth="900.0" AnchorPane.bottomAnchor="562.8" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#createHTML" text="Create html" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadHTML" text="Load html" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#editHTML" text="Edit html" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Settings">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#addToFavorites" text="Add to favorites" />
+                  <MenuItem mnemonicParsing="false" onAction="#showFavorites" text="Show favorites" />
+                  <MenuItem mnemonicParsing="false" onAction="#disableHistoryForSite" text="Disable history for site" />
+                  <MenuItem mnemonicParsing="false" onAction="#enableHistoryForSite" text="Enable history for site" />
+                  <MenuItem mnemonicParsing="false" onAction="#disableHistory" text="Disable history" />
+                  <MenuItem mnemonicParsing="false" onAction="#enableHistory" text="Enable history" />
+                  <MenuItem mnemonicParsing="false" onAction="#savePage" text="Save page" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveZipPage" text="Save zip page" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
