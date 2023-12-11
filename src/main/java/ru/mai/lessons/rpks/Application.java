@@ -19,6 +19,7 @@ public class Application extends javafx.application.Application {
         stage.setTitle("Browser");
         stage.setScene(scene);
         stage.show();
+        //Ян попросил проверить пуш
     }
 
     @Override
