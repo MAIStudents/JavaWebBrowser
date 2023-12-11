@@ -335,6 +335,7 @@ public class ApplicationController {
     void initialize() {
         historySwitch = true;
         historyDisableSites = new ArrayList<>();
+
     }
 
     public void onClose() {
