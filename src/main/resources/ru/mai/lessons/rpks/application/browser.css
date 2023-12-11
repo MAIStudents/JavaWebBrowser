@@ -92,6 +92,11 @@
     -fx-background-color: #ea59f6;
 }
 
+.MainPane {
+    -fx-border-width: 3;
+    -fx-border-color: Black;
+}
+
 .TextURL {
     -fx-border-width: 2;
     -fx-border-radius: 14;

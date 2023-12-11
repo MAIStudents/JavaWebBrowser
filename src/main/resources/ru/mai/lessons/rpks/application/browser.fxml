@@ -21,7 +21,7 @@
               <content>
                 <AnchorPane minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="1200.0">
                      <children>
-                        <WebView fx:id="webView" layoutY="70.0" minHeight="605.0" minWidth="1200.0" prefHeight="605.0" prefWidth="1200.0" />
+                        <WebView fx:id="webView" layoutY="70.0" minHeight="605.0" minWidth="1200.0" prefHeight="605.0" prefWidth="1200.0"/>
                         <HBox minHeight="60.0" minWidth="1200.0" prefHeight="60.0" prefWidth="1200.0">
                            <children>
                               <Button minHeight="40.0" minWidth="80.0" mnemonicParsing="false" onAction="#goBackTab" prefHeight="40.0" prefWidth="80.0" styleClass="Button" text="&lt;" textAlignment="CENTER" wrapText="true">
