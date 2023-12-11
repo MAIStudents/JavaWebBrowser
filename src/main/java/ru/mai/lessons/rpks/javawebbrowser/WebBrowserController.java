@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -166,13 +167,27 @@ public class WebBrowserController implements Initializable {
         currentWebView.getEngine().load(homePage);
     }
     public void loadPageFromTextField() {
-        String query = "";
-        if (!textField.getText().startsWith("https://")) {
-            query = "https://";
+
+        String text = textField.getText();
+        String query = text;
+
+        if (!text.startsWith("https://") && !(text.startsWith("http://"))) {
+            query = "https://" + text;
         }
 
-        currentWebView.getEngine().load(query + textField.getText());
-        textField.setText(query + textField.getText());
+        String regex = "^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}\\.([a-z]+)?$";
+
+        if (!Pattern.compile(regex).matcher(query).matches()) {
+            query = "https://duckduckgo.com/?q=" + String.join("+", text.split(" "));
+        }
+
+        try {
+            currentWebView.getEngine().load(query);
+        } catch (IllegalArgumentException e) {
+            log.info("Wrong address");
+            query = "";
+        }
+        textField.setText(query);
         loadEnvironment();
     }
     public void newPage() {
