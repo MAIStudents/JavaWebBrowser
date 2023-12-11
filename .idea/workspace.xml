@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="add MainController">
+    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="add history">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" afterDir="false" />
@@ -42,19 +43,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "student/313__gorschenko__d",
-    "last_opened_file_path": "C:/Users/Denis/.jdks/javafx-sdk-21.0.1/lib",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.JavaFX"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;student/313__gorschenko__d&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Denis/.jdks/javafx-sdk-21.0.1/lib&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser\src\main\java\ru\mai\lessons\rpks" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.WebViewExample">
     <configuration name="ExampleSceneBuilder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.ExampleSceneBuilder" />
@@ -186,12 +192,21 @@
       <option name="project" value="LOCAL" />
       <updated>1702201479976</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add history">
+      <option name="closed" value="true" />
+      <created>1702202555661</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702202555661</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add MainController" />
-    <option name="LAST_COMMIT_MESSAGE" value="add MainController" />
+    <MESSAGE value="add history" />
+    <option name="LAST_COMMIT_MESSAGE" value="add history" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

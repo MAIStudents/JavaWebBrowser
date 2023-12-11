@@ -2,18 +2,23 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="459.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controler.MainController">
+<AnchorPane prefHeight="752.0" prefWidth="734.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controler.MainController">
    <children>
-      <WebView fx:id="webView" layoutX="4.0" layoutY="93.0" prefHeight="337.0" prefWidth="592.0" />
-      <TextField fx:id="textField" layoutX="52.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="512.0" />
+      <TextField fx:id="textField" layoutX="72.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="629.0" />
       <Button layoutX="4.0" layoutY="41.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
       <Button layoutX="43.0" layoutY="41.0" mnemonicParsing="false" onAction="#refreshPage" text="refresh" />
       <Button layoutX="96.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
       <Button layoutX="121.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomOut" text="-" />
       <Button layoutX="142.0" layoutY="41.0" mnemonicParsing="false" onAction="#displayHistory" text="History" />
-      <Button layoutX="196.0" layoutY="41.0" mnemonicParsing="false" onAction="#back" text="&lt;" />
-      <Button layoutX="221.0" layoutY="41.0" mnemonicParsing="false" text="&gt;" />
+      <Button layoutX="12.0" layoutY="16.0" mnemonicParsing="false" onAction="#back" text="&lt;" />
+      <Button layoutX="40.0" layoutY="16.0" mnemonicParsing="false" onAction="#forward" text="&gt;" />
+      <TabPane fx:id="tabPane" layoutX="2.0" layoutY="78.0" prefHeight="488.0" prefWidth="728.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+
+        </tabs>
+      </TabPane>
+      <Button layoutX="196.0" layoutY="41.0" mnemonicParsing="false" onAction="#createTab" text="addTab" />
+      <Button layoutX="252.0" layoutY="41.0" mnemonicParsing="false" onAction="#saveZip" text="SaveZip" />
    </children>
 </AnchorPane>
