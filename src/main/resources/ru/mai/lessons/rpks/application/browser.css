@@ -1,5 +1,6 @@
 .TabPane {
     -fx-background-color: #6060f8;
+    -fx-focus-color: transparent;
 }
 
 .Tab {
@@ -21,11 +22,16 @@
     -fx-background-color: #ea59f6;
 }
 
+.Tab:selected {
+    -fx-background-color: #efaef6;
+    -fx-focus-color: transparent;
+}
+
 .NewTab {
     -fx-font-size: 20px;
     -fx-padding: 8;
     -fx-font-family: "Cooper Black";
-    -fx-background-color: #efaef6;
+    -fx-background-color: #ffffff;
     -fx-border-width: 2;
     -fx-border-radius: 14;
     -fx-background-radius: 14;
@@ -33,7 +39,7 @@
 }
 
 .NewTab:hover {
-    -fx-background-color: #e47df3;
+    -fx-background-color: #efaef6;
 }
 
 .NewTab:pressed {
