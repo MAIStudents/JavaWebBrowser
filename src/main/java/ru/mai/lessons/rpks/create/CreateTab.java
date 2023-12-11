@@ -1,4 +1,4 @@
-package ru.mai.lessons.rpks.tab;
+package ru.mai.lessons.rpks.create;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
