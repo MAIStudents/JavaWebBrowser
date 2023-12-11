@@ -21,7 +21,7 @@
               <content>
                 <AnchorPane minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="1200.0">
                      <children>
-                        <WebView layoutY="70.0" minHeight="605.0" minWidth="1200.0" prefHeight="605.0" prefWidth="1200.0" />
+                        <WebView fx:id="webView" layoutY="70.0" minHeight="605.0" minWidth="1200.0" prefHeight="605.0" prefWidth="1200.0" />
                         <HBox minHeight="60.0" minWidth="1200.0" prefHeight="60.0" prefWidth="1200.0">
                            <children>
                               <Button minHeight="40.0" minWidth="80.0" mnemonicParsing="false" onAction="#goBackTab" prefHeight="40.0" prefWidth="80.0" styleClass="Button" text="&lt;" textAlignment="CENTER" wrapText="true">
@@ -48,7 +48,7 @@
                                     <Font name="Cooper Black" size="22.0" />
                                  </font>
                               </Button>
-                              <TextField minHeight="40.0" minWidth="800.0" prefHeight="40.0" prefWidth="700.0" promptText="Start typing..." styleClass="TextURL">
+                              <TextField fx:id="urlField" minHeight="40.0" minWidth="800.0" prefHeight="40.0" prefWidth="700.0" promptText="Start typing..." styleClass="TextURL">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                                  </HBox.margin>
