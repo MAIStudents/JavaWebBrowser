@@ -1,8 +1,11 @@
 package ru.mai.lessons.rpks.controler;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -10,14 +13,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import ru.mai.lessons.rpks.WebViewExample;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
@@ -44,6 +48,7 @@ public class MainController implements Initializable {
     private String homePage;
     private double webZoom;
     private final static String PATH_DOWNLOADS = WebViewExample.class.getResource("").getPath() + "downloads/";
+    private final static String EDIT_HTML_FILE = PATH_DOWNLOADS + "index.html";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,6 +70,36 @@ public class MainController implements Initializable {
         } else {
             engine.load("https://" + textField.getText());
         }
+    }
+
+    public void editHTML() throws IOException {
+        String html = "";
+
+        if (getCurrentWebView().getEngine().getLoadWorker().getState().equals(Worker.State.RUNNING)) {
+            WebEngine webEngine = getCurrentWebView().getEngine();
+            html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
+        }
+
+        File file = new File(EDIT_HTML_FILE);
+        file.createNewFile();
+
+        try (FileWriter editHTMLFile = new FileWriter(file)) {
+            editHTMLFile.write(html);
+        }
+
+        Stage htmlStage = new Stage();
+        htmlStage.setOnCloseRequest(event -> file.delete());
+        FXMLLoader fxmlLoader = new FXMLLoader(WebViewExample.class.getResource("/edit-html.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+        HTMLEditorController controllerHTMLEditor = fxmlLoader.getController();
+        controllerHTMLEditor.setControllerApplication(this);
+        htmlStage.setResizable(false);
+        htmlStage.setTitle("HTML editor");
+        htmlStage.setScene(scene);
+        htmlStage.show();
+    }
+    public void loadContent(String html) {
+        getCurrentWebView().getEngine().loadContent(html);
     }
 
     public void refreshPage() {
@@ -139,6 +174,7 @@ public class MainController implements Initializable {
         return selectedTab.getText();
     }
 
+
     public void saveZip() throws IOException {
         WebView currentWebView = getCurrentWebView();
         String currentWebsite = getCurrentWebsiteName();
@@ -174,5 +210,33 @@ public class MainController implements Initializable {
         String basename = new File(url).getName();
         return basename.replaceAll(safeChars, "_");
     }
+
+    public void createHTML() throws IOException {
+        Stage htmlStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(WebViewExample.class.getResource("/create-html.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+        htmlStage.setResizable(false);
+        htmlStage.setTitle("HTML creator");
+        htmlStage.setScene(scene);
+        htmlStage.show();
+    }
+
+    public void loadHTML() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select HTML File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                String htmlContent = Files.readString(Path.of(selectedFile.getPath()));
+                getCurrentWebView().getEngine().loadContent(htmlContent);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
 
 }
