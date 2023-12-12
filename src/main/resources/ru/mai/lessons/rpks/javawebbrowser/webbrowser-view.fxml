@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.javawebbrowser.WebBrowserImplementation">
+   <children>
+      <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="577.0" tabMaxWidth="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="backButton" ellipsisString="&lt;" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageBackButtonAction" prefHeight="32.0" prefWidth="32.0" text="Back" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="34.0">
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="forwardButton" ellipsisString="&gt;" layoutX="114.0" layoutY="24.0" mnemonicParsing="false" onAction="#pageForwardButtonAction" prefHeight="32.0" prefWidth="32.0" text="Forward" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="34.0">
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="reloadButton" ellipsisString="⟲" layoutX="207.0" layoutY="24.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#reloadPageButtonAction" prefHeight="32.0" prefWidth="32.0" text="Reload" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="34.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font></Button>
+      <TextField fx:id="textField" layoutX="140.0" layoutY="22.0" minWidth="212.0" onAction="#loadPageFromTextField" prefHeight="32.0" prefWidth="317.0" promptText="🔍 search..." AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="34.0">
+         <font>
+            <Font name="Roboto Regular" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Lighting diffuseConstant="1.43" specularConstant="0.0" specularExponent="0.0" surfaceScale="2.41">
+               <bumpInput>
+                  <Shadow>
+                     <color>
+                        <Color opacity="0.18702289462089539" />
+                     </color>
+                  </Shadow>
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="53.28" />
+               </light>
+            </Lighting>
+         </effect></TextField>
+      <Button fx:id="findButton" ellipsisString="🔍" layoutX="570.0" layoutY="18.0" mnemonicParsing="false" onAction="#loadPageFromTextField" prefHeight="32.0" prefWidth="32.0" text="Find" AnchorPane.rightAnchor="116.0" AnchorPane.topAnchor="34.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font></Button>
+      <MenuButton ellipsisString="⚙" mnemonicParsing="false" prefHeight="32.0" prefWidth="43.0" text="⚙" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="34.0">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#favoriteButtonAction" text="Add to favourites" />
+          <MenuItem mnemonicParsing="false" onAction="#blockedHistoryButtonAction" text="Block Site from history" />
+            <MenuItem mnemonicParsing="false" onAction="#newEmptyPageButtonAction" text="New HTML Page" />
+            <MenuItem mnemonicParsing="false" text="Edit Page" />
+            <MenuItem mnemonicParsing="false" text="Download Page" />
+            <MenuItem mnemonicParsing="false" onAction="#zipButtonAction" text="Compress Page to Zip" />
+            <MenuItem mnemonicParsing="false" onAction="#historyButtonAction" text="Save History" />
+            <MenuItem mnemonicParsing="false" onAction="#switchHistoryWritingButtonAction" text="[Dis/En]able History" />
+        </items>
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MenuButton>
+      <Button ellipsisString="+" layoutX="34.0" layoutY="34.0" mnemonicParsing="false" onAction="#newPage" prefHeight="32.0" prefWidth="32.0" text="New Page" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="34.0">
+         <font>
+            <Font name="Roboto Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
