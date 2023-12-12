@@ -5,27 +5,29 @@
 
 <AnchorPane prefHeight="857.0" prefWidth="734.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controler.MainController">
     <children>
-        <TextField fx:id="textField" layoutX="72.0" layoutY="15.0" onAction="#loadPage" prefHeight="26.0" prefWidth="629.0" />
-        <Button layoutX="4.0" layoutY="41.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
-        <Button layoutX="43.0" layoutY="41.0" mnemonicParsing="false" onAction="#refreshPage" text="refresh" />
-        <Button layoutX="96.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
-        <Button layoutX="121.0" layoutY="41.0" mnemonicParsing="false" onAction="#zoomOut" text="-" />
-        <Button layoutX="142.0" layoutY="41.0" mnemonicParsing="false" onAction="#displayHistory" text="History" />
-        <Button layoutX="12.0" layoutY="16.0" mnemonicParsing="false" onAction="#back" text="&lt;" />
-        <Button layoutX="40.0" layoutY="16.0" mnemonicParsing="false" onAction="#forward" text="&gt;" />
+        <TextField fx:id="textField" layoutX="72.0" layoutY="42.0" onAction="#loadPage" prefHeight="26.0" prefWidth="629.0" />
+        <Button layoutX="4.0" layoutY="75.0" mnemonicParsing="false" onAction="#loadPage" text="load" />
+        <Button layoutX="43.0" layoutY="75.0" mnemonicParsing="false" onAction="#refreshPage" text="refresh" />
+        <Button layoutX="96.0" layoutY="75.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
+        <Button layoutX="121.0" layoutY="75.0" mnemonicParsing="false" onAction="#zoomOut" text="-" />
+        <Button layoutX="142.0" layoutY="75.0" mnemonicParsing="false" onAction="#displayHistory" text="History" />
+        <Button layoutX="12.0" layoutY="42.0" mnemonicParsing="false" onAction="#back" text="&lt;" />
+        <Button layoutX="40.0" layoutY="42.0" mnemonicParsing="false" onAction="#forward" text="&gt;" />
         <TabPane fx:id="tabPane" layoutX="2.0" layoutY="102.0" prefHeight="511.0" prefWidth="728.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
 
             </tabs>
         </TabPane>
-        <Button layoutX="196.0" layoutY="41.0" mnemonicParsing="false" onAction="#createTab" text="addTab" />
-        <Button layoutX="252.0" layoutY="41.0" mnemonicParsing="false" onAction="#saveZip" text="SaveZip" />
-        <MenuBar layoutX="6.0" layoutY="3.0" prefHeight="26.0" prefWidth="179.0">
+        <Button layoutX="196.0" layoutY="75.0" mnemonicParsing="false" onAction="#createTab" text="addTab" />
+        <Button layoutX="252.0" layoutY="75.0" mnemonicParsing="false" onAction="#saveZip" text="SaveZip" />
+        <MenuBar layoutX="6.0" layoutY="3.0" prefHeight="26.0" prefWidth="155.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#createHTML" text="Create html" />
                         <MenuItem mnemonicParsing="false" onAction="#loadHTML" text="Load html" />
+                        <MenuItem mnemonicParsing="false" onAction="#addFavoritesSite" text="addFavoritesSite" />
+                        <MenuItem mnemonicParsing="false" onAction="#showFavorites" text="showFavorites" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">

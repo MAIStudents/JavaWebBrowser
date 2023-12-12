@@ -1,29 +1,32 @@
 package ru.mai.lessons.rpks.controler;
 
+import com.google.gson.Gson;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import ru.mai.lessons.rpks.BrowserHistoryEntry;
 import ru.mai.lessons.rpks.WebViewExample;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -72,32 +75,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void editHTML() throws IOException {
-        String html = "";
 
-        if (getCurrentWebView().getEngine().getLoadWorker().getState().equals(Worker.State.RUNNING)) {
-            WebEngine webEngine = getCurrentWebView().getEngine();
-            html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
-        }
-
-        File file = new File(EDIT_HTML_FILE);
-        file.createNewFile();
-
-        try (FileWriter editHTMLFile = new FileWriter(file)) {
-            editHTMLFile.write(html);
-        }
-
-        Stage htmlStage = new Stage();
-        htmlStage.setOnCloseRequest(event -> file.delete());
-        FXMLLoader fxmlLoader = new FXMLLoader(WebViewExample.class.getResource("/edit-html.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
-        HTMLEditorController controllerHTMLEditor = fxmlLoader.getController();
-        controllerHTMLEditor.setControllerApplication(this);
-        htmlStage.setResizable(false);
-        htmlStage.setTitle("HTML editor");
-        htmlStage.setScene(scene);
-        htmlStage.show();
-    }
     public void loadContent(String html) {
         getCurrentWebView().getEngine().loadContent(html);
     }
@@ -117,18 +95,35 @@ public class MainController implements Initializable {
         webViews.get(selectedTab).setZoom(webZoom);
     }
 
-    public void displayHistory() {
-        selectedTab = tabPane.getSelectionModel().getSelectedItem();
-        history = webViews.get(selectedTab).getEngine().getHistory();
+    public void displayHistory() throws IOException {
+        history = getCurrentWebView().getEngine().getHistory();
         ObservableList<WebHistory.Entry> entries = history.getEntries();
+        List<BrowserHistoryEntry> historyEntries = new ArrayList<>();
+
+
+        String filePath = WebViewExample.class.getResource("/webHistory.json").getPath(); // Specify the file path here
+        System.out.println(filePath);
+
+
         for (WebHistory.Entry entry : entries) {
-            System.out.println(entry.getUrl() + " " + entry.getLastVisitedDate());
+            String url = entry.getUrl();
+            String title = entry.getTitle();
+            Date visitDate = entry.getLastVisitedDate();
+            BrowserHistoryEntry historyEntry = new BrowserHistoryEntry(url, title, visitDate);
+            historyEntries.add(historyEntry);
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(historyEntries);
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(json);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 
+
     public void back() {
-        selectedTab = tabPane.getSelectionModel().getSelectedItem();
-        history = webViews.get(selectedTab).getEngine().getHistory();
+        history = getCurrentWebView().getEngine().getHistory();
         ObservableList<WebHistory.Entry> entries = history.getEntries();
         history.go(-1);
         textField.setText(entries.get(history.getCurrentIndex()).getUrl());
@@ -136,8 +131,7 @@ public class MainController implements Initializable {
     }
 
     public void forward() {
-        selectedTab = tabPane.getSelectionModel().getSelectedItem();
-        history = webViews.get(selectedTab).getEngine().getHistory();
+        history = getCurrentWebView().getEngine().getHistory();
         ObservableList<WebHistory.Entry> entries = history.getEntries();
         history.go(1);
         textField.setText(entries.get(history.getCurrentIndex()).getUrl());
@@ -172,6 +166,40 @@ public class MainController implements Initializable {
     private String getCurrentWebsiteName() {
         selectedTab = tabPane.getSelectionModel().getSelectedItem();
         return selectedTab.getText();
+    }
+
+    private final List<String> favoritesSite = new ArrayList<>();
+
+    public void addFavoritesSite() {
+        String currentSite = getCurrentWebsiteName();
+        Alert alert;
+        if (currentSite != null) {
+            favoritesSite.add(currentSite);
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Add to favorites");
+            alert.setHeaderText(null);
+            alert.setContentText("The current site has added to the favorites list");
+            alert.showAndWait();
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Add to favorites");
+            alert.setHeaderText(null);
+            alert.setContentText("Can't add empty site to the favorites list");
+            alert.showAndWait();
+        }
+    }
+
+    public void showFavorites() {
+        Stage favoritesStage = new Stage();
+        VBox favoritesBox = new VBox();
+        ListView<String> listView = new ListView<>();
+        listView.getItems().setAll(favoritesSite);
+        favoritesBox.getChildren().addAll(new Label("Favorite sites"), listView);
+
+        Scene favoritesScene = new Scene(favoritesBox, 300, 200);
+        favoritesStage.setScene(favoritesScene);
+        favoritesStage.setTitle("Favorite sites");
+        favoritesStage.show();
     }
 
 
@@ -209,6 +237,33 @@ public class MainController implements Initializable {
         String safeChars = "[^a-zA-Z0-9.-]";
         String basename = new File(url).getName();
         return basename.replaceAll(safeChars, "_");
+    }
+
+    public void editHTML() throws IOException {
+        String html = "";
+
+        if (getCurrentWebView().getEngine().getLoadWorker().getState().equals(Worker.State.RUNNING)) {
+            WebEngine webEngine = getCurrentWebView().getEngine();
+            html = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
+        }
+
+        File file = new File(EDIT_HTML_FILE);
+        file.createNewFile();
+
+        try (FileWriter editHTMLFile = new FileWriter(file)) {
+            editHTMLFile.write(html);
+        }
+
+        Stage htmlStage = new Stage();
+        htmlStage.setOnCloseRequest(event -> file.delete());
+        FXMLLoader fxmlLoader = new FXMLLoader(WebViewExample.class.getResource("/edit-html.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 590);
+        HTMLEditorController controllerHTMLEditor = fxmlLoader.getController();
+        controllerHTMLEditor.setControllerApplication(this);
+        htmlStage.setResizable(false);
+        htmlStage.setTitle("HTML editor");
+        htmlStage.setScene(scene);
+        htmlStage.show();
     }
 
     public void createHTML() throws IOException {

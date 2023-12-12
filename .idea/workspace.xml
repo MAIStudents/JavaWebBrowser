@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="сделал механизм вкладок и сохранение zip">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/HTMLCreateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/HTMLEditorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/create-html.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/edit-html.fxml" afterDir="false" />
+    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="добавлен просмотр и редактирование html-кода">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/webHistory.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" afterDir="false" />
     </list>
@@ -22,8 +21,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
-        <option value="Class" />
         <option value="AnnotationType" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -214,14 +213,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702322919422</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="добавлен просмотр и редактирование html-кода">
+      <option name="closed" value="true" />
+      <created>1702345862182</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702345862182</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add MainController" />
     <MESSAGE value="add history" />
     <MESSAGE value="сделал механизм вкладок и сохранение zip" />
-    <option name="LAST_COMMIT_MESSAGE" value="сделал механизм вкладок и сохранение zip" />
+    <MESSAGE value="добавлен просмотр и редактирование html-кода" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлен просмотр и редактирование html-кода" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
