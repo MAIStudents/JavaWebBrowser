@@ -50,7 +50,7 @@ public class CreateTab {
     public static Tab create(EventHandler<ActionEvent> goBackTabAction,
                              EventHandler<ActionEvent> goForwardTabAction,
                              EventHandler<ActionEvent> reloadTabAction,
-                             EventHandler<Event> onCloseTabAction) {
+                             EventHandler<Event> onSelectTabAction) {
         var goBackTabButton = createButton(80.0, "<",
                 new Insets(10.0, 5.0, 10.0, 10.0), goBackTabAction);
         var goForwardTabButton = createButton(80.0, ">",
@@ -86,7 +86,7 @@ public class CreateTab {
 
         var tab = new Tab();
         tab.setText("Oh, hello!");
-        tab.setOnCloseRequest(onCloseTabAction);
+        tab.setOnSelectionChanged(onSelectTabAction);
         tab.setContent(anchorPane);
         tab.getStyleClass().add("Tab");
 
