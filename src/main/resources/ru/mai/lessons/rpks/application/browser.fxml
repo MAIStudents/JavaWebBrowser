@@ -17,7 +17,7 @@
     <children>
         <TabPane fx:id="tabPane" styleClass="TabPane" AnchorPane.topAnchor="50.0">
          <tabs>
-            <Tab onCloseRequest="#closeTab" styleClass="Tab" text="Oh, hello!">
+            <Tab onSelectionChanged="#changedSelectionTab" styleClass="Tab" text="Oh, hello!">
               <content>
                 <AnchorPane minHeight="675.0" minWidth="1200.0" prefHeight="675.0" prefWidth="1200.0">
                      <children>
