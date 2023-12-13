@@ -1,0 +1,66 @@
+.favListBox {
+    -fx-background-color: #efe094;
+}
+
+.favListing {
+    -fx-font-family: "Cooper Black";
+    -fx-font-size: 18;
+    -fx-background-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: Black;
+}
+
+.cell {
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: transparent;
+}
+
+.cell:focused {
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: white;
+}
+
+.cell:hover {
+    -fx-background-color: #efe094;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: Black;
+}
+
+.cell:pressed {
+    -fx-background-color: #dc77ec;
+}
+
+.cell:selected {
+    -fx-background-color: #dc77ec;
+}
+
+.favListButton {
+    -fx-font-size: 20;
+    -fx-font-family: "Cooper Black";
+    -fx-background-color: #dc77ec;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: Black;
+}
+
+.favListButton:hover {
+    -fx-background-color: #c82aee;
+}
+
+.favListButton:pressed {
+    -fx-background-color: #6060f8;
+}
+
+.favListTitle {
+    -fx-font-family: "Cooper Black";
+    -fx-font-size: 22;
+}
