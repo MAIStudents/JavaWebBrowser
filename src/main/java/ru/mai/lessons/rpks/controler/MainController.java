@@ -132,21 +132,6 @@ public class MainController implements Initializable {
         anchorPane.setStyle("-fx-background-color: #fff;");
     }
 
-    public void homiak() throws MalformedURLException {
-        Stage stage = new Stage();
-        VBox root = new VBox();
-        final ImageView selectedImage = new ImageView();
-        Image image1 = new Image(new File("C:\\Users\\Denis\\RPCS\\JavaWebBrowser\\Screenshot_2.jpeg").toURI().toURL().toExternalForm());
-
-        selectedImage.setImage(image1);
-
-        root.getChildren().addAll(selectedImage);
-
-        Scene scene = new Scene(root, 300, 300);
-
-        stage.setScene(scene);
-        stage.show();
-    }
 
     public void showHistory(List<BrowserHistoryEntry> historyEntries) {
         Stage historyStage = new Stage();
