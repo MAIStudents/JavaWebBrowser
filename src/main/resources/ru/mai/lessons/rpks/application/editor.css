@@ -1,0 +1,40 @@
+.editorTextArea {
+    -fx-font-family: Consolas;
+    -fx-font-size: 16;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-background-radius: 13;
+    -fx-border-color: Black;
+}
+
+.editorVBox {
+    -fx-background-color: #efe094;
+}
+
+.editorButton {
+    -fx-font-size: 20;
+    -fx-font-family: "Cooper Black";
+    -fx-background-color: #dc77ec;
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-border-color: Black;
+}
+
+.editorButton:hover {
+    -fx-background-color: #c82aee;
+}
+
+.editorButton:pressed {
+    -fx-background-color: #6060f8;
+}
+
+.editorFilename {
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-border-color: Black;
+    -fx-font-family: "Cooper Black";
+    -fx-font-size: 16;
+    -fx-background-color: white;
+}
