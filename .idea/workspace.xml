@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="update MainController">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="AnnotationType" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2Z0phzbLKW73D7yAAauNDnVqsy1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "student/313__gorschenko__d",
+    "last_opened_file_path": "C:/Users/Denis/.jdks/javafx-sdk-21.0.1/lib",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.25977013",
+    "settings.editor.selected.configurable": "preferences.JavaFX"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ru.mai.lessons.rpks.controler" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser" />
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser\src\main\resources" />
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser\src\main\java\ru\mai\lessons\rpks" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.WebViewExample">
+    <configuration name="ExampleSceneBuilder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.ExampleSceneBuilder" />
+      <module name="JavaWebBrowser" />
+      <option name="VM_PARAMETERS" value="--module-path C:\Users\Denis\.jdks\javafx-sdk-21.0.1\lib --add-modules javafx.controls,javafx.fxml,javafx.web" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.mai.lessons.rpks.controler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavaFX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.JavaFX" />
+      <module name="JavaWebBrowser" />
+      <option name="VM_PARAMETERS" value="--module-path C:\Users\Denis\.jdks\javafx-sdk-21.0.1\lib --add-modules javafx.controls,javafx.fxml" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.mai.lessons.rpks.controler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebViewExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.WebViewExample" />
+      <module name="JavaWebBrowser" />
+      <option name="VM_PARAMETERS" value="--module-path C:\Users\Denis\.jdks\javafx-sdk-21.0.1\lib --add-modules javafx.controls,javafx.fxml,javafx.web" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.mai.lessons.rpks.controler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavaWebBrowser [clean,javafx:run]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="javafx:run" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.ExampleSceneBuilder" />
+      <item itemvalue="Application.JavaFX" />
+      <item itemvalue="Application.WebViewExample" />
+      <item itemvalue="Maven.JavaWebBrowser [clean,javafx:run]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.WebViewExample" />
+        <item itemvalue="Application.ExampleSceneBuilder" />
+        <item itemvalue="Application.JavaFX" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="" />
+      <created>1701568973332</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701568973332</updated>
+    </task>
+    <task id="LOCAL-00001" summary="add MainController">
+      <option name="closed" value="true" />
+      <created>1702198331239</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1702198331239</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add MainController">
+      <option name="closed" value="true" />
+      <created>1702198348754</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702198348754</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add MainController">
+      <option name="closed" value="true" />
+      <created>1702201479976</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702201479976</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add history">
+      <option name="closed" value="true" />
+      <created>1702202555661</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702202555661</updated>
+    </task>
+    <task id="LOCAL-00005" summary="сделал механизм вкладок и сохранение zip">
+      <option name="closed" value="true" />
+      <created>1702322919422</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702322919422</updated>
+    </task>
+    <task id="LOCAL-00006" summary="добавлен просмотр и редактирование html-кода">
+      <option name="closed" value="true" />
+      <created>1702345862182</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702345862182</updated>
+    </task>
+    <task id="LOCAL-00007" summary="сохранение истории в json файл">
+      <option name="closed" value="true" />
+      <created>1702397430682</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702397430682</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add incognito">
+      <option name="closed" value="true" />
+      <created>1702428616617</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702428616617</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update MainController">
+      <option name="closed" value="true" />
+      <created>1702428841419</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702428841419</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add MainController" />
+    <MESSAGE value="add history" />
+    <MESSAGE value="сделал механизм вкладок и сохранение zip" />
+    <MESSAGE value="добавлен просмотр и редактирование html-кода" />
+    <MESSAGE value="сохранение истории в json файл" />
+    <MESSAGE value="add incognito" />
+    <MESSAGE value="update MainController" />
+    <option name="LAST_COMMIT_MESSAGE" value="update MainController" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
