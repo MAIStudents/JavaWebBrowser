@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
@@ -20,11 +21,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import ru.mai.lessons.rpks.application.Application;
+import ru.mai.lessons.rpks.create.CreateEditor;
 import ru.mai.lessons.rpks.create.CreateFavList;
 import ru.mai.lessons.rpks.create.CreateNotification;
 import ru.mai.lessons.rpks.create.CreateTab;
@@ -125,15 +128,6 @@ public class ApplicationController {
         throw new RuntimeException("Window is not found!");
     }
 
-    private double getWindowHeight() {
-        for (Window window : Stage.getWindows()) {
-            if (window.isShowing()) {
-                return window.getHeight();
-            }
-        }
-        throw new RuntimeException("Window is not found!");
-    }
-
     private void setTabTitle(String currentUrl) {
         String TabTitle;
         if (!currentUrl.isEmpty()) {
@@ -214,12 +208,73 @@ public class ApplicationController {
 
     @FXML
     void EditorCreate() {
+        try {
+            double mainX = getWindowX();
+            double mainY = getWindowY();
 
+            var editorStage = CreateEditor.create(715.0, 1180.0, null,
+                    actionEvent -> {
+                        var tmp = (Pair<String, String>) actionEvent.getSource();
+                        var editorText = tmp.getKey();
+                        var filename = tmp.getValue();
+                        File saveHtml = new File(DOWNLOADS +
+                                (filename == null || filename.isEmpty() ? "after.editor" : filename)
+                                + ".html");
+                        try {
+                            saveHtml.createNewFile();
+                            try (FileWriter fileWriter = new FileWriter(saveHtml)) {
+                                fileWriter.write(editorText);
+                            }
+                            System.out.println("Note (Editor): file successfully save to " + saveHtml.getAbsolutePath());
+                        } catch (IOException ex) {
+                            System.out.println("Editor error: IOException caught, Ex.message: " + ex.getMessage());
+                        }
+                    });
+            editorStage.setX(mainX + 15);
+            editorStage.setY(mainY + 55);
+            editorStage.showAndWait();
+        } catch (RuntimeException ex) {
+            System.out.println("Editor error: RuntimeException caught: " + ex.getMessage());
+        }
     }
 
     @FXML
     void EditorEdit() {
+        String currentHtml = null;
+        var state = CurrentWebView().getEngine().getLoadWorker().getState();
+        if (state.equals(Worker.State.RUNNING) || state.equals(Worker.State.SUCCEEDED)) {
+            var webEngine = CurrentWebView().getEngine();
+            currentHtml = new org.jsoup.helper.W3CDom().asString(webEngine.getDocument());
+        }
 
+        try {
+            double mainX = getWindowX();
+            double mainY = getWindowY();
+
+            var editorStage = CreateEditor.create(715.0, 1180.0, currentHtml,
+                    actionEvent -> {
+                        var tmp = (Pair<String, String>) actionEvent.getSource();
+                        var editorText = tmp.getKey();
+                        var filename = tmp.getValue();
+                        File saveHtml = new File(DOWNLOADS +
+                                (filename == null || filename.isEmpty() ? "after.editor" : filename)
+                                + ".html");
+                        try {
+                            saveHtml.createNewFile();
+                            try (FileWriter fileWriter = new FileWriter(saveHtml)) {
+                                fileWriter.write(editorText);
+                            }
+                            System.out.println("Note (Editor): file successfully save to " + saveHtml.getAbsolutePath());
+                        } catch (IOException ex) {
+                            System.out.println("Editor error: IOException caught, Ex.message: " + ex.getMessage());
+                        }
+                    });
+            editorStage.setX(mainX + 15);
+            editorStage.setY(mainY + 55);
+            editorStage.showAndWait();
+        } catch (RuntimeException ex) {
+            System.out.println("Editor error: RuntimeException caught: " + ex.getMessage());
+        }
     }
 
     @FXML
