@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -22,11 +20,13 @@ import ru.mai.lessons.rpks.BrowserHistoryEntry;
 import ru.mai.lessons.rpks.WebViewExample;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -130,22 +130,6 @@ public class MainController implements Initializable {
     public void enableHistory() {
         isEnableHistory = true;
         anchorPane.setStyle("-fx-background-color: #fff;");
-    }
-
-    public void homiak() throws MalformedURLException {
-        Stage stage = new Stage();
-        VBox root = new VBox();
-        final ImageView selectedImage = new ImageView();
-        Image image1 = new Image(new File("C:\\Users\\Denis\\RPCS\\JavaWebBrowser\\Screenshot_2.jpeg").toURI().toURL().toExternalForm());
-
-        selectedImage.setImage(image1);
-
-        root.getChildren().addAll(selectedImage);
-
-        Scene scene = new Scene(root, 300, 300);
-
-        stage.setScene(scene);
-        stage.show();
     }
 
     public void showHistory(List<BrowserHistoryEntry> historyEntries) {

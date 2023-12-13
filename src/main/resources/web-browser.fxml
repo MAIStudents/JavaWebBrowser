@@ -44,6 +44,5 @@
                 </Menu>
             </menus>
         </MenuBar>
-      <Button layoutX="112.0" layoutY="75.0" mnemonicParsing="false" onAction="#homiak" text="Click" />
     </children>
 </AnchorPane>
