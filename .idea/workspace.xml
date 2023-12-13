@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="добавлен просмотр и редактирование html-кода">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/webHistory.json" afterDir="false" />
+    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="сохранение истории в json файл">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/webHistory.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/webHistory.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,24 +45,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;student/313__gorschenko__d&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Denis/.jdks/javafx-sdk-21.0.1/lib&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "student/313__gorschenko__d",
+    "last_opened_file_path": "C:/Users/Denis/.jdks/javafx-sdk-21.0.1/lib",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.25977013",
+    "settings.editor.selected.configurable": "preferences.JavaFX"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ru.mai.lessons.rpks.controler" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser" />
+      <recent name="C:\Users\Denis\RPCS\JavaWebBrowser\src\main\resources" />
       <recent name="C:\Users\Denis\RPCS\JavaWebBrowser\src\main\java\ru\mai\lessons\rpks" />
     </key>
   </component>
@@ -221,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702345862182</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="сохранение истории в json файл">
+      <option name="closed" value="true" />
+      <created>1702397430682</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702397430682</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -229,7 +239,8 @@
     <MESSAGE value="add history" />
     <MESSAGE value="сделал механизм вкладок и сохранение zip" />
     <MESSAGE value="добавлен просмотр и редактирование html-кода" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавлен просмотр и редактирование html-кода" />
+    <MESSAGE value="сохранение истории в json файл" />
+    <option name="LAST_COMMIT_MESSAGE" value="сохранение истории в json файл" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

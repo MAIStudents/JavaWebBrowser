@@ -8,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
@@ -15,36 +18,30 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import ru.mai.lessons.rpks.BrowserHistoryEntry;
 import ru.mai.lessons.rpks.WebViewExample;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static java.lang.Integer.parseInt;
-
 public class MainController implements Initializable {
-
-
-    private WebView webView;
-
     private final HashMap<Tab, WebView> webViews = new HashMap<>();
-
+    private final HashMap<String, String> disableHistorySites = new HashMap<>();
     @FXML
     private TextField textField;
 
     @FXML
     private TabPane tabPane;
 
+    @FXML
+    private AnchorPane anchorPane;
     private Tab selectedTab;
     private WebHistory history;
     private WebEngine engine;
@@ -52,6 +49,10 @@ public class MainController implements Initializable {
     private double webZoom;
     private final static String PATH_DOWNLOADS = WebViewExample.class.getResource("").getPath() + "downloads/";
     private final static String EDIT_HTML_FILE = PATH_DOWNLOADS + "index.html";
+
+    private boolean isEnableHistory = true;
+
+    private final List<BrowserHistoryEntry> historyEntries = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,7 +63,6 @@ public class MainController implements Initializable {
         webZoom = 1;
         loadPage();
 
-        System.out.println(PATH_DOWNLOADS);
     }
 
     public void loadPage() {
@@ -70,6 +70,13 @@ public class MainController implements Initializable {
         if (selectedTab != null && selectedTab.getContent() instanceof WebView) {
             webViews.get(selectedTab).getEngine().load("https://" + textField.getText());
             selectedTab.setText(textField.getText());
+            WebHistory.Entry lastEntry = getCurrentWebView().getEngine().getHistory().getEntries().stream().reduce((a, b) -> b).orElse(null);
+            if (lastEntry != null) {
+                if (!disableHistorySites.containsKey(lastEntry.getUrl())) {
+                    BrowserHistoryEntry entry = new BrowserHistoryEntry(lastEntry.getUrl(), getCurrentWebsiteName(), lastEntry.getLastVisitedDate());
+                    historyEntries.add(entry);
+                }
+            }
         } else {
             engine.load("https://" + textField.getText());
         }
@@ -95,23 +102,11 @@ public class MainController implements Initializable {
         webViews.get(selectedTab).setZoom(webZoom);
     }
 
-    public void displayHistory() throws IOException {
-        history = getCurrentWebView().getEngine().getHistory();
-        ObservableList<WebHistory.Entry> entries = history.getEntries();
-        List<BrowserHistoryEntry> historyEntries = new ArrayList<>();
+    public void displayHistory() {
 
+        if (isEnableHistory == false) return;
 
         String filePath = WebViewExample.class.getResource("/webHistory.json").getPath(); // Specify the file path here
-        System.out.println(filePath);
-
-
-        for (WebHistory.Entry entry : entries) {
-            String url = entry.getUrl();
-            String title = entry.getTitle();
-            Date visitDate = entry.getLastVisitedDate();
-            BrowserHistoryEntry historyEntry = new BrowserHistoryEntry(url, title, visitDate);
-            historyEntries.add(historyEntry);
-        }
         Gson gson = new Gson();
         String json = gson.toJson(historyEntries);
         try (FileWriter fileWriter = new FileWriter(filePath)) {
@@ -119,6 +114,51 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+
+        showHistory(historyEntries);
+    }
+
+    public void disableHistoryForSite() {
+        disableHistorySites.put(getCurrentWebView().getEngine().getLocation(), getCurrentWebsiteName());
+    }
+
+    public void disableHistory() {
+        isEnableHistory = false;
+        anchorPane.setStyle("-fx-background-color: #000;");
+    }
+
+    public void enableHistory() {
+        isEnableHistory = true;
+        anchorPane.setStyle("-fx-background-color: #fff;");
+    }
+
+    public void homiak() throws MalformedURLException {
+        Stage stage = new Stage();
+        VBox root = new VBox();
+        final ImageView selectedImage = new ImageView();
+        Image image1 = new Image(new File("C:\\Users\\Denis\\RPCS\\JavaWebBrowser\\Screenshot_2.jpeg").toURI().toURL().toExternalForm());
+
+        selectedImage.setImage(image1);
+
+        root.getChildren().addAll(selectedImage);
+
+        Scene scene = new Scene(root, 300, 300);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showHistory(List<BrowserHistoryEntry> historyEntries) {
+        Stage historyStage = new Stage();
+        VBox historyBox = new VBox();
+        ListView<String> listView = new ListView<>();
+        listView.getItems().setAll(historyEntries.stream().map(entry -> entry.getUrl()).collect(Collectors.toList()));
+        historyBox.getChildren().addAll(new Label("History"), listView);
+
+        Scene historyScene = new Scene(historyBox, 300, 200);
+        historyStage.setScene(historyScene);
+        historyStage.setTitle("History");
+        historyStage.show();
     }
 
 

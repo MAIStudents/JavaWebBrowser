@@ -21,5 +21,8 @@ public class BrowserHistoryEntry {
         this.visitTime = timeFormat.format(visitDate);
     }
 
-    // Добавьте геттеры и методы для получения полей
+    public String getUrl() {
+        return url;
+    }
+
 }
