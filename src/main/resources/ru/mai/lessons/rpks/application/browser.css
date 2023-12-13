@@ -1,0 +1,105 @@
+.TabPane {
+    -fx-background-color: #6060f8;
+    -fx-focus-color: transparent;
+}
+
+.Tab {
+    -fx-font-size: 20px;
+    -fx-padding: 8;
+    -fx-font-family: "Cooper Black";
+    -fx-background-color: #efe094;
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-border-color: Black;
+}
+
+.Tab:hover {
+    -fx-background-color: #efaef6;
+}
+
+.Tab:pressed {
+    -fx-background-color: #ea59f6;
+}
+
+.Tab:selected {
+    -fx-background-color: #efaef6;
+    -fx-focus-color: transparent;
+}
+
+.NewTab {
+    -fx-font-size: 20px;
+    -fx-padding: 8;
+    -fx-font-family: "Cooper Black";
+    -fx-background-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-border-color: Black;
+}
+
+.NewTab:hover {
+    -fx-background-color: #efaef6;
+}
+
+.NewTab:pressed {
+    -fx-background-color: #ea59f6;
+}
+
+.Menu {
+    -fx-font-size: 20px;
+}
+
+.menu:showing  {
+    -fx-text-fill: Black;
+    -fx-background-color: #ea84f1;
+    -fx-background-radius: 15;
+}
+
+.menu:hover {
+    -fx-text-fill: Black;
+    -fx-background-color: #ea84f1;
+    -fx-background-radius: 15;
+}
+
+.MenuBar {
+    -fx-background-color: #6060f8;
+    -fx-font-size: 22px;
+    -fx-font-family: "Cooper Black";
+}
+
+.menu-item {
+    -fx-font-size: 20;
+}
+
+.menu-item:focused {
+    -fx-background-color: #6060f8;
+}
+
+.Button {
+    -fx-background-color: #efe094;
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 15;
+    -fx-border-color: Black;
+}
+
+.Button:hover {
+    -fx-background-color: #efaef6;
+}
+
+.Button:pressed {
+    -fx-background-color: #ea59f6;
+}
+
+.MainPane {
+    -fx-border-width: 3;
+    -fx-border-color: Black;
+}
+
+.TextURL {
+    -fx-border-width: 2;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-border-color: Black;
+}

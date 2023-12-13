@@ -1,0 +1,29 @@
+.notificationText {
+    -fx-font-size: 20;
+    -fx-font-family: "Cooper Black";
+}
+
+.notificationButton {
+    -fx-font-size: 15;
+    -fx-font-family: "Cooper Black";
+    -fx-background-color: #efaef6;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 11;
+    -fx-border-color: Black;
+}
+
+.notificationButton:hover {
+    -fx-background-color: #dc77ec;
+}
+
+.notificationButton:pressed {
+    -fx-background-color: #6060f8;
+}
+
+.notificationBox {
+    -fx-background-color: #efe094;
+    -fx-border-width: 2;
+    -fx-border-color: Black;
+    -fx-border-radius: 5;
+}
