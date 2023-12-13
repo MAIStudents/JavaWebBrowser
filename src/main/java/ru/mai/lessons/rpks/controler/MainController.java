@@ -23,17 +23,14 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class MainController implements Initializable {
     private final HashMap<Tab, WebView> webViews = new HashMap<>();
-    private final HashMap<String, String> disableHistorySites = new HashMap<>();
+    private final List<String> disableHistorySites = new ArrayList<>();
     @FXML
     private TextField textField;
 
@@ -67,18 +64,19 @@ public class MainController implements Initializable {
 
     public void loadPage() {
         selectedTab = tabPane.getSelectionModel().getSelectedItem();
+        String requestText = "https://" + textField.getText();
         if (selectedTab != null && selectedTab.getContent() instanceof WebView) {
-            webViews.get(selectedTab).getEngine().load("https://" + textField.getText());
+            webViews.get(selectedTab).getEngine().load(requestText);
             selectedTab.setText(textField.getText());
             WebHistory.Entry lastEntry = getCurrentWebView().getEngine().getHistory().getEntries().stream().reduce((a, b) -> b).orElse(null);
             if (lastEntry != null) {
-                if (!disableHistorySites.containsKey(lastEntry.getUrl())) {
+                if (!disableHistorySites.contains(lastEntry.getUrl().substring(0, lastEntry.getUrl().length() - 1))) {
                     BrowserHistoryEntry entry = new BrowserHistoryEntry(lastEntry.getUrl(), getCurrentWebsiteName(), lastEntry.getLastVisitedDate());
                     historyEntries.add(entry);
                 }
             }
         } else {
-            engine.load("https://" + textField.getText());
+            engine.load(requestText);
         }
     }
 
@@ -119,17 +117,45 @@ public class MainController implements Initializable {
     }
 
     public void disableHistoryForSite() {
-        disableHistorySites.put(getCurrentWebView().getEngine().getLocation(), getCurrentWebsiteName());
+        Dialog<String> dialog = new TextInputDialog();
+        dialog.setTitle("Disable history for site");
+        dialog.setHeaderText("Enter the site for which you want to disable history");
+        Optional<String> optional = dialog.showAndWait();
+        String website = "";
+
+        if (optional.isPresent()) {
+            String websiteTemp = optional.get();
+
+            if (!websiteTemp.contains("https://")) {
+                website = "https://" + websiteTemp;
+            } else {
+                website = websiteTemp;
+            }
+
+            disableHistorySites.add(website);
+            System.out.println(disableHistorySites);
+        }
     }
 
     public void disableHistory() {
         isEnableHistory = false;
         anchorPane.setStyle("-fx-background-color: #000;");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Incognito");
+        alert.setHeaderText(null);
+        alert.setContentText("Incognito is on");
+        alert.showAndWait();
+
     }
 
     public void enableHistory() {
         isEnableHistory = true;
-        anchorPane.setStyle("-fx-background-color: #fff;");
+        anchorPane.setStyle("-fx-background-color: #ccc;");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Incognito");
+        alert.setHeaderText(null);
+        alert.setContentText("Incognito is off");
+        alert.showAndWait();
     }
 
     public void showHistory(List<BrowserHistoryEntry> historyEntries) {

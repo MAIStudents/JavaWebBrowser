@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="сохранение истории в json файл">
+    <list default="true" id="e92fcfba-af87-4027-931c-a23c3c76f8da" name="Changes" comment="update MainController">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/BrowserHistoryEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/WebViewExample.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controler/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web-browser.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/webHistory.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/webHistory.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +227,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702397430682</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add incognito">
+      <option name="closed" value="true" />
+      <created>1702428616617</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702428616617</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update MainController">
+      <option name="closed" value="true" />
+      <created>1702428841419</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702428841419</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -240,7 +252,9 @@
     <MESSAGE value="сделал механизм вкладок и сохранение zip" />
     <MESSAGE value="добавлен просмотр и редактирование html-кода" />
     <MESSAGE value="сохранение истории в json файл" />
-    <option name="LAST_COMMIT_MESSAGE" value="сохранение истории в json файл" />
+    <MESSAGE value="add incognito" />
+    <MESSAGE value="update MainController" />
+    <option name="LAST_COMMIT_MESSAGE" value="update MainController" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
