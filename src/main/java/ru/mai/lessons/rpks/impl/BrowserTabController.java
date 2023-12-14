@@ -2,10 +2,7 @@ package ru.mai.lessons.rpks.impl;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,7 +18,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -232,7 +228,7 @@ public class BrowserTabController extends StackPane implements Initializable {
     }
 
     private boolean startRecording = false;
-    private long startTime, endTime;
+    private long startTime;
     private String currentURL;
 
     private void startRecording() {
@@ -247,12 +243,12 @@ public class BrowserTabController extends StackPane implements Initializable {
         if (!startRecording) {
             return;
         }
-        endTime = System.nanoTime();
+        long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000000;
         if (duration > 0) {
             int hour = (int) (duration / 3600);
             int mm = (int) (duration / 60);
-            duration -= (3600 * hour + 60 * mm);
+            duration -= (3600L * hour + 60L * mm);
             webBrowserController.addToHistoryList(new HistoryTableViewDataProvider(LocalDateTime.now(),
                     LocalTime.of(hour, mm, (int) duration), currentURL));
         }
