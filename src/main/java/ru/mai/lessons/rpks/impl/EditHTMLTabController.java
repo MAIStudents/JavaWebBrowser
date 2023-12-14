@@ -1,5 +1,6 @@
 package ru.mai.lessons.rpks.impl;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -11,6 +12,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import org.w3c.dom.Document;
 import ru.mai.lessons.rpks.helpClasses.DirectoryChooser;
@@ -21,17 +23,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 public class EditHTMLTabController extends StackPane implements Initializable {
-    // todo: get html code of this page in area
-    // todo: if textarea changed,
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(EditHTMLTabController.class.getName());
 
     @FXML
     private JFXButton saveBtn;
@@ -40,10 +43,10 @@ public class EditHTMLTabController extends StackPane implements Initializable {
     private TextArea textArea;
 
     @FXML
-    private JFXButton viewChangesBtn;
+    private HTMLEditor editor;
 
     @FXML
-    private WebView webView;
+    private JFXButton viewChangesBtn;
 
     @FXML
     private Label header;
@@ -67,12 +70,8 @@ public class EditHTMLTabController extends StackPane implements Initializable {
         try {
             loader.load();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.error(ex.getMessage());
         }
-    }
-
-    private void loadFromTextArea() {
-        webView.getEngine().loadContent(textArea.getText());
     }
 
     private void saveHTMLPage() {
@@ -87,49 +86,82 @@ public class EditHTMLTabController extends StackPane implements Initializable {
             writer.write(textArea.getText());
             writer.flush();
             writer.close();
+            logger.info("Downloaded successfully");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 
+    private void loadTextAreaFromHTMLEditor() {
+        textArea.setText(editor.getHtmlText());
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ChangeListener<Worker.State> listener = new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                if (newValue == Worker.State.SUCCEEDED) {
-                    Document doc = webView.getEngine().getDocument();
-                    try {
-                        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-                        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-                        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
-                        StringWriter writer = new StringWriter();
-                        transformer.transform(new DOMSource(doc), new StreamResult(writer));
-                        textArea.setText(writer.toString());
-                        loadFromTextArea();
-                        webView.getEngine().getLoadWorker().stateProperty().removeListener(this);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        };
-        webView.getEngine().getLoadWorker().stateProperty().addListener(listener);
-        webView.getEngine().load(address);
+        LoadPageThread loadPageThread =
+                new LoadPageThread(address, editor, textArea);
+        loadPageThread.start();
 
         if (!isEditable) {
             textArea.setEditable(false);
+            viewChangesBtn.setDisable(true);
+            viewChangesBtn.setVisible(false);
             header.setText("Просмотр HTML страницы");
         }
 
         // from textarea to engine
-        viewChangesBtn.setOnAction(a -> loadFromTextArea());
+        viewChangesBtn.setOnAction(a -> loadTextAreaFromHTMLEditor());
 
         saveBtn.setOnAction(a -> saveHTMLPage());
+        logger.info("Initializing of view/edit HTML tab done");
     }
+
+    class LoadPageThread extends Thread {
+
+        String PageSrc;
+        HTMLEditor editor;
+        TextArea textArea;
+
+        public LoadPageThread(String src, HTMLEditor editor, TextArea textArea) {
+            PageSrc = src;
+            this.editor = editor;
+            this.textArea = textArea;
+        }
+
+        @Override
+        public void run() {
+            String result = loadPage(PageSrc);
+
+            Platform.runLater(() -> {
+                //update html code in HTMLEditor
+                editor.setHtmlText(result);
+
+                //get html code from HTMLEditor
+                String html = editor.getHtmlText();
+                textArea.setText(html);
+            });
+        }
+
+        private String loadPage(String src) {
+
+            StringBuilder pageCode = new StringBuilder();
+
+            try {
+                URL url = new URL(src);
+                URLConnection connection = url.openConnection();
+                InputStream inputStream = connection.getInputStream();
+                Scanner scanner = new Scanner(inputStream);
+
+                while (scanner.hasNextLine()) {
+                    pageCode.append(scanner.nextLine()).append("\n");
+                }
+
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+            }
+
+            return pageCode.toString();
+        }
+    }
+
 }

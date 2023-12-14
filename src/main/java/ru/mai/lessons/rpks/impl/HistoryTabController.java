@@ -17,11 +17,12 @@ import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 public class HistoryTabController extends StackPane implements Initializable {
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(HistoryTabController.class.getName());
 
     @FXML
     private TableView<HistoryTableViewDataProvider> historyTableview;
@@ -77,6 +78,7 @@ public class HistoryTabController extends StackPane implements Initializable {
         toggleBtn.setOnAction(a -> {
             browserController.setTrackHistory(!toggleBtn.isSelected());
         });
+        logger.info("Initializing of history tab done");
     }
 
     public HistoryTabController(BrowserController browserController, Tab tab) {
@@ -91,7 +93,7 @@ public class HistoryTabController extends StackPane implements Initializable {
         try {
             loader.load();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.error(ex.getMessage());
         }
     }
 

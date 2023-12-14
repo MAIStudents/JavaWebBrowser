@@ -12,25 +12,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
-import org.apache.commons.io.FileUtils;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ru.mai.lessons.rpks.helpClasses.DirectoryChooser;
 import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
@@ -38,9 +35,6 @@ import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
 public class BrowserTabController extends StackPane implements Initializable {
     @FXML
     private JFXButton backwardButton;
-
-    @FXML
-    private BorderPane borderPane;
 
     @FXML
     private CheckMenuItem collectHistoryThisPageCheckedMenuItem;
@@ -53,9 +47,6 @@ public class BrowserTabController extends StackPane implements Initializable {
 
     @FXML
     private MenuItem editHTMLMenuItem;
-
-    @FXML
-    private VBox errorPane;
 
     @FXML
     private MenuItem favouritesMenuItem;
@@ -85,25 +76,19 @@ public class BrowserTabController extends StackPane implements Initializable {
     private FontIcon toFavouritesFontIcon;
 
     @FXML
-    private JFXButton tryAgain;
-
-    @FXML
-    private ProgressIndicator tryAgainIndicator;
-
-    @FXML
     private MenuItem viewHTMLMenuItem;
 
     @FXML
     private WebView webView;
 
-    private Tab tab;
+    private final Tab tab;
     private final BrowserController browserController;
-    private String firstWebSite;
+    private final String firstWebSite;
     WebEngine browser;
     private WebHistory history;
     private ObservableList<WebHistory.Entry> historyEntryList;
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(BrowserTabController.class.getName());
 
     public BrowserTabController(BrowserController browserController, Tab tab, String firstWebSite) {
         this.browserController = browserController;
@@ -111,9 +96,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         this.firstWebSite = firstWebSite;
         this.tab.setContent(this);
 
-        tab.setOnClosed(a -> {
-            endRecording(false);
-        });
+        tab.setOnClosed(a -> endRecording(false));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/BrowserTab.fxml"));
         loader.setRoot(this);
@@ -122,7 +105,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         try {
             loader.load();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.error(ex.getMessage());
         }
     }
 
@@ -173,40 +156,50 @@ public class BrowserTabController extends StackPane implements Initializable {
     }
 
     private void urlIsIgnored() {
-        if (browserController.getIgnored().contains(browser.locationProperty().getValue())) {
-            collectHistoryThisPageCheckedMenuItem.setSelected(true);
-        }
+        collectHistoryThisPageCheckedMenuItem.
+                setSelected(browserController.getIgnored().contains(browser.locationProperty().getValue()));
     }
 
     public void downloadHTMLPageToHTML() {
         try {
-            URI u = new URI(getHistory().getEntries().get(getHistory().getCurrentIndex()).getUrl());
-            String new_ur = u.getHost() + u.getRawPath().replaceAll("/", ".");
+            // get source for downloading
+            URL url = new URL(browser.locationProperty().getValue());
+            URLConnection connection = url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            Scanner scanner = new Scanner(inputStream);
+
+            // get resource for writing
+            String fileName = url.getHost() + url.getPath().replaceAll("/", ".");
             DirectoryChooser directoryChooser = new DirectoryChooser();
             String dirPath = directoryChooser.getPathFromDirectoryChooser(browserController.getTabPane().getScene().getWindow());
-            File fos = new File(dirPath + File.separator + new_ur + ".html");
-            FileUtils.copyURLToFile(u.toURL(), fos);
-            System.out.println("Ended downloading");
-        } catch (IOException | URISyntaxException e) {
-            // todo: log
-            System.out.println("exception occured" + e.getMessage());
+            File fos = new File(dirPath + File.separator + fileName + ".html");
+            FileWriter writer = new FileWriter(fos);
+
+            while (scanner.hasNextLine()) {
+                writer.write(scanner.nextLine() + System.lineSeparator());
+            }
+
+            writer.flush();
+            writer.close();
+            scanner.close();
+
+            logger.info("Ended downloading");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
         }
     }
 
     public void downloadHTMLPageToZip() {
         try {
-            URI u = new URI(getHistory().getEntries().get(getHistory().getCurrentIndex()).getUrl());
-            String fileName = u.getHost() + u.getRawPath().replaceAll("/", ".");
-            String new_ur = fileName + "html";
+            URL url = new URL(browser.locationProperty().getValue());
 
+            String fileName = url.getHost() + url.getPath().replaceAll("/", ".");
             DirectoryChooser directoryChooser = new DirectoryChooser();
             String dirPath = directoryChooser.getPathFromDirectoryChooser(browserController.getTabPane().getScene().getWindow());
 
-            URL url = u.toURL();
-
             InputStream in = new BufferedInputStream(url.openStream());
-            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(dirPath + File.separator + new_ur + ".zip"));
-            ZipEntry e = new ZipEntry(new_ur);
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(dirPath + File.separator + fileName + ".zip"));
+            ZipEntry e = new ZipEntry(fileName + ".html");
             out.putNextEntry(e);
 
             byte[] data = in.readAllBytes();
@@ -215,16 +208,10 @@ public class BrowserTabController extends StackPane implements Initializable {
             out.closeEntry();
             out.close();
             in.close();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            logger.info("Ended downloading");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
-        // todo: log errors
     }
 
     private boolean startRecording = false;
@@ -235,7 +222,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         if (!browserController.trackHistory) {
             return;
         }
-        if (!browserController.getIgnored().contains(browser.locationProperty().getValue()))  {
+        if (!browserController.getIgnored().contains(browser.locationProperty().getValue())) {
             startRecording = true;
             startTime = System.nanoTime();
             currentURL = browser.locationProperty().getValue();
@@ -274,8 +261,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         browser.locationProperty().addListener((observable, oldValue, newValue) -> {
             if (startRecording) {
                 endRecording(true);
-            }
-            else {
+            } else {
                 startRecording();
             }
             urlIsIgnored();
@@ -303,9 +289,9 @@ public class BrowserTabController extends StackPane implements Initializable {
                 searchBar.textProperty().bind(browser.locationProperty());
             }
         });
-        searchBar.setOnAction(a -> {
-            loadWebSite(searchBar.getText().startsWith("http://") ? searchBar.getText() : "http://" + searchBar.getText());
-        });
+        searchBar.setOnAction(a -> loadWebSite(searchBar.getText().startsWith("http://")
+                ? searchBar.getText()
+                : "http://" + searchBar.getText()));
         searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
                 Platform.runLater(() -> searchBar.selectAll());
@@ -315,14 +301,10 @@ public class BrowserTabController extends StackPane implements Initializable {
         goButton.setOnAction(searchBar.getOnAction());
 
         // <--- reloadButton --->
-        reloadButton.setOnAction(a -> {
-            reloadWebSite();
-        });
+        reloadButton.setOnAction(a -> reloadWebSite());
 
         // <--- backwardButton --->
-        backwardButton.setOnAction(a -> {
-            goBack();
-        });
+        backwardButton.setOnAction(a -> goBack());
         backwardButton.disableProperty().bind(getHistory().currentIndexProperty().isEqualTo(0));
         backwardButton.setOnMouseReleased(m -> {
             if (m.getButton() == MouseButton.MIDDLE) //Create and add it next to this tab
@@ -331,9 +313,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         });
 
         // <--- forwardButton --->
-        forwardButton.setOnAction(a -> {
-            goForward();
-        });
+        forwardButton.setOnAction(a -> goForward());
         forwardButton.disableProperty().bind(getHistory().currentIndexProperty().greaterThanOrEqualTo(list.sizeProperty().subtract(1)));
         forwardButton.setOnMouseReleased(m -> {
             if (m.getButton() == MouseButton.MIDDLE) //Create and add it next to this tab
@@ -363,6 +343,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         // <--- Edit or view HTML page --->
         viewHTMLMenuItem.setOnAction(a -> browserController.createNewEditHTMLTab(browser.locationProperty().getValue(), false));
         editHTMLMenuItem.setOnAction(a -> browserController.createNewEditHTMLTab(browser.locationProperty().getValue(), true));
+        logger.info("Initializing ordinary tab done");
     }
 
     public Tab getTab() {

@@ -12,8 +12,9 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 public class FavouritesTabController extends StackPane implements Initializable {
     @FXML
@@ -22,9 +23,10 @@ public class FavouritesTabController extends StackPane implements Initializable 
     @FXML
     private Tab tab;
 
-    private BrowserController browserController;
+    private final BrowserController browserController;
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(FavouritesTabController.class.getName());
+
     public FavouritesTabController(BrowserController browserController, Tab tab) {
         this.browserController = browserController;
         this.tab = tab;
@@ -37,7 +39,7 @@ public class FavouritesTabController extends StackPane implements Initializable 
         try {
             loader.load();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.error(ex.getMessage());
         }
     }
 
@@ -49,6 +51,7 @@ public class FavouritesTabController extends StackPane implements Initializable 
             browserController.createAndAddNewTab(browserController.getNewTabIndex(), listView.getSelectionModel().getSelectedItem());
             browserController.getTabPane().getSelectionModel().select(browserController.getTabPane().getTabs().size() - 2);
         });
+        logger.info("Initializing of favourites tab done");
     }
 
     public Tab getTab() {

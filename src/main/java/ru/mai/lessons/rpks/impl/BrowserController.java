@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
+import org.w3c.dom.Document;
 import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
 
 import java.io.*;
@@ -18,13 +19,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 public class BrowserController extends StackPane implements Initializable {
     @FXML
     private TabPane tabPane;
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(BrowserController.class.getName());
 
     // region Favourites
     private final String favouritesJsonPath = "ru/mai/lessons/rpks/impl/json/favourites.json";
@@ -55,7 +56,7 @@ public class BrowserController extends StackPane implements Initializable {
                 favourites.addAll(fromGson);
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -69,7 +70,7 @@ public class BrowserController extends StackPane implements Initializable {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
     // endregion
@@ -145,7 +146,7 @@ public class BrowserController extends StackPane implements Initializable {
             }
             reader.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -158,7 +159,7 @@ public class BrowserController extends StackPane implements Initializable {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
     // endregion
@@ -192,7 +193,7 @@ public class BrowserController extends StackPane implements Initializable {
                 ignored.addAll(fromGson);
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -206,7 +207,7 @@ public class BrowserController extends StackPane implements Initializable {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
     // endregion
@@ -248,6 +249,7 @@ public class BrowserController extends StackPane implements Initializable {
 
     public void createNewFavouritesTab() {
         Tab tab = new Tab("Favourites");
+        tab.setOnClosed(a -> removeTab(tab));
         FavouritesTabController favouritesTab = new FavouritesTabController(this, tab);
         tabPane.getTabs().add(getNewTabIndex(), favouritesTab.getTab());
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2); // Selecting the tab before the button, which is the newly created one
@@ -255,6 +257,7 @@ public class BrowserController extends StackPane implements Initializable {
 
     public void createNewHistoryTab() {
         Tab tab = new Tab("History");
+        tab.setOnClosed(a -> removeTab(tab));
         HistoryTabController historyTabController = new HistoryTabController(this, tab);
         tabPane.getTabs().add(getNewTabIndex(), historyTabController.getTab());
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2); // Selecting the tab before the button, which is the newly created one
@@ -262,6 +265,7 @@ public class BrowserController extends StackPane implements Initializable {
 
     public void createNewCreateHTMLPageTab() {
         Tab tab = new Tab("Create HTML page");
+        tab.setOnClosed(a -> removeTab(tab));
         CreateHTMLTabController createHTMLTabController = new CreateHTMLTabController(this, tab);
         tabPane.getTabs().add(getNewTabIndex(), createHTMLTabController.tab);
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
@@ -269,6 +273,7 @@ public class BrowserController extends StackPane implements Initializable {
 
     public void createNewEditHTMLTab(String address, boolean isEditable) {
         Tab tab = new Tab(isEditable ? "Edit HTML page" : "View HTML page");
+        tab.setOnClosed(a -> removeTab(tab));
         EditHTMLTabController editHTMLTabController = new EditHTMLTabController(this, tab, address, isEditable);
         tabPane.getTabs().add(getNewTabIndex(), editHTMLTabController.tab);
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
@@ -277,9 +282,13 @@ public class BrowserController extends StackPane implements Initializable {
     public BrowserTabController createNewTab(String... webSite) {
         //Create
         Tab tab = new Tab("");
-        tab.setClosable(true);
-
+        tab.setOnClosed(a -> removeTab(tab));
         return new BrowserTabController(this, tab, webSite.length == 0 ? null : webSite[0]);
+    }
+
+    private void removeTab(Tab tab) {
+        ActionEvent.fireEvent(tab, new Event(Tab.CLOSED_EVENT));
+        tabPane.getTabs().remove(tab);
     }
 
     public void removeAllTabs() {

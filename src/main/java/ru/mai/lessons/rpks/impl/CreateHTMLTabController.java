@@ -20,11 +20,12 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 public class CreateHTMLTabController extends StackPane implements Initializable {
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(CreateHTMLTabController.class.getName());
 
     @FXML
     private HTMLEditor htmlEditor;
@@ -50,8 +51,9 @@ public class CreateHTMLTabController extends StackPane implements Initializable 
             writer.write(textArea.getText());
             writer.flush();
             writer.close();
+            logger.info("Downloaded successfully");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 
@@ -67,7 +69,7 @@ public class CreateHTMLTabController extends StackPane implements Initializable 
         try {
             loader.load();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "", ex);
+            logger.error(ex.getMessage());
         }
     }
 
@@ -115,5 +117,7 @@ public class CreateHTMLTabController extends StackPane implements Initializable 
             getHTMLFromEditor();
             saveHTMLPage();
         });
+
+        logger.info("Initializing of create HTML tab done");
     }
 }
