@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class BrowserController extends StackPane implements Initializable {
     @FXML
@@ -46,7 +46,7 @@ public class BrowserController extends StackPane implements Initializable {
     private void loadFavouritesList() {
         try {
             Gson gsonFavourites = new Gson();
-            FileReader reader = new FileReader(getClass().getClassLoader().getResource(favouritesJsonPath).getPath());
+            FileReader reader = new FileReader(Objects.requireNonNull(getClass().getClassLoader().getResource(favouritesJsonPath)).getPath());
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
             List<String> fromGson = gsonFavourites.fromJson(reader, listType);
@@ -54,31 +54,33 @@ public class BrowserController extends StackPane implements Initializable {
             if (fromGson != null) {
                 favourites.addAll(fromGson);
             }
-        } catch (FileNotFoundException e) {
-            // todo: log
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void saveFavouritesToJson() {
         try {
             Gson gsonFavourites = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter writer = new FileWriter(getClass().getClassLoader().getResource(favouritesJsonPath).getPath());
+            FileWriter writer = new FileWriter(Objects.requireNonNull(getClass().getClassLoader().getResource(favouritesJsonPath)).getPath());
             Type listType = new TypeToken<List<String>>() {
             }.getType();
             gsonFavourites.toJson(favourites, listType, writer);
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            // todo: log
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     // endregion
 
     // region History
+    boolean trackHistory = true;
+
+    void setTrackHistory(boolean trackHistory) {
+        this.trackHistory = trackHistory;
+    }
+
     private final String historyJsonPath = "ru/mai/lessons/rpks/impl/json/history.json";
     private final List<HistoryTableViewDataProvider> history = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public class BrowserController extends StackPane implements Initializable {
         history.add(data);
     }
 
-    class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime> {
+    static class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime> {
         private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.MMM.uuuu HH:mm:ss");
 
         @Override
@@ -99,7 +101,7 @@ public class BrowserController extends StackPane implements Initializable {
         }
     }
 
-    class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
+    static class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
         @Override
         public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
@@ -108,7 +110,7 @@ public class BrowserController extends StackPane implements Initializable {
         }
     }
 
-    class LocalTimeSerializer implements JsonSerializer<LocalTime> {
+    static class LocalTimeSerializer implements JsonSerializer<LocalTime> {
         private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         @Override
@@ -117,7 +119,7 @@ public class BrowserController extends StackPane implements Initializable {
         }
     }
 
-    class LocalTimeDeserializer implements JsonDeserializer<LocalTime> {
+    static class LocalTimeDeserializer implements JsonDeserializer<LocalTime> {
         @Override
         public LocalTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             return LocalTime.parse(jsonElement.getAsString(),
@@ -134,7 +136,7 @@ public class BrowserController extends StackPane implements Initializable {
 
     private void loadHistory() {
         try {
-            FileReader reader = new FileReader(getClass().getClassLoader().getResource(historyJsonPath).getPath());
+            FileReader reader = new FileReader(Objects.requireNonNull(getClass().getClassLoader().getResource(historyJsonPath)).getPath());
             Type listType = new TypeToken<ArrayList<HistoryTableViewDataProvider>>() {
             }.getType();
             List<HistoryTableViewDataProvider> readFromJson = gson.fromJson(reader, listType);
@@ -142,24 +144,21 @@ public class BrowserController extends StackPane implements Initializable {
                 history.addAll(readFromJson);
             }
             reader.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void saveHistory() {
         try {
-            java.io.FileWriter writer = new java.io.FileWriter(getClass().getClassLoader().getResource(historyJsonPath).getPath());
+            java.io.FileWriter writer = new java.io.FileWriter(Objects.requireNonNull(getClass().getClassLoader().getResource(historyJsonPath)).getPath());
             Type listType = new TypeToken<List<HistoryTableViewDataProvider>>() {
             }.getType();
             gson.toJson(history, listType, writer);
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            // todo: log
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     // endregion
@@ -184,7 +183,7 @@ public class BrowserController extends StackPane implements Initializable {
     private void loadIgnored() {
         try {
             Gson gsonIgnored = new Gson();
-            FileReader reader = new FileReader(getClass().getClassLoader().getResource(ignoredJsonPath).getPath());
+            FileReader reader = new FileReader(Objects.requireNonNull(getClass().getClassLoader().getResource(ignoredJsonPath)).getPath());
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
             List<String> fromGson = gsonIgnored.fromJson(reader, listType);
@@ -192,26 +191,22 @@ public class BrowserController extends StackPane implements Initializable {
             if (fromGson != null) {
                 ignored.addAll(fromGson);
             }
-        } catch (FileNotFoundException e) {
-            // todo: log
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void saveIgnored() {
         try {
             Gson gsonIgnored = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter writer = new FileWriter(getClass().getClassLoader().getResource(ignoredJsonPath).getPath());
+            FileWriter writer = new FileWriter(Objects.requireNonNull(getClass().getClassLoader().getResource(ignoredJsonPath)).getPath());
             Type listType = new TypeToken<List<String>>() {
             }.getType();
             gsonIgnored.toJson(ignored, listType, writer);
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            // todo: log
-            throw new RuntimeException(e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     // endregion
@@ -241,11 +236,7 @@ public class BrowserController extends StackPane implements Initializable {
         return addTab;
     }
 
-    public void createTabAndSelect(String url) {
-        tabPane.getSelectionModel().select(createAndAddNewTab(getNewTabIndex(), url).getTab());
-    }
-
-    public BrowserTabController createAndAddNewTab(int index, String... webSite) {
+    public void createAndAddNewTab(int index, String... webSite) {
 
         //Create
         BrowserTabController webBrowserTab = createNewTab(webSite);
@@ -253,7 +244,6 @@ public class BrowserController extends StackPane implements Initializable {
         //Add the tab
         tabPane.getTabs().add(index, webBrowserTab.getTab());
 
-        return webBrowserTab;
     }
 
     public void createNewFavouritesTab() {
@@ -288,48 +278,8 @@ public class BrowserController extends StackPane implements Initializable {
         //Create
         Tab tab = new Tab("");
         tab.setClosable(true);
-        BrowserTabController webBrowserTab = new BrowserTabController(this, tab, webSite.length == 0 ? null : webSite[0]);
 
-        return webBrowserTab;
-    }
-
-    public void closeTabsToTheRight(Tab givenTab) {
-        //Return if size <= 1
-        if (tabPane.getTabs().size() <= 1)
-            return;
-
-        //The start
-        int start = tabPane.getTabs().indexOf(givenTab);
-
-        //Remove the appropriate items
-        tabPane.getTabs().stream()
-                //filter
-                .filter(tab -> tabPane.getTabs().indexOf(tab) > start)
-                //Collect the all to a list
-                .collect(Collectors.toList()).forEach(this::removeTab);
-
-    }
-
-    public void closeTabsToTheLeft(Tab givenTab) {
-        //Return if size <= 1
-        if (tabPane.getTabs().size() <= 1)
-            return;
-
-        //The start
-        int start = tabPane.getTabs().indexOf(givenTab);
-
-        //Remove the appropriate items
-        tabPane.getTabs().stream()
-                //filter
-                .filter(tab -> tabPane.getTabs().indexOf(tab) < start)
-                //Collect the all to a list
-                .collect(Collectors.toList()).forEach(this::removeTab);
-
-    }
-
-    public void removeTab(Tab tab) {
-        tabPane.getTabs().remove(tab);
-        tab.getOnClosed().handle(null);
+        return new BrowserTabController(this, tab, webSite.length == 0 ? null : webSite[0]);
     }
 
     public void removeAllTabs() {

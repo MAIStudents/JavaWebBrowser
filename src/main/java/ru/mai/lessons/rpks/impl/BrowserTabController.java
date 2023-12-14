@@ -232,6 +232,9 @@ public class BrowserTabController extends StackPane implements Initializable {
     private String currentURL;
 
     private void startRecording() {
+        if (!browserController.trackHistory) {
+            return;
+        }
         if (!browserController.getIgnored().contains(browser.locationProperty().getValue()))  {
             startRecording = true;
             startTime = System.nanoTime();

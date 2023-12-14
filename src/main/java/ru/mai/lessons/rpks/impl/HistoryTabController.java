@@ -1,5 +1,6 @@
 package ru.mai.lessons.rpks.impl;
 
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,6 +38,9 @@ public class HistoryTabController extends StackPane implements Initializable {
     @FXML
     private ListView<String> turnOffHistoryListview;
 
+    @FXML
+    JFXToggleButton toggleBtn;
+
     BrowserController browserController;
     Tab tab;
 
@@ -67,6 +71,12 @@ public class HistoryTabController extends StackPane implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         historyDisplayData();
         ignoredDisplayData();
+        if (!browserController.trackHistory) {
+            toggleBtn.setSelected(true);
+        }
+        toggleBtn.setOnAction(a -> {
+            browserController.setTrackHistory(!toggleBtn.isSelected());
+        });
     }
 
     public HistoryTabController(BrowserController browserController, Tab tab) {
