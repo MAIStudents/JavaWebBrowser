@@ -97,7 +97,7 @@ public class BrowserTabController extends StackPane implements Initializable {
     private WebView webView;
 
     private Tab tab;
-    private final BrowserController webBrowserController;
+    private final BrowserController browserController;
     private String firstWebSite;
     WebEngine browser;
     private WebHistory history;
@@ -106,7 +106,7 @@ public class BrowserTabController extends StackPane implements Initializable {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     public BrowserTabController(BrowserController browserController, Tab tab, String firstWebSite) {
-        this.webBrowserController = browserController;
+        this.browserController = browserController;
         this.tab = tab;
         this.firstWebSite = firstWebSite;
         this.tab.setContent(this);
@@ -155,17 +155,17 @@ public class BrowserTabController extends StackPane implements Initializable {
 
     public void toFavourites() {
         String url = browser.locationProperty().getValue();
-        webBrowserController.addToFavouritesList(url);
+        browserController.addToFavouritesList(url);
         urlIsInFavourites();
     }
 
     public void toIgnored() {
         String url = browser.locationProperty().getValue();
-        webBrowserController.addToIgnoredList(url);
+        browserController.addToIgnoredList(url);
     }
 
     private void urlIsInFavourites() {
-        if (webBrowserController.getFavouritesList().contains(browser.locationProperty().getValue())) {
+        if (browserController.getFavouritesList().contains(browser.locationProperty().getValue())) {
             toFavouritesFontIcon.setIconColor(Color.web("#FFFF00"));
         } else {
             toFavouritesFontIcon.setIconColor(Color.web("#FFFFFF"));
@@ -173,7 +173,7 @@ public class BrowserTabController extends StackPane implements Initializable {
     }
 
     private void urlIsIgnored() {
-        if (webBrowserController.getIgnored().contains(browser.locationProperty().getValue())) {
+        if (browserController.getIgnored().contains(browser.locationProperty().getValue())) {
             collectHistoryThisPageCheckedMenuItem.setSelected(true);
         }
     }
@@ -183,7 +183,7 @@ public class BrowserTabController extends StackPane implements Initializable {
             URI u = new URI(getHistory().getEntries().get(getHistory().getCurrentIndex()).getUrl());
             String new_ur = u.getHost() + u.getRawPath().replaceAll("/", ".");
             DirectoryChooser directoryChooser = new DirectoryChooser();
-            String dirPath = directoryChooser.getPathFromDirectoryChooser(webBrowserController.getTabPane().getScene().getWindow());
+            String dirPath = directoryChooser.getPathFromDirectoryChooser(browserController.getTabPane().getScene().getWindow());
             File fos = new File(dirPath + File.separator + new_ur + ".html");
             FileUtils.copyURLToFile(u.toURL(), fos);
             System.out.println("Ended downloading");
@@ -200,7 +200,7 @@ public class BrowserTabController extends StackPane implements Initializable {
             String new_ur = fileName + "html";
 
             DirectoryChooser directoryChooser = new DirectoryChooser();
-            String dirPath = directoryChooser.getPathFromDirectoryChooser(webBrowserController.getTabPane().getScene().getWindow());
+            String dirPath = directoryChooser.getPathFromDirectoryChooser(browserController.getTabPane().getScene().getWindow());
 
             URL url = u.toURL();
 
@@ -232,7 +232,7 @@ public class BrowserTabController extends StackPane implements Initializable {
     private String currentURL;
 
     private void startRecording() {
-        if (!webBrowserController.getIgnored().contains(browser.locationProperty().getValue()))  {
+        if (!browserController.getIgnored().contains(browser.locationProperty().getValue()))  {
             startRecording = true;
             startTime = System.nanoTime();
             currentURL = browser.locationProperty().getValue();
@@ -249,11 +249,11 @@ public class BrowserTabController extends StackPane implements Initializable {
             int hour = (int) (duration / 3600);
             int mm = (int) (duration / 60);
             duration -= (3600L * hour + 60L * mm);
-            webBrowserController.addToHistoryList(new HistoryTableViewDataProvider(LocalDateTime.now(),
+            browserController.addToHistoryList(new HistoryTableViewDataProvider(LocalDateTime.now(),
                     LocalTime.of(hour, mm, (int) duration), currentURL));
         }
         if (startNewRecording) {
-            if (webBrowserController.getIgnored().contains(browser.locationProperty().getValue())) {
+            if (browserController.getIgnored().contains(browser.locationProperty().getValue())) {
                 startRecording = false;
                 return;
             }
@@ -266,6 +266,18 @@ public class BrowserTabController extends StackPane implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         browser = webView.getEngine();
         tab.textProperty().bind(webView.getEngine().titleProperty());
+
+        // <--- Load Property Favourite and Record history --->
+        browser.locationProperty().addListener((observable, oldValue, newValue) -> {
+            if (startRecording) {
+                endRecording(true);
+            }
+            else {
+                startRecording();
+            }
+            urlIsIgnored();
+            urlIsInFavourites();
+        });
 
         // <--- Load the website --->
         loadWebSite(firstWebSite);
@@ -296,26 +308,6 @@ public class BrowserTabController extends StackPane implements Initializable {
                 Platform.runLater(() -> searchBar.selectAll());
         });
 
-        // <--- Load favourite property of webpage --->
-//        browser.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-//            if (Worker.State.SUCCEEDED.equals(newValue)) {
-//                getHistoryNote();
-//                urlIsInFavourites();
-//            }
-//        });
-
-        // <--- Load Property Favourite and Record history --->
-        browser.locationProperty().addListener((observable, oldValue, newValue) -> {
-            if (startRecording) {
-                endRecording(true);
-            }
-            else {
-                startRecording();
-            }
-            urlIsIgnored();
-            urlIsInFavourites();
-        });
-
         // <--- goButton --->
         goButton.setOnAction(searchBar.getOnAction());
 
@@ -331,8 +323,8 @@ public class BrowserTabController extends StackPane implements Initializable {
         backwardButton.disableProperty().bind(getHistory().currentIndexProperty().isEqualTo(0));
         backwardButton.setOnMouseReleased(m -> {
             if (m.getButton() == MouseButton.MIDDLE) //Create and add it next to this tab
-                webBrowserController.getTabPane().getTabs().add(webBrowserController.getTabPane().getTabs().indexOf(tab) + 1,
-                        webBrowserController.createNewTab(getHistory().getEntries().get(getHistory().getCurrentIndex() - 1).getUrl()).getTab());
+                browserController.getTabPane().getTabs().add(browserController.getTabPane().getTabs().indexOf(tab) + 1,
+                        browserController.createNewTab(getHistory().getEntries().get(getHistory().getCurrentIndex() - 1).getUrl()).getTab());
         });
 
         // <--- forwardButton --->
@@ -342,8 +334,8 @@ public class BrowserTabController extends StackPane implements Initializable {
         forwardButton.disableProperty().bind(getHistory().currentIndexProperty().greaterThanOrEqualTo(list.sizeProperty().subtract(1)));
         forwardButton.setOnMouseReleased(m -> {
             if (m.getButton() == MouseButton.MIDDLE) //Create and add it next to this tab
-                webBrowserController.getTabPane().getTabs().add(webBrowserController.getTabPane().getTabs().indexOf(tab) + 1,
-                        webBrowserController.createNewTab(getHistory().getEntries().get(getHistory().getCurrentIndex() + 1).getUrl()).getTab());
+                browserController.getTabPane().getTabs().add(browserController.getTabPane().getTabs().indexOf(tab) + 1,
+                        browserController.createNewTab(getHistory().getEntries().get(getHistory().getCurrentIndex() + 1).getUrl()).getTab());
         });
 
         // <--- Download HTML code --->
@@ -354,13 +346,20 @@ public class BrowserTabController extends StackPane implements Initializable {
         toFavouritesButton.setOnAction(a -> toFavourites());
 
         // <--- Favourites tab --->
-        favouritesMenuItem.setOnAction(a -> webBrowserController.createNewFavouritesTab());
+        favouritesMenuItem.setOnAction(a -> browserController.createNewFavouritesTab());
 
         // <--- Ignored list --->
         collectHistoryThisPageCheckedMenuItem.setOnAction(a -> toIgnored());
 
         // <--- History tab --->
-        historyMenuItem.setOnAction(a -> webBrowserController.createNewHistoryTab());
+        historyMenuItem.setOnAction(a -> browserController.createNewHistoryTab());
+
+        // <--- Create new HTML page --->
+        newHTMLMenuItem.setOnAction(a -> browserController.createNewCreateHTMLPageTab());
+
+        // <--- Edit or view HTML page --->
+        viewHTMLMenuItem.setOnAction(a -> browserController.createNewEditHTMLTab(browser.locationProperty().getValue(), false));
+        editHTMLMenuItem.setOnAction(a -> browserController.createNewEditHTMLTab(browser.locationProperty().getValue(), true));
     }
 
     public Tab getTab() {

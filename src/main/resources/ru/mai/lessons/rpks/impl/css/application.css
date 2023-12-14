@@ -37,6 +37,10 @@
 }
 
 
+.jfx-button {
+    -fx-background-radius: 10px;
+}
+
 .jfx-button:armed,
 .jfx-button:hover,
 .jfx-button:focused{
@@ -268,56 +272,6 @@
 	-fx-background-color:#8013A2;
 }
 
-/*******************************************************************************
-
-*                             JFXTabPane                                      *
-*
-* .jfx-tab-pane#specialJFXTabPane .tab:hover .tab-label{
-*
-* }
-
-******************************************************************************/
-#specialJFXTabPane2 .tab-header-area .tab-header-background {
-    /*-fx-opacity: 0.0;*/
-    -fx-background-color:rgb(0.0,0.0,0.0,0.8) !important;
-}
-
-.specialJFXTabPane .tab-header-area .tab-header-background {
-    /*-fx-opacity: 0.0;*/
-    -fx-background-color:#252525 !important;
-}
-
-.specialJFXTabPane .tab-header-area .jfx-rippler{
-    -fx-rippler-fill:#5f0e78 !important;
-    -fx-cursor:hand;
-}
-
-.specialJFXTabPane .tab-header-area  .tab-selected-line{
-     -fx-stroke: #5f0e78 !important;
-}
-
-.specialJFXTabPane .tab .tab-label {
-    -fx-alignment: CENTER;
-    -fx-text-fill: white;
-    -fx-font-size: 13.5px; /* before it was 12px */
-    -fx-font-weight: bold;
-    -fx-wrap-text: true;
-    -fx-cursor:hand;
-}
-
-.specialJFXTabPane .tab:hover .tab-label{
-	-fx-text-fill:white;
-	-fx-background-color: #5f0e78 !important;
-	-fx-background-radius: 0.0;
-}
-
-.specialJFXTabPane .tab:selected .tab-label{
-	-fx-background-color: #8214a3;
-}
-
-.specialJFXTabPane .tab-selected-line {
-	 -fx-background-color:transparent;
-}
 /*******************************************************************************
 
 *                             List cell                                      *

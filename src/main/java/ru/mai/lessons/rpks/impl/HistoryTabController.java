@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HistoryTab extends StackPane implements Initializable {
+public class HistoryTabController extends StackPane implements Initializable {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     @FXML
@@ -69,7 +69,7 @@ public class HistoryTab extends StackPane implements Initializable {
         ignoredDisplayData();
     }
 
-    public HistoryTab(BrowserController browserController, Tab tab) {
+    public HistoryTabController(BrowserController browserController, Tab tab) {
         this.browserController = browserController;
         this.tab = tab;
         this.tab.setContent(this);

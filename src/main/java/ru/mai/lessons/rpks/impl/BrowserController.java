@@ -2,7 +2,6 @@ package ru.mai.lessons.rpks.impl;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.jfoenix.controls.JFXTabPane;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -10,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
-import org.kordamp.ikonli.javafx.FontIcon;
 import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
 
 import java.io.*;
@@ -267,9 +265,23 @@ public class BrowserController extends StackPane implements Initializable {
 
     public void createNewHistoryTab() {
         Tab tab = new Tab("History");
-        HistoryTab historyTab = new HistoryTab(this, tab);
-        tabPane.getTabs().add(getNewTabIndex(), historyTab.getTab());
+        HistoryTabController historyTabController = new HistoryTabController(this, tab);
+        tabPane.getTabs().add(getNewTabIndex(), historyTabController.getTab());
         tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2); // Selecting the tab before the button, which is the newly created one
+    }
+
+    public void createNewCreateHTMLPageTab() {
+        Tab tab = new Tab("Create HTML page");
+        CreateHTMLTabController createHTMLTabController = new CreateHTMLTabController(this, tab);
+        tabPane.getTabs().add(getNewTabIndex(), createHTMLTabController.tab);
+        tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
+    }
+
+    public void createNewEditHTMLTab(String address, boolean isEditable) {
+        Tab tab = new Tab(isEditable ? "Edit HTML page" : "View HTML page");
+        EditHTMLTabController editHTMLTabController = new EditHTMLTabController(this, tab, address, isEditable);
+        tabPane.getTabs().add(getNewTabIndex(), editHTMLTabController.tab);
+        tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
     }
 
     public BrowserTabController createNewTab(String... webSite) {
