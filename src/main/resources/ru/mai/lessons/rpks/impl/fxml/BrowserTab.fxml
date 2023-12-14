@@ -67,7 +67,7 @@
                             <items>
                         <MenuItem fx:id="historyMenuItem" mnemonicParsing="false" text="История" />
                         <MenuItem fx:id="favouritesMenuItem" mnemonicParsing="false" text="Избранное" />
-                        <CheckMenuItem fx:id="collectHistoryThisPageCheckedMenuItem" mnemonicParsing="false" text="Отслеживать эту страницу" />
+                        <CheckMenuItem fx:id="collectHistoryThisPageCheckedMenuItem" mnemonicParsing="false" text="Не отслеживать эту страницу" />
                         <Menu mnemonicParsing="false" text="Сохранить страницу...">
                           <items>
                               <MenuItem fx:id="downloadPageMenuItem" mnemonicParsing="false" text="как HTML" />

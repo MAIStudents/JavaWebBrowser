@@ -2,6 +2,8 @@ package ru.mai.lessons.rpks.impl;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +37,7 @@ import javafx.scene.web.WebView;
 import org.apache.commons.io.FileUtils;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ru.mai.lessons.rpks.helpClasses.DirectoryChooser;
+import ru.mai.lessons.rpks.helpClasses.HistoryTableViewDataProvider;
 
 public class BrowserTabController extends StackPane implements Initializable {
     @FXML
@@ -109,6 +115,10 @@ public class BrowserTabController extends StackPane implements Initializable {
         this.firstWebSite = firstWebSite;
         this.tab.setContent(this);
 
+        tab.setOnClosed(a -> {
+            endRecording(false);
+        });
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/BrowserTab.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -136,7 +146,7 @@ public class BrowserTabController extends StackPane implements Initializable {
         if (!getHistory().getEntries().isEmpty())
             browser.reload();
         else
-            browser.load("https://www.google.com");
+            browser.load(firstWebSite);
     }
 
     public void goBack() {
@@ -148,19 +158,27 @@ public class BrowserTabController extends StackPane implements Initializable {
     }
 
     public void toFavourites() {
-        // todo: check if this page already is in favourites. If it is, delete it from list
-        // todo: add to json file (?)
         String url = browser.locationProperty().getValue();
         webBrowserController.addToFavouritesList(url);
         urlIsInFavourites();
     }
 
+    public void toIgnored() {
+        String url = browser.locationProperty().getValue();
+        webBrowserController.addToIgnoredList(url);
+    }
+
     private void urlIsInFavourites() {
-        if (webBrowserController.getFavouritesList()== null) { return;}
         if (webBrowserController.getFavouritesList().contains(browser.locationProperty().getValue())) {
             toFavouritesFontIcon.setIconColor(Color.web("#FFFF00"));
         } else {
             toFavouritesFontIcon.setIconColor(Color.web("#FFFFFF"));
+        }
+    }
+
+    private void urlIsIgnored() {
+        if (webBrowserController.getIgnored().contains(browser.locationProperty().getValue())) {
+            collectHistoryThisPageCheckedMenuItem.setSelected(true);
         }
     }
 
@@ -213,10 +231,49 @@ public class BrowserTabController extends StackPane implements Initializable {
         // todo: log errors
     }
 
+    private boolean startRecording = false;
+    private long startTime, endTime;
+    private String currentURL;
+
+    private void startRecording() {
+        if (!webBrowserController.getIgnored().contains(browser.locationProperty().getValue()))  {
+            startRecording = true;
+            startTime = System.nanoTime();
+            currentURL = browser.locationProperty().getValue();
+        }
+    }
+
+    private void endRecording(boolean startNewRecording) {
+        if (!startRecording) {
+            return;
+        }
+        endTime = System.nanoTime();
+        long duration = (endTime - startTime) / 1000000000;
+        if (duration > 0) {
+            int hour = (int) (duration / 3600);
+            int mm = (int) (duration / 60);
+            duration -= (3600 * hour + 60 * mm);
+            webBrowserController.addToHistoryList(new HistoryTableViewDataProvider(LocalDateTime.now(),
+                    LocalTime.of(hour, mm, (int) duration), currentURL));
+        }
+        if (startNewRecording) {
+            if (webBrowserController.getIgnored().contains(browser.locationProperty().getValue())) {
+                startRecording = false;
+                return;
+            }
+            startTime = System.nanoTime();
+            currentURL = browser.locationProperty().getValue();
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         browser = webView.getEngine();
         tab.textProperty().bind(webView.getEngine().titleProperty());
+
+        // <--- Load the website --->
+        loadWebSite(firstWebSite);
+        startRecording();
 
         // <--- History --->
         setHistory(browser.getHistory());
@@ -235,17 +292,32 @@ public class BrowserTabController extends StackPane implements Initializable {
                 searchBar.textProperty().bind(browser.locationProperty());
             }
         });
-        searchBar.setOnAction(a -> loadWebSite(searchBar.getText()));
+        searchBar.setOnAction(a -> {
+            loadWebSite(searchBar.getText().startsWith("http://") ? searchBar.getText() : "http://" + searchBar.getText());
+        });
         searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
                 Platform.runLater(() -> searchBar.selectAll());
         });
 
         // <--- Load favourite property of webpage --->
-        browser.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (Worker.State.SUCCEEDED.equals(newValue)) {
-                urlIsInFavourites();
+//        browser.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+//            if (Worker.State.SUCCEEDED.equals(newValue)) {
+//                getHistoryNote();
+//                urlIsInFavourites();
+//            }
+//        });
+
+        // <--- Load Property Favourite and Record history --->
+        browser.locationProperty().addListener((observable, oldValue, newValue) -> {
+            if (startRecording) {
+                endRecording(true);
             }
+            else {
+                startRecording();
+            }
+            urlIsIgnored();
+            urlIsInFavourites();
         });
 
         // <--- goButton --->
@@ -278,18 +350,21 @@ public class BrowserTabController extends StackPane implements Initializable {
                         webBrowserController.createNewTab(getHistory().getEntries().get(getHistory().getCurrentIndex() + 1).getUrl()).getTab());
         });
 
-        // <--- Load the website --->
-        loadWebSite(firstWebSite);
-
-        // <--- To favourites button --->
-        toFavouritesButton.setOnAction(a -> toFavourites());
-
         // <--- Download HTML code --->
         downloadPageMenuItem.setOnAction(printPage -> downloadHTMLPageToHTML());
         downloadPageZipMenuItem.setOnAction(printPage -> downloadHTMLPageToZip());
 
-        // <--- Favourites list --->
+        // <--- To favourites button --->
+        toFavouritesButton.setOnAction(a -> toFavourites());
+
+        // <--- Favourites tab --->
         favouritesMenuItem.setOnAction(a -> webBrowserController.createNewFavouritesTab());
+
+        // <--- Ignored list --->
+        collectHistoryThisPageCheckedMenuItem.setOnAction(a -> toIgnored());
+
+        // <--- History tab --->
+        historyMenuItem.setOnAction(a -> webBrowserController.createNewHistoryTab());
     }
 
     public Tab getTab() {

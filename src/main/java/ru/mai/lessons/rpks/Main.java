@@ -32,8 +32,11 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
         primaryStage.setOnCloseRequest(cl -> {
+            browserController.removeAllTabs();
             browserController.saveFavouritesToJson();
-            System.exit(0);
+            browserController.saveIgnored();
+            browserController.saveHistory();
+//            System.exit(0);
         });
         primaryStage.show();
     }

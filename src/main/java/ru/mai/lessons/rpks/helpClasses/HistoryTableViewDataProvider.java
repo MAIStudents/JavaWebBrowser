@@ -1,20 +1,21 @@
 package ru.mai.lessons.rpks.helpClasses;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
 public class HistoryTableViewDataProvider {
-    Date date;
+    LocalDateTime date;
     LocalTime time;
     String address;
 
-    public HistoryTableViewDataProvider(Date date, LocalTime time, String address) {
+    public HistoryTableViewDataProvider(LocalDateTime date, LocalTime time, String address) {
         this.date = date;
         this.time = time;
         this.address = address;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
