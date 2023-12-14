@@ -1,0 +1,292 @@
+/*******************************************************************************
+
+* 						Button                                      *
+
+******************************************************************************/
+
+ /**About Button  ----------------------------------------*/
+
+ .button , .menu-button , .segmented-button-bar .toggle-button {
+    /* -fx-background-color:  linear-gradient(#38424b 0.0%, #1f2429 20.0%, #191d22 100.0%);   */
+ 	-fx-background-color: #252525;
+    -fx-background-insets: 0.0, 1.0 1.0 1.0 0.0, 2.0 1.0 1.0 1.0;
+    -fx-text-fill: white;
+    -fx-font-size: 13.0px;
+    -fx-font-weight:bold;
+    -fx-background-radius:45.0;
+ }
+
+ .button:hover , .menu-button:hover , .segmented-button-bar .button:hover , .segmented-button-bar .toggle-button:hover{
+ 	-fx-background-color:#8013A2;
+ }
+
+ .button:pressed , .menu-button:pressed , .segmented-button-bar .button:pressed{
+    -fx-background-color: #252525;
+}
+
+.toggle-button {
+	-fx-cursor:hand;
+}
+
+.segmented-button-bar .toggle-button:selected{
+	-fx-background-color:#E47434;
+	-fx-text-fill:#202020;
+}
+
+
+.jfx-button {
+    -fx-background-radius: 10px;
+}
+
+.jfx-button:armed,
+.jfx-button:hover,
+.jfx-button:focused{
+    -fx-background-color:rgb(255.0,255.0,255.0,0.9);
+    -fx-text-fill:black;
+}
+
+.jfx-button,.jfx-menu-button {
+    -fx-background-color:rgb(255.0,255.0,255.0,0.4);
+    -fx-background-radius: 0.0px;
+    -fx-background-insets: 0.0px;
+    -fx-cursor:hand;
+}
+
+/*******************************************************************************
+
+* CSS Styles for the ContextMenu,MenuItem,..                                  *
+
+******************************************************************************/
+
+
+ .context-menu {
+ 	-fx-background-color:#202020;
+  	-fx-background-radius:5.0;
+  	-fx-border-width:2.0;
+  	-fx-border-radius:2.0;
+    /*-fx-border-style:segments(4.0); */
+    -fx-cursor:hand;
+}
+
+ .menu-item .label{
+ 	-fx-text-fill:white;
+ 	-fx-font-weight:bold;
+ 	-fx-font-size:15.5;
+ }
+
+ .menu-item:focused {
+ 	-color: #8013A2;
+	/*-fx-background-color:linear-gradient(
+        from 0.0px 0.75em to 0.75em 0.0px,
+        repeat,
+        -color 0.0%,
+       -color 49.0%,
+        derive(-color, 30.0%) 50.0%,
+        derive(-color, 30.0%) 99.0%
+    );*/
+    -fx-background-color:#A031C2;
+ }
+
+ .menu-item:focused .label{
+ 	-fx-text-fill:white;
+ }
+
+
+/*******************************************************************************
+
+*                           Label-Menu-Item                            *
+
+******************************************************************************/
+.title-menu-item .label{
+	  -fx-text-alignment:center;
+}
+
+.title-menu-item .label .text{
+	  -fx-text-alignment:center;
+}
+
+
+/* When the Label-Menu-Item is disabled [Always it is cause i don't want the user to be able to click it] */
+.title-menu-item:disabled {
+    -fx-opacity: 1.0;
+    -fx-border-color:transparent firebrick firebrick firebrick;
+    -fx-border-width:2.0;
+    -fx-cursor:default;
+}
+
+.title-menu-item:disabled:hover{
+	-fx-background-color: transparent;
+}
+
+.title-menu-item:disabled .label {
+    -fx-opacity: 1.0;
+    -fx-font-size:11.0;
+    -fx-font-weight:bold;
+    -fx-text-fill:white;
+    -fx-text-alignment:center;
+    -fx-text-fill: #BBFF00;
+}
+
+.title-menu-item:disabled:hover .label {
+	-fx-background-color: transparent;
+}
+
+/*******************************************************************************
+
+*                          .menu-button                          *
+
+******************************************************************************/
+
+.menu-button{
+	-fx-background-radius:0.0;
+	-fx-cursor:hand;
+}
+
+.menu-button .label{
+	-fx-text-fill:white;
+}
+
+.menu-button .label:hover{
+	-fx-background-color:rgb(0.0,0.0,0.0,0.7);
+	-fx-background-radius:45.0;
+	-fx-text-fill:white;
+}
+
+.menu-button .arrow-button .arrow{
+	-fx-background-color:white;
+}
+
+.visWindowMenuButton .label{
+	-fx-text-fill:white;
+}
+
+.visWindowMenuButton .label:hover{
+	-fx-background-color:rgb(0.0,0.0,0.0,0.7);
+	-fx-background-radius:45.0;
+	-fx-text-fill:white;
+}
+
+.menu-button2 .label{
+	-fx-text-fill:white;
+}
+
+.menu-button2 .label:hover{
+	-fx-background-color:transparent;
+	-fx-text-fill:white;
+}
+
+/*******************************************************************************
+
+*                         MenuButton                        *
+
+******************************************************************************/
+
+.menu-button2 > .arrow-button > .arrow {
+ -fx-shape: "M3.5 0 L7 10 Q3.5 7 0 10z";
+ /* arrow down = M3.5 10 L7 0 Q3.5 3 0 0z */
+}
+
+.menu-button3 > .arrow-button > .arrow {
+ -fx-shape: "0";
+ /* arrow down = M3.5 10 L7 0 Q3.5 3 0 0z */
+}
+
+
+/*******************************************************************************
+
+*                         TextFields                        *
+
+******************************************************************************/
+
+
+.dark-text-field,.search-box .text-field, .libraries-search-box .text-field,.dark-text-field-rectangle{
+
+	-fx-background-color:#202020;
+	-fx-text-fill:white;
+	-fx-font-weight:bold;
+	-fx-accent: firebrick ;
+}
+
+.dark-text-field-rectangle{
+	-fx-background-radius:0.0px;
+}
+
+.dark-text-field-rectangle:disabled{
+   -fx-opacity: 1.0;
+}
+
+.dark-text-area {
+	-fx-background-color:#202020;
+	-fx-text-fill:white;
+	-fx-fill:white;
+	-fx-accent: #454247 ;
+	-fx-font-weight:bold;
+}
+
+.dark-text-area .content {
+    -fx-background-color: #202020;
+}
+
+/*******************************************************************************
+
+*                        Dark Buttons etc                    *
+
+******************************************************************************/
+
+
+.toggle-button3,.jfx-menu-button2,.jfx-button4,.dark-menu-button,.dark-round-jfx-button,.jfx-button-dark-white-selection{
+    -fx-background-color:rgb(20.0,20.0,20.0);
+    -fx-text-fill:white;
+    -fx-background-radius: 0.0px;
+    -fx-background-insets: 0.0px;
+    -fx-cursor:hand;
+    -fx-font-weight:bold;
+}
+
+.jfx-button-dark-white-selection,.split-menu-button:openvertically,.split-menu-button2 .label .text,.split-menu-button2 .arrow-button{
+	 -fx-background-color:rgb(20.0,20.0,20.0) !important;
+    -fx-text-fill:white !important;
+    -fx-background-radius: 0.0px;
+    -fx-background-insets: 0.0px;
+    -fx-cursor:hand;
+    -fx-font-weight:bold;
+}
+
+.split-menu-button2 .arrow-button .arrow{
+	 -fx-background-color:white;
+}
+
+.dark-menu-button .label{
+	-fx-background-color:transparent;
+}
+
+.dark-menu-button .label:hover{
+	-fx-background-color:transparent;
+}
+
+
+.jfx-button4:hover,.dark-menu-button:hover{
+	-fx-background-color:#8013A2;
+}
+
+/*******************************************************************************
+
+*                             List cell                                      *
+
+******************************************************************************/
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+	-fx-background-color:#8013A2;
+    -fx-text-fill: white;
+}
+
+.list-cell:even { /* <=== changed to even */
+    -fx-background-color: white;
+}
+.list-cell:odd {
+    -fx-background-color: lightgray;
+}
+
+.list-cell:filled:hover {
+	-fx-background-color:#8013A2;
+    -fx-text-fill: white;
+}

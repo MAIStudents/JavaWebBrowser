@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.HTMLEditor?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<fx:root prefHeight="578.0" prefWidth="1074.0" style="-fx-background-color: #252525;" stylesheets="@../css/application.css" type="StackPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="474.0" prefWidth="1074.0">
+         <top>
+            <HBox alignment="TOP_CENTER" BorderPane.alignment="TOP_CENTER">
+               <children>
+                  <FontIcon iconColor="WHITE" iconLiteral="fa-code" iconSize="20" selectionEnd="0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="10.0" top="5.0" />
+                     </HBox.margin>
+                  </FontIcon>
+                  <Label text="Создание HTML страниц" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" top="2.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <bottom>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+               <children>
+                  <JFXButton fx:id="saveBtn" layoutX="817.0" prefWidth="150.0" style="-fx-background-radius: 10px;" text="Сохранить" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-save" iconSize="15" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </AnchorPane>
+         </bottom>
+         <center>
+            <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <items>
+                  <HTMLEditor fx:id="htmlEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="452.0" prefWidth="600.0" />
+                  <TextArea fx:id="textArea" prefHeight="452.0" prefWidth="519.0" />
+               </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </children>
+</fx:root>

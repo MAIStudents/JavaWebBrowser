@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<fx:root prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #252525;" type="StackPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefWidth="696.0">
+         <children>
+            <HBox alignment="TOP_CENTER" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-history" iconSize="20">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </FontIcon>
+                        <Label text="История" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <JFXToggleButton fx:id="toggleBtn" maxHeight="0.0" text=" " textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXToggleButton>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane maxWidth="700.0" prefHeight="730.0" prefWidth="662.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="700.0" prefWidth="760.0" style="-fx-background-radius: 10px; -fx-background-color: grey;">
+                     <children>
+                        <Label text="Список посещенных сайтов" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TableView fx:id="historyTableview" prefHeight="642.0" prefWidth="910.0" style="-fx-background-radius: 10px;">
+                           <columns>
+                              <TableColumn fx:id="dateCol" prefWidth="94.40001714229584" text="Дата" />
+                              <TableColumn fx:id="timeCol" prefWidth="107.99998474121094" text="Время" />
+                              <TableColumn fx:id="webAddressCol" prefWidth="535.199984741211" text="Адрес" />
+                           </columns>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </BorderPane.margin>
+            </AnchorPane>
+         </center>
+         <right>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="700.0" prefWidth="418.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
+                     <children>
+                        <Label text="Не отслеживать" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ListView fx:id="turnOffHistoryListview" prefHeight="672.0" prefWidth="288.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </ListView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </BorderPane.margin>
+            </AnchorPane>
+         </right>
+      </BorderPane>
+   </children>
+</fx:root>
