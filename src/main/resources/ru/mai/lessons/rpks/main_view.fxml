@@ -20,12 +20,15 @@
           <MenuItem mnemonicParsing="false" onAction="#saveToZip" text="Save to ZIP" />
           <MenuItem mnemonicParsing="false" text="View and edit HTML" />
             <MenuItem mnemonicParsing="false" onAction="#selectFavorites" text="Favorites" />
+            <MenuItem mnemonicParsing="false" onAction="#toggleGlobalPrivateMode" text="Private all" />
+            <MenuItem mnemonicParsing="false" onAction="#saveHistoryToResourcesXML" text="Save all history to XML" />
         </items>
       </MenuButton>
         <Button fx:id="reloadButton" text="R" />
         <Button fx:id="addButton" text="+" />
         <Button fx:id="delButton" text="-" />
         <Button fx:id="favoriteButton" text="S" />
+      <Button fx:id="Private" onAction="#toggleSitePrivateMode" text="Private" />
     </HBox>
 
     <TabPane fx:id="tabPane" layoutX="14.0" layoutY="50.0" prefHeight="620.0" prefWidth="1024.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0" />

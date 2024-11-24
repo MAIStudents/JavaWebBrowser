@@ -3,7 +3,7 @@ package ru.mai.lessons.rpks.controllers;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -12,9 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -29,6 +32,8 @@ import java.util.zip.ZipOutputStream;
 
 @Slf4j
 public class MainController implements Initializable {
+  private boolean globalPrivateMode = false;
+
   @FXML
   private TabPane tabPane;
 
@@ -107,10 +112,10 @@ public class MainController implements Initializable {
       return;
     }
 
-    String formattedUrl = url.startsWith("http://") || url.startsWith("https://") ? url : "https://" + url;
+    String formattedUrl = formatUrl(url);
+    log.info("Formatted URL: {}", formattedUrl);
 
     pageTabController.getWebEngine().getLoadWorker().exceptionProperty().removeListener(pageTabController.getExceptionListener());
-
     ChangeListener<Throwable> exceptionListener = (observableValue, oldException, newException) -> {
       if (newException != null) {
         log.error("Error loading URL: {}", formattedUrl, newException);
@@ -118,17 +123,43 @@ public class MainController implements Initializable {
         String googleSearchUrl = "https://www.google.com/search?q=" + url;
         log.info("Redirecting to Google Search: {}", googleSearchUrl);
         pageTabController.getWebEngine().load(googleSearchUrl);
+        pageTabController.getHistoryController().addEntry(googleSearchUrl);
       }
     };
     pageTabController.setExceptionListener(exceptionListener);
-
     pageTabController.getWebEngine().getLoadWorker().exceptionProperty().addListener(exceptionListener);
+
+    pageTabController.getWebEngine().getLoadWorker().stateProperty().removeListener(pageTabController.getStateListener());
+    ChangeListener<Worker.State> stateListener = (observable, oldState, newState) -> {
+      if (newState == Worker.State.SUCCEEDED) {
+        String currentUrl = pageTabController.getWebEngine().getLocation();
+        if (isValidUrl(currentUrl) && !Objects.equals(pageTabController.getHistoryController().getCurrent(), currentUrl)) {
+          pageTabController.getHistoryController().addEntry(currentUrl);
+          log.info("Successfully loaded URL: {}", currentUrl);
+        } else {
+          log.warn("Invalid URL, not adding to history: {}", currentUrl);
+        }
+      }
+    };
+    pageTabController.setStateListener(stateListener);
+    pageTabController.getWebEngine().getLoadWorker().stateProperty().addListener(stateListener);
 
     log.info("Loading URL: {}", formattedUrl);
     pageTabController.getWebEngine().load(formattedUrl);
   }
 
+  private boolean isValidUrl(String url) {
+    try {
+      new java.net.URL(url);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
+  private String formatUrl(String url) {
+    return url.startsWith("http://") || url.startsWith("https://") ? url : "https://" + url;
+  }
 
   private void reloadPage() {
     Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
@@ -142,6 +173,7 @@ public class MainController implements Initializable {
 
   private void addNewTab(String url) {
     PageTabController newTabController = new PageTabController(url);
+    newTabController.getHistoryController().addEntry(url);
     Tab newTab = newTabController.getTab();
     tabPane.getTabs().add(newTab);
     tabPane.getSelectionModel().select(newTab);
@@ -185,7 +217,10 @@ public class MainController implements Initializable {
     for (String favorite : favorites) {
       Button favoriteUrlButton = new Button(favorite);
       PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-      favoriteUrlButton.setOnAction(actionEvent -> loadPage(favorite, pageTabController));
+      favoriteUrlButton.setOnAction(actionEvent -> {
+        loadPage(favorite, pageTabController);
+        favoriteStage.close();
+      });
       favoriteList.getChildren().add(favoriteUrlButton);
     }
 
@@ -267,11 +302,71 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  public void goBack(ActionEvent actionEvent) {
+  public void goBack() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    String previousUrl = pageTabController.getHistoryController().goBack();
+    if (previousUrl != null) {
+      log.info("Go to the previous URL {}", previousUrl);
+      pageTabController.getWebEngine().load(previousUrl);
+    } else {
+      log.warn("Doesn't have previous URL");
+    }
   }
 
   @FXML
-  public void goForward(ActionEvent actionEvent) {
+  public void goForward() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    String nextUrl = pageTabController.getHistoryController().goForward();
+    if (nextUrl != null) {
+      log.info("Go to the next URL {}", nextUrl);
+      pageTabController.getWebEngine().load(nextUrl);
+    } else {
+      log.warn("Doesn't have next URL");
+    }
+  }
+
+  @FXML
+  private void toggleGlobalPrivateMode() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    if (pageTabController != null) {
+      globalPrivateMode = !globalPrivateMode;
+      pageTabController.getHistoryController().setHistoryEnabled(!globalPrivateMode);
+      log.info("Global Private Mode: {}", globalPrivateMode ? "Enabled" : "Disabled");
+    }
+  }
+
+  @FXML
+  private void toggleSitePrivateMode() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    if (pageTabController != null) {
+      String currentUrl = pageTabController.getWebEngine().getLocation();
+      if (pageTabController.getHistoryController().isSiteExcluded(currentUrl)) {
+        pageTabController.getHistoryController().removeExcludedSite(currentUrl);
+        log.info("Site removed from private mode: {}", currentUrl);
+      } else {
+        pageTabController.getHistoryController().addExcludedSite(currentUrl);
+        log.info("Site added to private mode: {}", currentUrl);
+      }
+    }
+  }
+
+  @FXML
+  private void saveHistoryToResourcesXML() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    if (pageTabController != null) {
+      try {
+        File resourcesDir = new File("src/main/resources/xml");
+        if (!resourcesDir.exists() && !resourcesDir.mkdirs()) {
+          log.error("Failed to create resources directory");
+          return;
+        }
+        File file = new File(resourcesDir, "history.xml");
+        pageTabController.getHistoryController().saveHistoryToXml(file);
+        log.info("History saved to XML in resources: {}", file.getAbsolutePath());
+      } catch (IOException e) {
+        log.error("Failed to save history to XML in resources", e);
+      }
+    }
   }
 
   private void closeApp() {
