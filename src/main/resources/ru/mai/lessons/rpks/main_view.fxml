@@ -18,7 +18,7 @@
         <items>
           <MenuItem mnemonicParsing="false" text="History" />
           <MenuItem mnemonicParsing="false" onAction="#saveToZip" text="Save to ZIP" />
-          <MenuItem mnemonicParsing="false" text="View and edit HTML" />
+          <MenuItem mnemonicParsing="false" onAction="#viewAndEditHtml" text="View and edit HTML" />
             <MenuItem mnemonicParsing="false" onAction="#selectFavorites" text="Favorites" />
             <MenuItem mnemonicParsing="false" onAction="#toggleGlobalPrivateMode" text="Private all" />
             <MenuItem mnemonicParsing="false" onAction="#saveHistoryToResourcesXML" text="Save all history to XML" />

@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -210,6 +211,7 @@ public class MainController implements Initializable {
     }
 
     Stage favoriteStage = new Stage();
+    favoriteStage.initModality(Modality.APPLICATION_MODAL);
     VBox favoriteList = new VBox(10);
     favoriteList.setPadding(new Insets(10));
     favoriteList.setAlignment(Pos.BOTTOM_LEFT);
@@ -366,6 +368,15 @@ public class MainController implements Initializable {
       } catch (IOException e) {
         log.error("Failed to save history to XML in resources", e);
       }
+    }
+  }
+
+  @FXML
+  private void viewAndEditHtml() {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+
+    if (pageTabController != null) {
+      pageTabController.getHtmlController().viewAndEditHtml();
     }
   }
 

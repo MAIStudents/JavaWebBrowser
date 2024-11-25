@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7fe867ae-422c-414f-9e4c-ed2f57770cd5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/PageTabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/PageTabController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/main_view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/main_view.fxml" afterDir="false" />
@@ -50,19 +49,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;student/311__Zaslavtsev__M&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/vladimirzaslavtsev/University/DACS_RPKS/JavaWebBrowser&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "student/311__Zaslavtsev__M",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/vladimirzaslavtsev/University/DACS_RPKS/JavaWebBrowser",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.appearance"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />

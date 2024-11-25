@@ -1,7 +1,6 @@
 package ru.mai.lessons.rpks.controllers;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.Priority;
@@ -11,6 +10,7 @@ import javafx.scene.web.WebView;
 
 public class PageTabController {
   private final HistoryController historyController;
+  private final HTMLController htmlController;
   private final Tab tab;
   private final WebView webView;
   private final WebEngine webEngine;
@@ -22,6 +22,7 @@ public class PageTabController {
     this.webView = new WebView();
     this.webEngine = webView.getEngine();
     this.webEngine.load(url);
+    this.htmlController = new HTMLController(this.webEngine);
     this.listener = (observableValue, throwable, t1) -> {};
     this.stateListener = (observableValue, throwable, t1) -> {};
 
@@ -31,6 +32,8 @@ public class PageTabController {
     this.tab = new Tab("New Tab", vBox);
     this.tab.setUserData(this);
   }
+
+  public HTMLController getHtmlController() { return htmlController; }
 
   public HistoryController getHistoryController() {
     return historyController;
