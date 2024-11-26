@@ -46,21 +46,24 @@ public class HTMLController {
       stage.close();
     });
 
-    Button saveToFileButton = new Button("Save");
-    saveToFileButton.setOnAction(actionEvent -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Save HTML File");
-      fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
-      File file = fileChooser.showSaveDialog(stage);
-      if (file != null) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-          writer.write(textArea.getText());
-        } catch (IOException e) {
-          log.error("Error saving HTML file", e);
-        }
-      }
-    });
+    Button saveToFileButton = getSaveToFileButton(stage, textArea);
 
+    Button loadFromFileButton = getLoadFromFileButton(stage, textArea);
+
+    HBox buttonBox = new HBox(10);
+    buttonBox.getChildren().addAll(clearButton, applyButton, saveToFileButton, loadFromFileButton);
+    buttonBox.setPadding(new javafx.geometry.Insets(10));
+
+    BorderPane borderPane = new BorderPane();
+    borderPane.setTop(buttonBox);
+    borderPane.setCenter(textArea);
+
+    Scene scene = new Scene(borderPane, 800, 600);
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  private static Button getLoadFromFileButton(Stage stage, TextArea textArea) {
     Button loadFromFileButton = new Button("Load from file");
     loadFromFileButton.setOnAction(actionEvent -> {
       FileChooser fileChooser = new FileChooser();
@@ -82,17 +85,24 @@ public class HTMLController {
         log.warn("File is null");
       }
     });
+    return loadFromFileButton;
+  }
 
-    HBox buttonBox = new HBox(10);
-    buttonBox.getChildren().addAll(clearButton, applyButton, saveToFileButton, loadFromFileButton);
-    buttonBox.setPadding(new javafx.geometry.Insets(10));
-
-    BorderPane borderPane = new BorderPane();
-    borderPane.setTop(buttonBox);
-    borderPane.setCenter(textArea);
-
-    Scene scene = new Scene(borderPane, 800, 600);
-    stage.setScene(scene);
-    stage.show();
+  private static Button getSaveToFileButton(Stage stage, TextArea textArea) {
+    Button saveToFileButton = new Button("Save");
+    saveToFileButton.setOnAction(actionEvent -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Save HTML File");
+      fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
+      File file = fileChooser.showSaveDialog(stage);
+      if (file != null) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+          writer.write(textArea.getText());
+        } catch (IOException e) {
+          log.error("Error saving HTML file", e);
+        }
+      }
+    });
+    return saveToFileButton;
   }
 }

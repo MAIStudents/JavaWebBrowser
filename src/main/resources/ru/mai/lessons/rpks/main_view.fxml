@@ -16,7 +16,7 @@
         <Button fx:id="goButton" text="Go" />
       <MenuButton fx:id="menuButton" mnemonicParsing="false" text="Menu">
         <items>
-          <MenuItem mnemonicParsing="false" text="History" />
+          <MenuItem mnemonicParsing="false" onAction="#showHistoryViewer" text="History" />
           <MenuItem mnemonicParsing="false" onAction="#saveToZip" text="Save to ZIP" />
           <MenuItem mnemonicParsing="false" onAction="#viewAndEditHtml" text="View and edit HTML" />
             <MenuItem mnemonicParsing="false" onAction="#selectFavorites" text="Favorites" />
@@ -28,7 +28,7 @@
         <Button fx:id="addButton" text="+" />
         <Button fx:id="delButton" text="-" />
         <Button fx:id="favoriteButton" text="S" />
-      <Button fx:id="Private" onAction="#toggleSitePrivateMode" text="Private" />
+      <Button onAction="#toggleSitePrivateMode" text="Private" />
     </HBox>
 
     <TabPane fx:id="tabPane" layoutX="14.0" layoutY="50.0" prefHeight="620.0" prefWidth="1024.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0" />

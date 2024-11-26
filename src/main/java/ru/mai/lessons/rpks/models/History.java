@@ -1,7 +1,5 @@
 package ru.mai.lessons.rpks.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -47,13 +45,13 @@ public class History {
 
   public static class HistoryDto {
     private String url;
-    private String timestamp; // Преобразованный формат
-    private String duration;  // Преобразованный формат
+    private String timestamp;
+    private String duration;
 
     public HistoryDto(History history) {
       this.url = history.getUrl();
       this.timestamp = history.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-      this.duration = formatDuration(history.getDuration()); // Преобразуем Duration в читаемый формат
+      this.duration = formatDuration(history.getDuration());
     }
 
     private String formatDuration(Duration duration) {

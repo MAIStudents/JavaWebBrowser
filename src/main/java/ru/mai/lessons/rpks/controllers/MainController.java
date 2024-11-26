@@ -1,6 +1,7 @@
 package ru.mai.lessons.rpks.controllers;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
@@ -12,10 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import ru.mai.lessons.rpks.models.History;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,11 +66,11 @@ public class MainController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    addNewTab("https://www.google.com");
+    addNewTab();
 
     goButton.setOnAction(actionEvent -> loadPageFromTextBar());
     reloadButton.setOnAction(actionEvent -> reloadPage());
-    addButton.setOnAction(actionEvent -> addNewTab("https://www.google.com"));
+    addButton.setOnAction(actionEvent -> addNewTab());
     delButton.setOnAction(actionEvent -> delTab());
     favoriteButton.setOnAction(actionEvent -> addToFavorites());
 
@@ -102,7 +103,6 @@ public class MainController implements Initializable {
     }
   }
 
-
   private void loadPage(String url, PageTabController pageTabController) {
     if (url == null || url.isEmpty()) {
       log.warn("URL is empty or null");
@@ -124,7 +124,6 @@ public class MainController implements Initializable {
         String googleSearchUrl = "https://www.google.com/search?q=" + url;
         log.info("Redirecting to Google Search: {}", googleSearchUrl);
         pageTabController.getWebEngine().load(googleSearchUrl);
-        pageTabController.getHistoryController().addEntry(googleSearchUrl);
       }
     };
     pageTabController.setExceptionListener(exceptionListener);
@@ -172,9 +171,9 @@ public class MainController implements Initializable {
     }
   }
 
-  private void addNewTab(String url) {
-    PageTabController newTabController = new PageTabController(url);
-    newTabController.getHistoryController().addEntry(url);
+  private void addNewTab() {
+    PageTabController newTabController = new PageTabController("https://www.google.com");
+    newTabController.getHistoryController().addEntry("https://www.google.com");
     Tab newTab = newTabController.getTab();
     tabPane.getTabs().add(newTab);
     tabPane.getSelectionModel().select(newTab);
@@ -332,8 +331,14 @@ public class MainController implements Initializable {
     PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
     if (pageTabController != null) {
       globalPrivateMode = !globalPrivateMode;
-      pageTabController.getHistoryController().setHistoryEnabled(!globalPrivateMode);
+      HistoryController.setHistoryEnabled(!globalPrivateMode);
       log.info("Global Private Mode: {}", globalPrivateMode ? "Enabled" : "Disabled");
+      Scene mainScene = tabPane.getScene();
+      if (globalPrivateMode) {
+        mainScene.getRoot().setStyle("-fx-background-color: #2F4444; -fx-opacity: 1.0;");
+      } else {
+        mainScene.getRoot().setStyle("");
+      }
     }
   }
 
@@ -342,7 +347,7 @@ public class MainController implements Initializable {
     PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
     if (pageTabController != null) {
       String currentUrl = pageTabController.getWebEngine().getLocation();
-      if (pageTabController.getHistoryController().isSiteExcluded(currentUrl)) {
+      if (HistoryController.isSiteExcluded(currentUrl)) {
         pageTabController.getHistoryController().removeExcludedSite(currentUrl);
         log.info("Site removed from private mode: {}", currentUrl);
       } else {
@@ -380,10 +385,71 @@ public class MainController implements Initializable {
     }
   }
 
+  @FXML
+  private void showHistoryViewer () {
+    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    if (pageTabController == null) {
+      log.warn("No active tab to show history");
+      return;
+    }
+
+    Stage historyStage = new Stage();
+    historyStage.initModality(Modality.APPLICATION_MODAL);
+    historyStage.setTitle("History");
+
+    TableView<History.HistoryDto> tableView = new TableView<>();
+
+    TableColumn<History.HistoryDto, String> urlColumn = getStringTableColumn(historyStage);
+
+    TableColumn<History.HistoryDto, String> visitDateColumn = new TableColumn<>("Visited");
+    visitDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimestamp()));
+    visitDateColumn.setPrefWidth(300);
+
+    tableView.getColumns().addAll(urlColumn, visitDateColumn);
+
+    tableView.getItems().addAll(pageTabController.getHistoryController()
+            .getHistoryListGlobal().stream()
+            .map(History.HistoryDto::new)
+            .toList());
+
+    VBox layout = new VBox(10);
+    layout.setPadding(new Insets(10));
+    layout.getChildren().add(tableView);
+
+    Scene scene = new Scene(layout, 600, 400);
+    historyStage.setScene(scene);
+
+    historyStage.show();
+  }
+
+  private TableColumn<History.HistoryDto, String> getStringTableColumn(Stage historyStage) {
+    TableColumn<History.HistoryDto, String> urlColumn = new TableColumn<>("URL");
+    urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUrl()));
+    urlColumn.setCellFactory(col -> new TableCell<>() {
+      @Override
+      protected void updateItem(String url, boolean empty) {
+        super.updateItem(url, empty);
+        if (empty || url == null) {
+          setText(null);
+          setGraphic(null);
+        } else {
+          Hyperlink link = new Hyperlink(url);
+          link.setOnAction(actionEvent -> {
+            PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+            loadPage(url,pageTabController);
+            historyStage.close();
+          });
+          setGraphic(link);
+        }
+      }
+    });
+    urlColumn.setPrefWidth(300);
+    return urlColumn;
+  }
+
   private void closeApp() {
     log.info("Closing application...");
     Platform.exit();
-
   }
 
 }
