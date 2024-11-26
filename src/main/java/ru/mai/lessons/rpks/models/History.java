@@ -61,7 +61,6 @@ public class History {
       return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    // Геттеры и сеттеры
     public String getUrl() {
       return url;
     }

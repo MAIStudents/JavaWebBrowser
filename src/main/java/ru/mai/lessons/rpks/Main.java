@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.mai.lessons.rpks.utils.Logger;
 
 public class Main extends Application {
-    private static final String PATH_TO_FXML_FILE = "main_view.fxml";
+    public static final String PATH_TO_FXML_FILE = "main_view.fxml";
+    private static final Logger log = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
         launch(args);

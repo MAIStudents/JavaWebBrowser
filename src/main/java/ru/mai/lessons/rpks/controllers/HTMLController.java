@@ -9,13 +9,13 @@ import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
-import lombok.extern.slf4j.Slf4j;
+import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.*;
 
 
-@Slf4j
 public class HTMLController {
+  private static final Logger log = Logger.getLogger(HTMLController.class);
   private final WebEngine webEngine;
 
   public HTMLController(WebEngine webEngine) {

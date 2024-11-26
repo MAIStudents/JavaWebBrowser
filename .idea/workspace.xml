@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fe867ae-422c-414f-9e4c-ed2f57770cd5" name="Changes" comment="Add HTMLEditor. Only add history visual and debug all">
+    <list default="true" id="7fe867ae-422c-414f-9e4c-ed2f57770cd5" name="Changes" comment="All done and debug probably">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/models/History.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/models/History.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/main_view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/main_view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/xml/history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/xml/history.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +20,7 @@
       <list>
         <option value="FxmlFile" />
         <option value="Class" />
+        <option value="module-info" />
       </list>
     </option>
   </component>
@@ -52,21 +50,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;student/311__Zaslavtsev__M&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/vladimirzaslavtsev/University/DACS_RPKS/JavaWebBrowser&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "student/311__Zaslavtsev__M",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/vladimirzaslavtsev/University/DACS_RPKS/JavaWebBrowser",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
@@ -74,10 +72,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.Main" />
       <module name="JavaWebBrowser" />
-      <option name="VM_PARAMETERS" value="--module-path $USER_HOME$/Library/javafx-sdk-21.0.5/lib --add-modules javafx.controls,javafx.fxml,javafx.web " />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ru.mai.lessons.rpks.*" />
@@ -88,11 +85,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -114,19 +106,24 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add HTMLEditor. Only add history visual and debug all" />
     <option name="LAST_COMMIT_MESSAGE" value="Add HTMLEditor. Only add history visual and debug all" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Main.java</url>
-          <line>17</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/JavaWebBrowser$Main.ic" NAME="Main Coverage Results" MODIFIED="1732624391733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>ru.mai.lessons.rpks.*</FILTER>
+    </SUITE>
   </component>
 </project>

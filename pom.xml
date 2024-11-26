@@ -13,6 +13,9 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>21.0.5</javafx.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.9.2</junit.version>
+        <app.name>FXMaven</app.name>
     </properties>
 
     <dependencies>
@@ -86,6 +89,12 @@
                 </executions>
                 <configuration>
                     <mainClass>ru.mai.lessons.rpks.Main</mainClass>
+                    <launcher>${app.name}</launcher>
+                    <jlinkZipName>${app.name}</jlinkZipName>
+                    <jlinkImageName>${app.name}</jlinkImageName>
+                    <noManPages>true</noManPages>
+                    <stripDebug>true</stripDebug>
+                    <noHeaderFiles>true</noHeaderFiles>
                 </configuration>
             </plugin>
         </plugins>

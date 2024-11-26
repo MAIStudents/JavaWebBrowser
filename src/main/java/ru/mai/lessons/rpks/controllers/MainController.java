@@ -15,8 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 import ru.mai.lessons.rpks.models.History;
+import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,8 +32,10 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@Slf4j
 public class MainController implements Initializable {
+
+  private static final Logger log = Logger.getLogger(MainController.class);
+
   private boolean globalPrivateMode = false;
 
   @FXML

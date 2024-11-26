@@ -1,8 +1,8 @@
 package ru.mai.lessons.rpks.controllers;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.extern.slf4j.Slf4j;
 import ru.mai.lessons.rpks.models.History;
+import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
-@Slf4j
 public class HistoryController {
+  private static final Logger log = Logger.getLogger(HistoryController.class);
+
   private static final List<History> historyListGlobal = new ArrayList<>();
   private List<History> historyList = new ArrayList<>();
   private int currentIndex = -1;
