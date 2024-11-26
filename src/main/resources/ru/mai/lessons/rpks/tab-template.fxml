@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.web.WebView?>
+<Tab xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.HelloController" text="Новая вкладка">
+    <content>
+        <AnchorPane>
+            <children>
+                <Button fx:id="backButton" disable="true" text="←" onAction="#backButtonClick"
+                        AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="14.0"/>
+                <Button fx:id="nextButton" disable="true" text="→" onAction="#nextButtonClick"
+                        AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="44.0"/>
+                <Button text="⟲" onAction="#reloadButtonClick"
+                        AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="74.0"/>
+                <Button text="☆" onAction="#makeFavourite"
+                        AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="104.0"/>
+                <TextField fx:id="addressLine" text="https://google.com/"
+                           onAction="#loadAddress"
+                           AnchorPane.topAnchor="5.0"
+                           AnchorPane.leftAnchor="150.0"
+                           AnchorPane.rightAnchor="10.0"/>
+                <WebView fx:id="webView" onContextMenuRequested="#changeAddress"
+                         AnchorPane.topAnchor="40.0"
+                         AnchorPane.bottomAnchor="0.0"
+                         AnchorPane.leftAnchor="0.0"
+                         AnchorPane.rightAnchor="0.0"/>
+            </children>
+        </AnchorPane>
+    </content>
+</Tab>

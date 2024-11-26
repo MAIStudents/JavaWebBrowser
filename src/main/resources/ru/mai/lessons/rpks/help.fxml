@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Краткая справка по браузеру:&#10;&#10;Меню:&#10;&#10;Files:&#10;History - сохраняет историю браузера в JSON файле &quot;History.json&quot;&#10;Hide in History - скрывает страницу из истории (она не будет показана в JSON файле)&#10;Unhide in History - отменяет действие &quot;Hide in History&quot;&#10;Disable/Enable History - отключает/включает возможность сохранять историю браузера&#10;Save page - сохраняет данные страницы в ZIP файл с именем домена данного сайта&#10;HTMLEdit - примитивный HTML редактор с возможностью сохранения&#10;&#10;Favourites:&#10;В нём располагаются все сохранённые сайты. Чтобы сохранить необходимую &#10;страницу в избранное - нажмите на кнопку &quot;☆&quot; находясь на данном сайте. Чтобы убрать сайт из избранных нажмите на эту кнопку повторно.&#10;&#10;&#10; " textAlignment="JUSTIFY" wrappingWidth="551.7367858886719">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+   </children>
+   <padding>
+      <Insets left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
