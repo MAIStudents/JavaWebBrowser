@@ -12,6 +12,8 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main_window.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
+        String css = this.getClass().getResource("styles.css").toExternalForm();
+        scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.setTitle("JavaFX Web Browser");
         stage.show();
