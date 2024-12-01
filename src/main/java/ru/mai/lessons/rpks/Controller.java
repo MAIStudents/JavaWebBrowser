@@ -8,9 +8,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebHistory;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,39 +42,30 @@ public class Controller {
     @FXML
     private TableColumn<HistoryEntry, Boolean> validColumn;
 
-    private List<String> globalHistory;
+    private final HistoryManager historyManager;
 
     public Controller() {
-        globalHistory = new ArrayList<>();
+        historyManager = new HistoryManager();
     }
 
     @FXML
     public void initialize() {
+        setupHistoryTable();
         createNewTab();
     }
 
+    private void setupHistoryTable() {
+        urlColumn.setCellValueFactory(new PropertyValueFactory<>("url"));
+        visitTimeColumn.setCellValueFactory(new PropertyValueFactory<>("visitTime"));
+        timeSpentColumn.setCellValueFactory(new PropertyValueFactory<>("timeSpent"));
+        validColumn.setCellValueFactory(new PropertyValueFactory<>("valid"));
+        historyTable.setItems(historyManager.getHistory());
+    }
+
     public void createNewTab() {
-        BrowserTab newTab = new BrowserTab("New Tab");
-
-        newTab.getWebHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) change -> {
-            while (change.next()) {
-                if (change.wasAdded()) {
-                    for (WebHistory.Entry entry : change.getAddedSubList()) {
-                        globalHistory.add(entry.getUrl());
-                        System.out.println("Global History: " + entry.getUrl());
-                    }
-                }
-            }
-        });
-
+        BrowserTab newTab = new BrowserTab("New Tab", historyManager);
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().select(newTab);
-
-        newTab.setOnClosed(event -> {
-            System.out.println("Tab closed: " + newTab.getText());
-
-        });
-
     }
 
 
@@ -97,34 +91,47 @@ public class Controller {
     public void refreshPage() {
         BrowserTab currentTab = (BrowserTab) tabPane.getSelectionModel().getSelectedItem();
         if (currentTab != null) {
-            currentTab.getWebEngine().reload();
+            currentTab.refreshPage();
         }
     }
+
+
 
 
     public void loadPage() {
         BrowserTab currentTab = (BrowserTab) tabPane.getSelectionModel().getSelectedItem();
+        String url = textField.getText();
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url;
+        }
         if (currentTab != null) {
-            currentTab.getWebEngine().load("http://" + textField.getText());
+            currentTab.loadPage(url);
         }
     }
 
-    public List<String> getGlobalHistory() {
-        return globalHistory;
-    }
+
 
     public void displayHistory() {
-
-
-        for (String url : globalHistory) {
-            System.out.println(url);
-        }
+        boolean isVisible = historyTable.isVisible();
+        historyTable.setVisible(!isVisible);
     }
 
 
 
 
 
+    //    public String encodeUrl(String url) {
+//        try {
+//            return URLEncoder.encode(url, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            return url;
+//        }
+//    }
+
+//    public List<String> getGlobalHistory() {
+//        return globalHistory;
+//    }
 
 //    private WebEngine engine;
 //
