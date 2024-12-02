@@ -147,8 +147,7 @@ public class Browser {
     public HBox createFavSitesEntry(ListView<HBox> sitesListView, FavSitesManager.SiteEntry site) {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
-        Label urlLabel = new Label(site.host() + " - " + site.title());
-        urlLabel.setTextFill(Color.BLACK);
+        Label urlLabel = createUrlLabel(site.title(), site.host(), site.url());
         Button excludeButton = createButton(DELETE_BUTTON_TEXT, Event.removeFavSiteEntry(sitesListView, hBox, site));
         hBox.getChildren().addAll(excludeButton, urlLabel);
         return hBox;
