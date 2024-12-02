@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controllers.TabController">
+    <Button fx:id="backButton" layoutX="10.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#backAction" prefHeight="22.0" prefWidth="40.0" text="Back">
+        <font>
+            <Font size="10.0" />
+        </font>
+    </Button>
+    <TextField fx:id="UrlField" layoutX="176.0" layoutY="17.0" onKeyPressed="#UrlFieldEnterKey" prefHeight="22.0" prefWidth="519.0" promptText="URL" AnchorPane.leftAnchor="176.0" AnchorPane.rightAnchor="109.0">
+        <font>
+            <Font size="10.0" />
+        </font>
+    </TextField>
+    <Button fx:id="forwardButton" layoutX="55.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#forwardAction" prefHeight="22.0" prefWidth="53.0" text="Forward">
+        <font>
+            <Font size="10.0" />
+        </font>
+    </Button>
+    <Button fx:id="reloadButton" layoutX="116.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#reloadAction" prefHeight="22.0" prefWidth="53.0" text="Reload">
+        <font>
+            <Font size="10.0" />
+        </font>
+    </Button>
+    <WebView fx:id="webView" layoutY="59.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
+   <Button fx:id="favButton" layoutX="754.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#favSite" prefHeight="22.0" prefWidth="40.0" text="Fav" AnchorPane.rightAnchor="6">
+      <font>
+         <Font size="10.0" />
+      </font>
+   </Button>
+   <Button fx:id="saveButton" layoutX="707.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#saveSite" prefHeight="22.0" prefWidth="40.0" text="Save" AnchorPane.rightAnchor="56">
+      <font>
+         <Font size="10.0" />
+      </font>
+   </Button>
+</AnchorPane>

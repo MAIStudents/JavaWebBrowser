@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controllers.Browser">
+   <TabPane fx:id="tabPane" layoutX="93.0" prefHeight="400.0" prefWidth="587.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   </TabPane>
+   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="92.0" spacing="10.0">
+      <Button fx:id="historySwitch" onAction="#switchHistoryStatus" prefHeight="22.0" prefWidth="80.0" text="Disable history">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="history" onAction="#createHistoryTab" prefHeight="22.0" prefWidth="80.0" text="History">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="editHtml" onAction="#openHtmlEditor" prefHeight="22.0" prefWidth="80.0" text="Edit HTML">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="excludedSites" onAction="#openExcludedSites" prefHeight="22.0" prefWidth="80.0" text="Excluded sites">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="favSites" layoutX="15.0" layoutY="74.0" onAction="#openFavSites" prefHeight="22.0" prefWidth="80.0" text="Favorites">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="createHTML" layoutX="16.0" layoutY="138.0" onAction="#createHtmlEditor" prefHeight="22.0" prefWidth="80.0" text="Create HTML">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+   </VBox>
+</AnchorPane>
