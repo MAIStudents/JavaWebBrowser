@@ -1,0 +1,117 @@
+.root {
+    -fx-background-color: #2b2b2b;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+}
+
+
+.table-view {
+    -fx-background-color: #3c3f41;
+    -fx-table-cell-border-color: #424242;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-control-inner-background: #3c3f41;
+    -fx-table-header-border-color: #424242;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #424242;
+}
+
+.table-view .column-header, .table-view .column-header > .label {
+    -fx-text-fill: black;
+}
+
+
+.table-view .cell {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+
+.text-field {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #424242;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #7a7a7a;
+}
+
+.text-field:focused {
+    -fx-border-color: #5294e2;
+    -fx-border-width: 2px;
+}
+
+
+.tab-pane {
+    -fx-background-color: #2b2b2b;
+}
+
+.tab {
+    -fx-background-color: #939393;
+    -fx-border-color: #424242;
+    -fx-border-radius: 5px 5px 0 0;
+    -fx-max-width: 180px;
+    -fx-min-width: 180px;
+    -fx-pref-width: 180px;
+    -fx-text-fill: #ffffff;
+}
+
+.tab:hover {
+    -fx-background-color: #4b4b4b;
+}
+
+.tab:selected {
+    -fx-background-color: #5294e2;
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #424242;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.button:hover {
+    -fx-background-color: #4b4b4b;
+}
+
+.button:pressed {
+    -fx-background-color: #5294e2;
+    -fx-text-fill: #ffffff;
+}
+
+
+.scroll-bar {
+    -fx-background-color: #2b2b2b;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #3c3f41;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #5294e2;
+    -fx-background-insets: 2;
+    -fx-background-radius: 5px;
+}
+
+
+.stage {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #e0e0e0;
+}
+
+.check-box {
+    -fx-text-fill: #ffffff;
+}
+
+#anchorForEdit {
+    -fx-background-color: #ffffff;
+}
+
