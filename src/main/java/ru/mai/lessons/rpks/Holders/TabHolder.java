@@ -1,7 +1,9 @@
-package ru.mai.lessons.rpks;
+package ru.mai.lessons.rpks.Holders;
 import javafx.scene.control.*;
+import org.tinylog.Logger;
 
 public class TabHolder {
+    private String url;
     private final TabPane parentPane;
     private final Tab tab;
 
@@ -11,6 +13,7 @@ public class TabHolder {
     }
 
     public void loadTab() {
+        Logger.info("Loading tab " + tab.getText());
 
     }
 

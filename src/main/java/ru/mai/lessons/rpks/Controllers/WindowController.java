@@ -1,5 +1,6 @@
-package ru.mai.lessons.rpks;
+package ru.mai.lessons.rpks.Controllers;
 
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
-public class MainPage implements Initializable {
+public class WindowController implements Initializable {
     @FXML
     public TabPane tabPane;
     @FXML
@@ -60,13 +61,38 @@ public class MainPage implements Initializable {
 
         webEngine.load(url);
 
-        Tab newTab = new Tab(url);
+        Tab newTab = new Tab(getDomainName(url)); // Устанавливаем начальное имя вкладки
+
+        // Обновляем название вкладки при изменении адреса
+        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> newTab.setText(getDomainName(newValue)));
+        });
+
         newTab.setContent(webView);
         String finalUrl1 = url;
         newTab.setOnClosed(event -> System.out.println("Вкладка закрыта: " + finalUrl1));
 
         tabPane.getTabs().add(newTab);
         tabPane.getSelectionModel().select(newTab);
+    }
+
+    /**
+     * Получает короткое доменное имя из URL.
+     * Например, "https://www.example.com/path" -> "example.com"
+     */
+    private String getDomainName(String url) {
+        try {
+            java.net.URL netUrl = new java.net.URL(url);
+            String host = netUrl.getHost();
+            // Убираем префикс "www." если он есть
+            if (host.startsWith("www.")) {
+                host = host.substring(4);
+            }
+            return host;
+        } catch (Exception e) {
+            System.out.println("Ошибка получения доменного имени: " + e.getMessage());
+            return url; // Если URL некорректен, возвращаем его как есть
+        }
     }
 
 }
