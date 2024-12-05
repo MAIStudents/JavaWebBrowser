@@ -6,13 +6,14 @@ public class HistoryEntry {
     private String url;
     private LocalDateTime visitTime;
     private long timeSpent;
-    private boolean isValid;
 
-    public HistoryEntry(String url, LocalDateTime visitTime, long timeSpent, boolean isValid) {
+    public HistoryEntry() {}
+
+
+    public HistoryEntry(String url, LocalDateTime visitTime, long timeSpent) {
         this.url = url;
         this.visitTime = visitTime;
         this.timeSpent = timeSpent;
-        this.isValid = isValid;
     }
 
     public String getUrl() {
@@ -27,9 +28,7 @@ public class HistoryEntry {
         return timeSpent;
     }
 
-    public boolean isValid() {
-        return isValid;
-    }
+
 
     public void setUrl(String url) {
         this.url = url;
@@ -43,7 +42,4 @@ public class HistoryEntry {
         this.timeSpent = timeSpent;
     }
 
-    public void setValid(boolean isValid) {
-        this.isValid = isValid;
-    }
 }

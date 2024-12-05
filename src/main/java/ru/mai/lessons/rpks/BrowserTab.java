@@ -1,80 +1,146 @@
 package ru.mai.lessons.rpks;
 
 import javafx.application.Platform;
+
+import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
+
 
 public class BrowserTab extends Tab {
 
-    private WebView webView;
+    private final WebView webView;
 
-    private WebEngine webEngine;
+    private final WebEngine webEngine;
 
     private final HistoryManager historyManager;
 
     private LocalDateTime startTime;
 
-    private WebHistory webHistory;
+    private final WebHistory webHistory;
 
-    public BrowserTab(String title, HistoryManager manager) {
-        super(title);
+    private final Controller controller;
+
+    private boolean isIncognito;
+
+    private ObservableList<PrivateEntry> listOfPrivates;
+
+
+
+    public BrowserTab(String title, HistoryManager manager, Controller cntrllr, boolean isInco, ObservableList<PrivateEntry> list ) {
+        setText(title);
         webView = new WebView();
         webEngine = webView.getEngine();
         webHistory = webEngine.getHistory();
         historyManager = manager;
+        controller = cntrllr;
+        isIncognito = isInco;
+        listOfPrivates = list;
         setContent(webView);
         setUpListeners();
+        setOnClosed(event -> updateTimeSpent());
+    }
+
+    public void setListOfPrivates(ObservableList<PrivateEntry> listOfPrivates) {
+        this.listOfPrivates = listOfPrivates;
+    }
+
+    public void setIsIncognito(boolean isIncognito) {
+        this.isIncognito = isIncognito;
+    }
+
+    public void updateTimeSpent() {
+        diffTime();
+    }
+
+    private void diffTime() {
+        if (startTime != null) {
+            Duration timeSpent = Duration.between(startTime, LocalDateTime.now());
+            long millis = timeSpent.toMillis();
+
+            String currentUrl = webEngine.getLocation();
+            if (currentUrl != null) {
+                HistoryEntry currentEntry = historyManager.getHistoryEntryByUrl(currentUrl, startTime);
+                if (currentEntry != null) {
+
+                    currentEntry.setTimeSpent(millis);
+
+                    historyManager.updateHistoryEntry(currentEntry);
+                }
+            }
+        }
+    }
+
+    private Controller getController() {
+        return controller;
     }
 
     private void setUpListeners() {
-        webEngine.locationProperty().addListener((observable, oldLocation, newLocation) -> {
-            long timeSpent = System.currentTimeMillis() / 1000 - startTime.getSecond();
-            boolean isValid = validateUrl(oldLocation);
-            historyManager.addHistoryEntry(new HistoryEntry(oldLocation, startTime, timeSpent, isValid));
+        webEngine.titleProperty().addListener((observable, oldTitle, newTitle) -> {
+            if (newTitle != null && !newTitle.isEmpty()) {
+                setText(newTitle.length() > 20 ? newTitle.substring(0, 20) + "..." : newTitle);
+            }
         });
-        startTime = LocalDateTime.now();
 
-        webEngine.locationProperty().addListener((obs, oldLocation, newLocation) -> {
+        webEngine.locationProperty().addListener((observable, oldLocation, newLocation) -> {
             if (newLocation != null) {
-                setText(newLocation);
+                if (startTime != null && oldLocation != null) {
+                    Duration timeSpent = Duration.between(startTime, LocalDateTime.now());
+                    long millis = timeSpent.toMillis();
+
+                    HistoryEntry oldEntry = historyManager.getHistoryEntryByUrl(oldLocation, startTime);
+                    if (oldEntry != null ) {
+                        oldEntry.setTimeSpent(millis);
+                        historyManager.updateHistoryEntry(oldEntry);
+                    }
+                }
+                startTime = LocalDateTime.now();
+                updateTabTitle(newLocation);
+
+                if (!isIncognito && !listOfPrivates.contains(new PrivateEntry(newLocation))) {
+                    historyManager.addHistoryEntry(new HistoryEntry(newLocation, startTime, 0));
+                }
+
+
+                if (controller != null) {
+                    controller.updateCheckBoxState();
+                }
             }
         });
     }
 
-    public boolean validateUrl(String url) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(2000);
-            connection.connect();
-//            connection.disconnect();
-//            return connection.getResponseCode() < 400 ||  connection.getResponseCode() == 418;
-            return true;
-        } catch (IOException e) {
-            return false;
+    private void updateTabTitle(String url) {
+        if (url != null) {
+            String truncatedTitle = url.length() > 20 ? url.substring(0, 20) + "..." : url;
+            setText(truncatedTitle);
         }
     }
 
     public void loadPage(String url) {
-        if (validateUrl(url)) {
-            Platform.runLater(() -> webEngine.load(url));
-        } else {
-            Platform.runLater(() -> setText("Invalid URL: " + url));
-        }
+        Platform.runLater(() -> {
+            try {
+                diffTime();
+
+                startTime = LocalDateTime.now();
+                webEngine.load(url);
+
+            } catch (Exception e) {
+                webEngine.load("https://www.google.com/search?q=" + url.replace(" ", "+"));
+            }
+        });
     }
+
+
 
     public void refreshPage() {
         webEngine.reload();
     }
-
-
 
     public WebEngine getWebEngine() {
         return webEngine;
@@ -100,15 +166,8 @@ public class BrowserTab extends Tab {
         });
     }
 
-//    public void back() {
-//        if (webHistory.getCurrentIndex() > 0) {
-//            webHistory.go(-1);
-//        }
-//    }
-//
-//    public void forward() {
-//        if (webHistory.getCurrentIndex() < webHistory.getEntries().size() - 1) {
-//            webHistory.go(1);
-//        }
-//    }
+    public String getLocation() {
+        return webEngine.getLocation();
+    }
+
 }

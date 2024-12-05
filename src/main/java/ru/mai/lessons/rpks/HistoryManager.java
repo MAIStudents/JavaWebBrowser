@@ -1,20 +1,45 @@
 package ru.mai.lessons.rpks;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class HistoryManager {
-    private ObservableList<HistoryEntry> history;
+    private final ObservableList<HistoryEntry> history;
 
     public HistoryManager() {
         history = FXCollections.observableArrayList();
     }
 
+    public HistoryEntry getHistoryEntryByUrl(String url, LocalDateTime visitTime) {
+        for (HistoryEntry entry : history) {
+            if (entry.getUrl().equals(url) && entry.getVisitTime().equals(visitTime)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    public void updateHistoryEntry(HistoryEntry entry) {
+
+        for (int i = 0; i < history.size(); i++) {
+            HistoryEntry currentEntry = history.get(i);
+            if (currentEntry.getUrl().equals(entry.getUrl()) && currentEntry.getVisitTime().equals(entry.getVisitTime())) {
+                history.set(i, entry);
+                return;
+            }
+        }
+    }
+
+
     public void addHistoryEntry(HistoryEntry entry) {
+
         history.add(entry);
     }
 
@@ -26,28 +51,24 @@ public class HistoryManager {
         history.removeIf(entry -> entry.getUrl().equals(url));
     }
 
-    public void clearHistory() {///////////////////////мб не пригодится
+    public void clearHistory() {
         history.clear();
-    }
-
-    public List<HistoryEntry> getValidHistory() {
-        return history.stream()
-                .filter(HistoryEntry::isValid)
-                .collect(Collectors.toList());
     }
 
 
     public void saveHistoryToFile(String filename) throws IOException {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(history);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        List<HistoryEntry> historyList = history.stream().toList();
+        objectMapper.writeValue(new File(filename), historyList);
     }
 
 
-    public void loadHistoryFromFile(String filename) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            history = (ObservableList<HistoryEntry>) in.readObject();
-        }
+    public void loadHistoryFromFile(String filename) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        List<HistoryEntry> historyList = objectMapper.readValue(new File(filename), objectMapper.getTypeFactory().constructCollectionType(List.class, HistoryEntry.class));
+        history.setAll(historyList);
     }
 
 
