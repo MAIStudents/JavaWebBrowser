@@ -1,0 +1,1181 @@
+Index: src/main/java/ru/mai/lessons/rpks/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ru.mai.lessons.rpks;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        System.out.println(\"Hello world!\");\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/Main.java b/src/main/java/ru/mai/lessons/rpks/Main.java
+--- a/src/main/java/ru/mai/lessons/rpks/Main.java	(revision e3b9cec11f26b786ec23ed785462abb2e422941f)
++++ b/src/main/java/ru/mai/lessons/rpks/Main.java	(date 1733408851036)
+@@ -1,7 +1,29 @@
+ package ru.mai.lessons.rpks;
+ 
+-public class Main {
++import javafx.application.Application;
++import javafx.fxml.FXMLLoader;
++import javafx.scene.Parent;
++import javafx.scene.Scene;
++import javafx.stage.Stage;
++import ru.mai.lessons.rpks.utils.Logger;
++
++public class Main extends Application {
++    public static final String PATH_TO_FXML_FILE = "main_view.fxml";
++    private static final Logger log = Logger.getLogger(Main.class);
++
+     public static void main(String[] args) {
+-        System.out.println("Hello world!");
++        launch(args);
++    }
++
++    @Override
++    public void start(Stage stage) throws Exception {
++        FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_TO_FXML_FILE));
++        Parent root = loader.load();
++        Scene scene = new Scene(root);
++
++        stage.setTitle("MPokeZWebBrowser");
++        stage.setScene(scene);
++        stage.show();
++
+     }
+ }
+\ No newline at end of file
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>ru.mai.lessons.rpks</groupId>\r\n    <artifactId>JavaWebBrowser</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n\r\n    <properties>\r\n        <maven.compiler.source>17</maven.compiler.source>\r\n        <maven.compiler.target>17</maven.compiler.target>\r\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n    </properties>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision e3b9cec11f26b786ec23ed785462abb2e422941f)
++++ b/pom.xml	(date 1733408874880)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+ 
+     <groupId>ru.mai.lessons.rpks</groupId>
+@@ -12,6 +12,91 @@
+         <maven.compiler.source>17</maven.compiler.source>
+         <maven.compiler.target>17</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <javafx.version>21.0.5</javafx.version>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <junit.version>5.9.2</junit.version>
++        <app.name>FXMaven</app.name>
+     </properties>
+ 
++    <dependencies>
++        <dependency>
++            <groupId>org.openjfx</groupId>
++            <artifactId>javafx-controls</artifactId>
++            <version>21.0.5</version>
++        </dependency>
++
++        <dependency>
++            <groupId>org.openjfx</groupId>
++            <artifactId>javafx-fxml</artifactId>
++            <version>21.0.5</version>
++        </dependency>
++
++        <dependency>
++            <groupId>org.openjfx</groupId>
++            <artifactId>javafx-web</artifactId>
++            <version>21.0.5</version>
++        </dependency>
++
++        <dependency>
++            <groupId>ch.qos.logback</groupId>
++            <artifactId>logback-classic</artifactId>
++            <version>1.4.11</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.fasterxml.jackson.core</groupId>
++            <artifactId>jackson-databind</artifactId>
++            <version>2.15.2</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.fasterxml.jackson.dataformat</groupId>
++            <artifactId>jackson-dataformat-xml</artifactId>
++            <version>2.15.2</version>
++        </dependency>
++
++
++        <dependency>
++            <groupId>org.projectlombok</groupId>
++            <artifactId>lombok</artifactId>
++            <version>1.18.30</version>
++            <scope>provided</scope>
++        </dependency>
++    </dependencies>
++
++    <build>
++        <plugins>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-compiler-plugin</artifactId>
++                <version>3.8.1</version>
++                <configuration>
++                    <source>${maven.compiler.source}</source>
++                    <target>${maven.compiler.target}</target>
++                </configuration>
++            </plugin>
++
++            <plugin>
++                <groupId>org.openjfx</groupId>
++                <artifactId>javafx-maven-plugin</artifactId>
++                <version>0.0.8</version>
++                <executions>
++                    <execution>
++                        <goals>
++                            <goal>run</goal>
++                        </goals>
++                    </execution>
++                </executions>
++                <configuration>
++                    <mainClass>ru.mai.lessons.rpks.Main</mainClass>
++                    <launcher>${app.name}</launcher>
++                    <jlinkZipName>${app.name}</jlinkZipName>
++                    <jlinkImageName>${app.name}</jlinkImageName>
++                    <noManPages>true</noManPages>
++                    <stripDebug>true</stripDebug>
++                    <noHeaderFiles>true</noHeaderFiles>
++                </configuration>
++            </plugin>
++        </plugins>
++    </build>
+ </project>
+\ No newline at end of file
+Index: src/main/resources/history.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/history.xml b/src/main/resources/history.xml
+new file mode 100644
+--- /dev/null	(date 1733408941956)
++++ b/src/main/resources/history.xml	(date 1733408941956)
+@@ -0,0 +1,1 @@
++<ListN><item><url>https://www.google.com</url><timestamp>2024-11-26 13:46:41</timestamp><duration>00:00:00</duration></item></ListN>
+\ No newline at end of file
+Index: src/main/java/ru/mai/lessons/rpks/models/History.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/models/History.java b/src/main/java/ru/mai/lessons/rpks/models/History.java
+new file mode 100644
+--- /dev/null	(date 1733408787551)
++++ b/src/main/java/ru/mai/lessons/rpks/models/History.java	(date 1733408787551)
+@@ -0,0 +1,89 @@
++package ru.mai.lessons.rpks.models;
++
++import java.time.Duration;
++import java.time.LocalDateTime;
++import java.time.format.DateTimeFormatter;
++
++public class History {
++  private String url;
++
++  private LocalDateTime timestamp;
++
++  private Duration duration;
++
++  public History() {}
++
++  public History(String url, LocalDateTime timestamp, Duration duration) {
++    this.url = url;
++    this.timestamp = timestamp;
++    this.duration = duration;
++  }
++
++  public String getUrl() {
++    return url;
++  }
++
++  public void setUrl(String url) {
++    this.url = url;
++  }
++
++  public LocalDateTime getTimestamp() {
++    return timestamp;
++  }
++
++  public void setTimestamp(LocalDateTime timestamp) {
++    this.timestamp = timestamp;
++  }
++
++  public Duration getDuration() {
++    return duration;
++  }
++
++  public void setDuration(Duration duration) {
++    this.duration = duration;
++  }
++
++  public static class HistoryDto {
++    private String url;
++    private String timestamp;
++    private String duration;
++
++    public HistoryDto(History history) {
++      this.url = history.getUrl();
++      this.timestamp = history.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
++      this.duration = formatDuration(history.getDuration());
++    }
++
++    private String formatDuration(Duration duration) {
++      long hours = duration.toHours();
++      long minutes = duration.toMinutes() % 60;
++      long seconds = duration.getSeconds() % 60;
++      return String.format("%02d:%02d:%02d", hours, minutes, seconds);
++    }
++
++    public String getUrl() {
++      return url;
++    }
++
++    public void setUrl(String url) {
++      this.url = url;
++    }
++
++    public String getTimestamp() {
++      return timestamp;
++    }
++
++    public void setTimestamp(String timestamp) {
++      this.timestamp = timestamp;
++    }
++
++    public String getDuration() {
++      return duration;
++    }
++
++    public void setDuration(String duration) {
++      this.duration = duration;
++    }
++  }
++
++}
+\ No newline at end of file
+Index: src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java b/src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java
+new file mode 100644
+--- /dev/null	(date 1733408893921)
++++ b/src/main/java/ru/mai/lessons/rpks/controllers/HTMLController.java	(date 1733408893921)
+@@ -0,0 +1,107 @@
++package ru.mai.lessons.rpks.controllers;
++
++import javafx.scene.Scene;
++import javafx.scene.control.Button;
++import javafx.scene.control.TextArea;
++import javafx.scene.layout.BorderPane;
++import javafx.scene.layout.HBox;
++import javafx.scene.web.WebEngine;
++import javafx.stage.FileChooser;
++import javafx.stage.Stage;
++import javafx.stage.Modality;
++import ru.mai.lessons.rpks.utils.Logger;
++
++import java.io.*;
++
++public final class HTMLController {
++  private static final Logger log = Logger.getLogger(HTMLController.class);
++  private final WebEngine webEngine;
++
++  public HTMLController(WebEngine webEngine) {
++    this.webEngine = webEngine;
++  }
++
++  public void viewAndEditHtml() {
++    String html = (String) webEngine.executeScript("document.documentElement.outerHTML");
++
++    Stage stage = new Stage();
++    stage.initModality(Modality.APPLICATION_MODAL);
++    stage.setTitle("View and Edit HTML");
++
++    TextArea textArea = new TextArea(html);
++    textArea.setWrapText(false);
++
++    Button clearButton = new Button("Clear");
++    clearButton.setOnAction(actionEvent -> textArea.clear());
++
++    Button applyButton = new Button("Apply Changes");
++    applyButton.setOnAction(actionEvent -> {
++      String editedHtml = textArea.getText();
++      webEngine.executeScript(
++          "document.open();" +
++              "document.write(`" + editedHtml.replace("`", "\\`") + "`);" +
++              "document.close();"
++      );
++      stage.close();
++    });
++
++    Button saveToFileButton = getSaveToFileButton(stage, textArea);
++
++    Button loadFromFileButton = getLoadFromFileButton(stage, textArea);
++
++    HBox buttonBox = new HBox(10);
++    buttonBox.getChildren().addAll(clearButton, applyButton, saveToFileButton, loadFromFileButton);
++    buttonBox.setPadding(new javafx.geometry.Insets(10));
++
++    BorderPane borderPane = new BorderPane();
++    borderPane.setTop(buttonBox);
++    borderPane.setCenter(textArea);
++
++    Scene scene = new Scene(borderPane, 800, 600);
++    stage.setScene(scene);
++    stage.show();
++  }
++
++  private static Button getLoadFromFileButton(Stage stage, TextArea textArea) {
++    Button loadFromFileButton = new Button("Load from file");
++    loadFromFileButton.setOnAction(actionEvent -> {
++      FileChooser fileChooser = new FileChooser();
++      fileChooser.setTitle("Load HTML File");
++      fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
++      File file = fileChooser.showOpenDialog(stage);
++      if (file != null) {
++        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
++          StringBuilder content = new StringBuilder();
++          String line;
++          while ((line = reader.readLine()) != null) {
++            content.append(line).append("\n");
++          }
++          textArea.setText(content.toString());
++        } catch (IOException e) {
++          log.error("Error loading HTML file", e);
++        }
++      } else {
++        log.warn("File is null");
++      }
++    });
++    return loadFromFileButton;
++  }
++
++  private static Button getSaveToFileButton(Stage stage, TextArea textArea) {
++    Button saveToFileButton = new Button("Save");
++    saveToFileButton.setOnAction(actionEvent -> {
++      FileChooser fileChooser = new FileChooser();
++      fileChooser.setTitle("Save HTML File");
++      fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
++      File file = fileChooser.showSaveDialog(stage);
++      if (file != null) {
++        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
++          writer.write(textArea.getText());
++        } catch (IOException e) {
++          log.error("Error saving HTML file", e);
++        }
++      }
++    });
++    return saveToFileButton;
++  }
++}
+Index: src/main/java/ru/mai/lessons/rpks/utils/Logger.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/utils/Logger.java b/src/main/java/ru/mai/lessons/rpks/utils/Logger.java
+new file mode 100644
+--- /dev/null	(date 1733408834704)
++++ b/src/main/java/ru/mai/lessons/rpks/utils/Logger.java	(date 1733408834704)
+@@ -0,0 +1,47 @@
++package ru.mai.lessons.rpks.utils;
++
++import java.time.LocalDateTime;
++import java.time.format.DateTimeFormatter;
++
++public class Logger {
++
++  private final Class<?> clazz;
++  private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
++
++  public Logger(Class<?> clazz) {
++    this.clazz = clazz;
++  }
++
++  public static Logger getLogger(Class<?> clazz) {
++    return new Logger(clazz);
++  }
++
++  public void debug(String message, Object... args) {
++    log("DEBUG", message, args);
++  }
++
++  public void info(String message, Object... args) {
++    log("INFO", message, args);
++  }
++
++  public void warn(String message, Object... args) {
++    log("WARN", message, args);
++  }
++
++  public void error(String message, Object... args) {
++    log("ERROR", message, args);
++  }
++
++  private void log(String level, String message, Object... args) {
++    String timestamp = LocalDateTime.now().format(formatter);
++    String formattedMessage = format(message, args);
++    System.out.printf("%s [%s] [%s] %s%n", timestamp, level, clazz.getSimpleName(), formattedMessage);
++  }
++
++  private String format(String message, Object... args) {
++    for (Object arg : args) {
++      message = message.replaceFirst("\\{\\}", arg != null ? arg.toString() : "null");
++    }
++    return message;
++  }
++}
+\ No newline at end of file
+Index: src/main/java/ru/mai/lessons/rpks/controllers/MainController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java b/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java
+new file mode 100644
+--- /dev/null	(date 1733408723248)
++++ b/src/main/java/ru/mai/lessons/rpks/controllers/MainController.java	(date 1733408723248)
+@@ -0,0 +1,457 @@
++package ru.mai.lessons.rpks.controllers;
++
++import javafx.application.Platform;
++import javafx.beans.property.SimpleStringProperty;
++import javafx.beans.value.ChangeListener;
++import javafx.collections.ListChangeListener;
++import javafx.concurrent.Worker;
++import javafx.fxml.FXML;
++import javafx.fxml.Initializable;
++import javafx.geometry.Insets;
++import javafx.geometry.Pos;
++import javafx.scene.Scene;
++import javafx.scene.control.*;
++import javafx.scene.layout.HBox;
++import javafx.scene.layout.VBox;
++import javafx.stage.Modality;
++import javafx.stage.Stage;
++import ru.mai.lessons.rpks.models.History;
++import ru.mai.lessons.rpks.utils.Logger;
++
++import java.io.File;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.net.URL;
++import java.nio.charset.StandardCharsets;
++import java.nio.file.Path;
++import java.nio.file.Paths;
++import java.util.LinkedHashSet;
++import java.util.Objects;
++import java.util.ResourceBundle;
++import java.util.Set;
++import java.util.zip.ZipEntry;
++import java.util.zip.ZipOutputStream;
++
++public class MainController implements Initializable {
++
++  private static final Logger log = Logger.getLogger(MainController.class);
++
++  private boolean globalPrivateMode = false;
++
++  @FXML
++  private TabPane tabPane;
++
++  @FXML
++  private HBox hBox;
++
++  @FXML
++  private TextField urlField;
++
++  @FXML
++  private Button goButton;
++
++  @FXML
++  private Button reloadButton;
++
++  @FXML
++  private Button addButton;
++
++  @FXML
++  private Button delButton;
++
++  @FXML
++  public Button favoriteButton;
++  private final Set<String> favorites = new LinkedHashSet<>();
++
++  @FXML
++  private MenuButton menuButton;
++
++  @Override
++  public void initialize(URL url, ResourceBundle resourceBundle) {
++    addNewTab();
++
++    goButton.setOnAction(actionEvent -> loadPageFromTextBar());
++    reloadButton.setOnAction(actionEvent -> reloadPage());
++    addButton.setOnAction(actionEvent -> addNewTab());
++    delButton.setOnAction(actionEvent -> delTab());
++    favoriteButton.setOnAction(actionEvent -> addToFavorites());
++
++    Platform.runLater(() -> {
++      Stage mainStage = (Stage) tabPane.getScene().getWindow();
++      mainStage.setOnCloseRequest(event -> closeApp());
++    });
++
++    tabPane.getTabs().addListener((ListChangeListener.Change<?extends Tab> change) -> {
++      if (tabPane.getTabs().isEmpty()) {
++        closeApp();
++      }
++    });
++  }
++
++  private void loadPageFromTextBar() {
++    String input = urlField.getText().trim();
++    log.debug("{}", input);
++    if (input.isEmpty()) {
++      log.warn("URL field is empty");
++      return;
++    }
++
++    Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
++    if (selectedTab != null) {
++      PageTabController currentTab = (PageTabController) selectedTab.getUserData();
++      loadPage(input, currentTab);
++    } else {
++      log.warn("No selected tab to load the page");
++    }
++  }
++
++  private void loadPage(String url, PageTabController pageTabController) {
++    if (url == null || url.isEmpty()) {
++      log.warn("URL is empty or null");
++      return;
++    }
++    if (pageTabController == null) {
++      log.warn("Error with current tab");
++      return;
++    }
++
++    String formattedUrl = formatUrl(url);
++    log.info("Formatted URL: {}", formattedUrl);
++
++    pageTabController.getWebEngine().getLoadWorker().exceptionProperty().removeListener(pageTabController.getExceptionListener());
++    ChangeListener<Throwable> exceptionListener = (observableValue, oldException, newException) -> {
++      if (newException != null) {
++        log.error("Error loading URL: {}", formattedUrl, newException);
++
++        String googleSearchUrl = "https://www.google.com/search?q=" + url;
++        log.info("Redirecting to Google Search: {}", googleSearchUrl);
++        pageTabController.getWebEngine().load(googleSearchUrl);
++      }
++    };
++    pageTabController.setExceptionListener(exceptionListener);
++    pageTabController.getWebEngine().getLoadWorker().exceptionProperty().addListener(exceptionListener);
++
++    pageTabController.getWebEngine().getLoadWorker().stateProperty().removeListener(pageTabController.getStateListener());
++    ChangeListener<Worker.State> stateListener = (observable, oldState, newState) -> {
++      if (newState == Worker.State.SUCCEEDED) {
++        String currentUrl = pageTabController.getWebEngine().getLocation();
++        if (isValidUrl(currentUrl) && !Objects.equals(pageTabController.getHistoryController().getCurrent(), currentUrl)) {
++          pageTabController.getHistoryController().addEntry(currentUrl);
++          log.info("Successfully loaded URL: {}", currentUrl);
++        } else {
++          log.warn("Invalid URL, not adding to history: {}", currentUrl);
++        }
++      }
++    };
++    pageTabController.setStateListener(stateListener);
++    pageTabController.getWebEngine().getLoadWorker().stateProperty().addListener(stateListener);
++
++    log.info("Loading URL: {}", formattedUrl);
++    pageTabController.getWebEngine().load(formattedUrl);
++  }
++
++  private boolean isValidUrl(String url) {
++    try {
++      new java.net.URL(url);
++      return true;
++    } catch (Exception e) {
++      return false;
++    }
++  }
++
++  private String formatUrl(String url) {
++    return url.startsWith("http://") || url.startsWith("https://") ? url : "https://" + url;
++  }
++
++  private void reloadPage() {
++    Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
++    if (selectedTab != null) {
++      PageTabController currentTab = (PageTabController) selectedTab.getUserData();
++      if (currentTab != null) {
++        currentTab.getWebEngine().reload();
++      }
++    }
++  }
++
++  private void addNewTab() {
++    PageTabController newTabController = new PageTabController("https://www.google.com");
++    newTabController.getHistoryController().addEntry("https://www.google.com");
++    Tab newTab = newTabController.getTab();
++    tabPane.getTabs().add(newTab);
++    tabPane.getSelectionModel().select(newTab);
++    log.info("Add new tab");
++  }
++
++  private void delTab() {
++    Tab curentTab = tabPane.getSelectionModel().getSelectedItem();
++    if (curentTab != null) {
++      tabPane.getTabs().remove(curentTab);
++      log.info("Tab remove");
++    }
++  }
++
++  private void addToFavorites() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    if (pageTabController != null) {
++      String currentURL = pageTabController.getWebEngine().getLocation();
++      if (favorites.add(currentURL)) {
++        log.info("Added to favorites url: {}", currentURL);
++      } else {
++        log.info("This url is already in favorites {}", currentURL);
++      }
++    } else {
++      log.warn("No active tab to add to favorites");
++    }
++  }
++
++  @FXML
++  private void selectFavorites () {
++    if (favorites.isEmpty()) {
++      log.warn("No favorites to show");
++      return;
++    }
++
++    Stage favoriteStage = new Stage();
++    favoriteStage.initModality(Modality.APPLICATION_MODAL);
++    VBox favoriteList = new VBox(10);
++    favoriteList.setPadding(new Insets(10));
++    favoriteList.setAlignment(Pos.BOTTOM_LEFT);
++
++    for (String favorite : favorites) {
++      Button favoriteUrlButton = new Button(favorite);
++      PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++      favoriteUrlButton.setOnAction(actionEvent -> {
++        loadPage(favorite, pageTabController);
++        favoriteStage.close();
++      });
++      favoriteList.getChildren().add(favoriteUrlButton);
++    }
++
++    ScrollPane scrollPane = new ScrollPane(favoriteList);
++    Scene scene = new Scene(scrollPane, 200, 300);
++    favoriteStage.setScene(scene);
++    favoriteStage.setTitle("Favorites");
++
++    Stage primaryStage = (Stage) tabPane.getScene().getWindow();
++    favoriteStage.setX(primaryStage.getX() + primaryStage.getWidth() - scene.getWidth());
++    favoriteStage.setY(primaryStage.getY() + tabPane.getHeight() / 2);
++
++    favoriteStage.show();
++  }
++
++  @FXML
++  private void saveToZip() {
++    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
++    if (currentTab != null) {
++      PageTabController pageTabController = (PageTabController) currentTab.getUserData();
++      if (pageTabController != null) {
++        String pageContent = (String) pageTabController.getWebEngine().executeScript("document.documentElement.outerHTML");
++        savePageToZip(pageContent);
++      }
++    }
++  }
++
++  private void savePageToZip(String pageContent) {
++    if (pageContent == null || pageContent.isEmpty()) {
++      log.error("Error with page content");
++      return;
++    }
++
++    String downloadsDir = getDownloadsDirectory();
++    if (downloadsDir == null) {
++      log.error("Cannot determine Downloads directory");
++      return;
++    }
++
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    String fileName = "default_page.html";
++    if (pageTabController != null) {
++      String url = pageTabController.getWebEngine().getLocation();
++      if (url != null && !url.isEmpty()) {
++        fileName = url.replaceAll("[^a-zA-Z0-9.-]", "_") + ".html";
++      }
++    }
++
++    Path zipFilePath = Paths.get(downloadsDir, "saved_page.zip");
++    try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath.toFile());
++         ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream)) {
++
++      ZipEntry zipEntry = new ZipEntry(fileName);
++      zipOutputStream.putNextEntry(zipEntry);
++
++      byte[] bytes = pageContent.getBytes(StandardCharsets.UTF_8);
++      zipOutputStream.write(bytes, 0, bytes.length);
++      zipOutputStream.closeEntry();
++
++      log.info("Page saved to ZIP: {}", zipFilePath);
++    } catch (IOException e) {
++      log.error("Error while saving to ZIP: ", e);
++      throw new RuntimeException(e);
++    }
++  }
++
++
++  private String getDownloadsDirectory() {
++    String os = System.getProperty("os.name").toLowerCase();
++    String userHome = System.getProperty("user.home");
++
++    if (os.contains("win")) {
++      return userHome + "\\Downloads";
++    } else if (os.contains("mac") || os.contains("nix") || os.contains("nux")) {
++      return userHome + "/Downloads";
++    } else {
++      return null;
++    }
++  }
++
++  @FXML
++  public void goBack() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    String previousUrl = pageTabController.getHistoryController().goBack();
++    if (previousUrl != null) {
++      log.info("Go to the previous URL {}", previousUrl);
++      pageTabController.getWebEngine().load(previousUrl);
++    } else {
++      log.warn("Doesn't have previous URL");
++    }
++  }
++
++  @FXML
++  public void goForward() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    String nextUrl = pageTabController.getHistoryController().goForward();
++    if (nextUrl != null) {
++      log.info("Go to the next URL {}", nextUrl);
++      pageTabController.getWebEngine().load(nextUrl);
++    } else {
++      log.warn("Doesn't have next URL");
++    }
++  }
++
++  @FXML
++  private void toggleGlobalPrivateMode() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    if (pageTabController != null) {
++      globalPrivateMode = !globalPrivateMode;
++      HistoryController.setHistoryEnabled(!globalPrivateMode);
++      log.info("Global Private Mode: {}", globalPrivateMode ? "Enabled" : "Disabled");
++      Scene mainScene = tabPane.getScene();
++      if (globalPrivateMode) {
++        mainScene.getRoot().setStyle("-fx-background-color: #2F4444; -fx-opacity: 1.0;");
++      } else {
++        mainScene.getRoot().setStyle("");
++      }
++    }
++  }
++
++  @FXML
++  private void toggleSitePrivateMode() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    if (pageTabController != null) {
++      String currentUrl = pageTabController.getWebEngine().getLocation();
++      if (HistoryController.isSiteExcluded(currentUrl)) {
++        pageTabController.getHistoryController().removeExcludedSite(currentUrl);
++        log.info("Site removed from private mode: {}", currentUrl);
++      } else {
++        pageTabController.getHistoryController().addExcludedSite(currentUrl);
++        log.info("Site added to private mode: {}", currentUrl);
++      }
++    }
++  }
++
++  @FXML
++  private void saveHistoryToResourcesXML() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    if (pageTabController != null) {
++      try {
++        File resourcesDir = new File("src/main/resources/xml");
++        if (!resourcesDir.exists() && !resourcesDir.mkdirs()) {
++          log.error("Failed to create resources directory");
++          return;
++        }
++        File file = new File(resourcesDir, "history.xml");
++        pageTabController.getHistoryController().saveHistoryToXml(file);
++        log.info("History saved to XML in resources: {}", file.getAbsolutePath());
++      } catch (IOException e) {
++        log.error("Failed to save history to XML in resources", e);
++      }
++    }
++  }
++
++  @FXML
++  private void viewAndEditHtml() {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++
++    if (pageTabController != null) {
++      pageTabController.getHtmlController().viewAndEditHtml();
++    }
++  }
++
++  @FXML
++  private void showHistoryViewer () {
++    PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++    if (pageTabController == null) {
++      log.warn("No active tab to show history");
++      return;
++    }
++
++    Stage historyStage = new Stage();
++    historyStage.initModality(Modality.APPLICATION_MODAL);
++    historyStage.setTitle("History");
++
++    TableView<History.HistoryDto> tableView = new TableView<>();
++
++    TableColumn<History.HistoryDto, String> urlColumn = getStringTableColumn(historyStage);
++
++    TableColumn<History.HistoryDto, String> visitDateColumn = new TableColumn<>("Visited");
++    visitDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimestamp()));
++    visitDateColumn.setPrefWidth(300);
++
++    tableView.getColumns().addAll(urlColumn, visitDateColumn);
++
++    tableView.getItems().addAll(pageTabController.getHistoryController()
++        .getHistoryListGlobal().stream()
++        .map(History.HistoryDto::new)
++        .toList());
++
++    VBox layout = new VBox(10);
++    layout.setPadding(new Insets(10));
++    layout.getChildren().add(tableView);
++
++    Scene scene = new Scene(layout, 600, 400);
++    historyStage.setScene(scene);
++
++    historyStage.show();
++  }
++
++  private TableColumn<History.HistoryDto, String> getStringTableColumn(Stage historyStage) {
++    TableColumn<History.HistoryDto, String> urlColumn = new TableColumn<>("URL");
++    urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUrl()));
++    urlColumn.setCellFactory(col -> new TableCell<>() {
++      @Override
++      protected void updateItem(String url, boolean empty) {
++        super.updateItem(url, empty);
++        if (empty || url == null) {
++          setText(null);
++          setGraphic(null);
++        } else {
++          Hyperlink link = new Hyperlink(url);
++          link.setOnAction(actionEvent -> {
++            PageTabController pageTabController = (PageTabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
++            loadPage(url,pageTabController);
++            historyStage.close();
++          });
++          setGraphic(link);
++        }
++      }
++    });
++    urlColumn.setPrefWidth(300);
++    return urlColumn;
++  }
++
++  private void closeApp() {
++    log.info("Closing application...");
++    Platform.exit();
++  }
++
++}
+\ No newline at end of file
+Index: src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java b/src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java
+new file mode 100644
+--- /dev/null	(date 1733408712800)
++++ b/src/main/java/ru/mai/lessons/rpks/controllers/HistoryController.java	(date 1733408712800)
+@@ -0,0 +1,134 @@
++package ru.mai.lessons.rpks.controllers;
++
++import com.fasterxml.jackson.dataformat.xml.XmlMapper;
++import ru.mai.lessons.rpks.models.History;
++import ru.mai.lessons.rpks.utils.Logger;
++
++import java.io.File;
++import java.io.IOException;
++import java.net.URI;
++import java.net.URISyntaxException;
++import java.time.Duration;
++import java.time.LocalDateTime;
++import java.util.*;
++
++public final class HistoryController {
++  private static final Logger log = Logger.getLogger(HistoryController.class);
++
++  private static final List<History> historyListGlobal = new ArrayList<>();
++  private List<History> historyList = new ArrayList<>();
++  private int currentIndex = -1;
++
++  private static boolean historyEnabled = true;
++  private static final Set<String> excludedSites = new HashSet<>();
++
++  public void addEntry(String url) {
++    if (!historyEnabled || isSiteExcluded(url)) {
++      return;
++    }
++
++    if (!historyList.isEmpty() && currentIndex >= 0 && currentIndex < historyList.size() &&
++        Objects.equals(historyList.get(currentIndex).getUrl() + '/', url)) {
++      log.debug("URL {} already matches the current entry. Skipping.", url);
++      return;
++    }
++
++    LocalDateTime now = LocalDateTime.now();
++
++    if (currentIndex < historyList.size() - 1) {
++      historyList = historyList.subList(0, currentIndex + 1);
++    }
++
++    if (!historyList.isEmpty()) {
++      History previous = historyList.get(currentIndex);
++      previous.setDuration(Duration.between(previous.getTimestamp(), now));
++    }
++
++    historyList.add(new History(url, now, Duration.ZERO));
++    currentIndex = historyList.size() - 1;
++    historyListGlobal.add(new History(url, now, Duration.ZERO));
++  }
++
++  public String getCurrent () {
++    if (currentIndex > 0) {
++      return historyList.get(currentIndex).getUrl();
++    }
++    return null;
++  }
++
++  public String goBack() {
++    while (currentIndex > 0) {
++      currentIndex--;
++      if (!excludedSites.contains(historyList.get(currentIndex).getUrl())) {
++        log.debug("Going back to: {}", historyList.get(currentIndex).getUrl());
++        return historyList.get(currentIndex).getUrl();
++      }
++    }
++    return null;
++  }
++
++  public String goForward() {
++    while (currentIndex < historyList.size() - 1) {
++      currentIndex++;
++      if (!excludedSites.contains(historyList.get(currentIndex).getUrl())) {
++        log.debug("Going forward to: {}", historyList.get(currentIndex).getUrl());
++        return historyList.get(currentIndex).getUrl();
++      }
++    }
++    return null;
++  }
++
++  public static void setHistoryEnabled(boolean enabled) {
++    historyEnabled = enabled;
++  }
++
++  public void addExcludedSite(String url) {
++    String domain = extractDomain(url);
++    if (domain != null) {
++      excludedSites.add(domain);
++    }
++  }
++
++  public void removeExcludedSite(String url) {
++    String domain = extractDomain(url);
++    if (domain != null) {
++      excludedSites.remove(domain);
++    }
++  }
++
++  public static boolean isSiteExcluded(String url) {
++    String domain = extractDomain(url);
++    return excludedSites.contains(domain);
++  }
++
++  private static String extractDomain(String url) {
++    try {
++      URI uri = new URI(url);
++      String host = uri.getHost();
++      if (host == null) {
++        return null;
++      }
++      log.info("Domain {}", host);
++      return host.startsWith("www.") ? host.substring(4) : host;
++    } catch (URISyntaxException e) {
++      log.error("Failed to extract domain from URL: {}", url, e);
++      return null;
++    }
++  }
++
++  public void saveHistoryToXml(File file) throws IOException {
++    List<History.HistoryDto> historyDtoList = historyListGlobal.stream()
++        .map(History.HistoryDto::new)
++        .toList();
++    XmlMapper xmlMapper = new XmlMapper();
++    xmlMapper.writeValue(file, historyDtoList);
++  }
++
++  public List<History> getHistoryList () {
++    return new ArrayList<>(historyList);
++  }
++
++  public List<History> getHistoryListGlobal () {
++    return new ArrayList<>(historyListGlobal);
++  }
++}
+\ No newline at end of file
+Index: src/main/resources/ru/mai/lessons/rpks/browser.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ru/mai/lessons/rpks/browser.fxml b/src/main/resources/ru/mai/lessons/rpks/browser.fxml
+new file mode 100644
+--- /dev/null	(date 1733408995750)
++++ b/src/main/resources/ru/mai/lessons/rpks/browser.fxml	(date 1733408995750)
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<?import javafx.scene.control.Button?>
++<?import javafx.scene.control.MenuButton?>
++<?import javafx.scene.control.MenuItem?>
++<?import javafx.scene.control.TabPane?>
++<?import javafx.scene.control.TextField?>
++<?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.HBox?>
++
++<AnchorPane prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.lessons.rpks.controllers.MainController">
++  <HBox fx:id="hBox" layoutX="14.0" layoutY="10.0" spacing="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0">
++    <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="&lt;--" />
++    <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#goForward" text="--&gt;" />
++    <TextField fx:id="urlField" promptText="Enter URL" HBox.hgrow="ALWAYS" />
++    <Button fx:id="goButton" text="Go" />
++    <MenuButton fx:id="menuButton" mnemonicParsing="false" text="Menu">
++      <items>
++        <MenuItem mnemonicParsing="false" onAction="#showHistoryViewer" text="History" />
++        <MenuItem mnemonicParsing="false" onAction="#saveToZip" text="Save to ZIP" />
++        <MenuItem mnemonicParsing="false" onAction="#viewAndEditHtml" text="View and edit HTML" />
++        <MenuItem mnemonicParsing="false" onAction="#selectFavorites" text="Favorites" />
++        <MenuItem mnemonicParsing="false" onAction="#toggleGlobalPrivateMode" text="Private all" />
++        <MenuItem mnemonicParsing="false" onAction="#saveHistoryToResourcesXML" text="Save all history to XML" />
++      </items>
++    </MenuButton>
++    <Button fx:id="reloadButton" text="R" />
++    <Button fx:id="addButton" text="+" />
++    <Button fx:id="delButton" text="-" />
++    <Button fx:id="favoriteButton" text="S" />
++    <Button onAction="#toggleSitePrivateMode" text="Private" />
++  </HBox>
++
++  <TabPane fx:id="tabPane" layoutX="14.0" layoutY="50.0" prefHeight="620.0" prefWidth="1024.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0" />
++</AnchorPane>
+\ No newline at end of file
+Index: src/main/java/ru/mai/lessons/rpks/controllers/TabController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/mai/lessons/rpks/controllers/TabController.java b/src/main/java/ru/mai/lessons/rpks/controllers/TabController.java
+new file mode 100644
+--- /dev/null	(date 1733408737723)
++++ b/src/main/java/ru/mai/lessons/rpks/controllers/TabController.java	(date 1733408737723)
+@@ -0,0 +1,69 @@
++package ru.mai.lessons.rpks.controllers;
++
++import javafx.beans.value.ChangeListener;
++import javafx.concurrent.Worker;
++import javafx.scene.control.Tab;
++import javafx.scene.layout.Priority;
++import javafx.scene.layout.VBox;
++import javafx.scene.web.WebEngine;
++import javafx.scene.web.WebView;
++
++public class TabController {
++  private final HistoryController historyController;
++  private final HTMLController htmlController;
++  private final Tab tab;
++  private final WebView webView;
++  private final WebEngine webEngine;
++  private ChangeListener<Throwable> listener;
++  private ChangeListener<Worker.State> stateListener;
++
++  public TabController (String url) {
++    this.historyController = new HistoryController();
++    this.webView = new WebView();
++    this.webEngine = webView.getEngine();
++    this.webEngine.load(url);
++    this.htmlController = new HTMLController(this.webEngine);
++    this.listener = (observableValue, throwable, t1) -> {};
++    this.stateListener = (observableValue, throwable, t1) -> {};
++
++    VBox.setVgrow(webView, Priority.ALWAYS);
++    VBox vBox = new VBox(webView);
++
++    this.tab = new Tab("New Tab", vBox);
++    this.tab.setUserData(this);
++  }
++
++  public HTMLController getHtmlController() { return htmlController; }
++
++  public HistoryController getHistoryController() {
++    return historyController;
++  }
++
++  public Tab getTab() {
++    return tab;
++  }
++
++  public WebEngine getWebEngine() {
++    return webEngine;
++  }
++
++  public WebView getWebView() {
++    return webView;
++  }
++
++  public ChangeListener<Throwable> getExceptionListener() {
++    return listener;
++  }
++
++  public void setExceptionListener(ChangeListener<Throwable> exceptionListener) {
++    this.listener = exceptionListener;
++  }
++
++  public ChangeListener<Worker.State> getStateListener() {
++    return stateListener;
++  }
++
++  public void setStateListener(ChangeListener<Worker.State> stateListener) {
++    this.stateListener = stateListener;
++  }
++}
+\ No newline at end of file

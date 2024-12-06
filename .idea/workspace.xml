@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3d181e51-3a4c-4586-ab91-d0aa5669b684" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/controllers/MenuController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Krolicc"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/MAIStudents/JavaWebBrowser.git",
+    "accountId": "d128d954-ce1b-4e2e-a3a1-128d961e16ab"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2pnhsUG3BYUyvsmYKE4pQARsoBL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Browser.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "student/311__Brazhkin__Y",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/y-bra/IdeaProjects/JavaWebBrowser/src/main/resources"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\y-bra\IdeaProjects\JavaWebBrowser\src\main\resources" />
+      <recent name="C:\Users\y-bra\IdeaProjects\JavaWebBrowser\src\main\java\ru\mai\lessons\rpks" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\y-bra\IdeaProjects\JavaWebBrowser\src\main\java" />
+      <recent name="C:\Users\y-bra\IdeaProjects\JavaWebBrowser\src\main\resources\xml" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Browser" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.mai.lessons.rpks.Browser" />
+      <module name="JavaWebBrowser" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3d181e51-3a4c-4586-ab91-d0aa5669b684" name="Changes" comment="" />
+      <created>1733407953325</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733407953325</updated>
+    </task>
+    <servers />
+  </component>
+</project>

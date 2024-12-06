@@ -1,0 +1,16 @@
+module ru.mai.lessons.rpks {
+  requires javafx.controls;
+  requires javafx.fxml;
+  requires javafx.web;
+  requires java.desktop;
+  requires com.fasterxml.jackson.dataformat.xml;
+
+  opens ru.mai.lessons.rpks to javafx.fxml;
+  exports ru.mai.lessons.rpks;
+
+  opens ru.mai.lessons.rpks.controllers to javafx.fxml;
+  exports ru.mai.lessons.rpks.controllers;
+
+  exports ru.mai.lessons.rpks.utils;
+  requires com.fasterxml.jackson.databind;
+}
