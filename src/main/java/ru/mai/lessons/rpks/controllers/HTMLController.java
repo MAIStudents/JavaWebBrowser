@@ -9,7 +9,6 @@ import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
-import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.*;
 
@@ -18,12 +17,6 @@ import java.io.*;
  * Предоставляет возможность загрузки, редактирования и сохранения HTML-страниц.
  */
 public final class HTMLController {
-
-  /**
-   * Логгер для записи сообщений об ошибках и предупреждениях.
-   */
-  private static final Logger log = Logger.getLogger(HTMLController.class);
-
   /**
    * Объект WebEngine, который используется для работы с HTML-контентом.
    */
@@ -107,10 +100,10 @@ public final class HTMLController {
           }
           textArea.setText(content.toString());
         } catch (IOException e) {
-          log.error("Error loading HTML file", e);
+          System.out.println("Error loading HTML file: " + e);
         }
       } else {
-        log.warn("File is null");
+        System.out.println("File is null");
       }
     });
     return loadFromFileButton;
@@ -135,7 +128,7 @@ public final class HTMLController {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
           writer.write(textArea.getText());
         } catch (IOException e) {
-          log.error("Error saving HTML file", e);
+          System.out.println("Error saving HTML file: " + e.getMessage());
         }
       }
     });

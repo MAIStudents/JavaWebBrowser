@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.IOException;
 
@@ -15,8 +14,6 @@ import java.io.IOException;
  * Этот класс отвечает за инициализацию и запуск графического интерфейса клиента.
  */
 public final class Browser extends Application {
-    private static final Logger log = Logger.getLogger(Browser.class);
-
     private double xOffset = 0;
     private double yOffset = 0;
 

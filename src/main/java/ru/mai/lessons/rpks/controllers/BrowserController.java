@@ -1,7 +1,6 @@
 package ru.mai.lessons.rpks.controllers;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
@@ -16,13 +15,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebEngine;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ru.mai.lessons.rpks.utils.History;
+import ru.mai.lessons.rpks.controllers.MenuController;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -42,11 +39,6 @@ import java.util.zip.ZipOutputStream;
  * историей посещенных сайтов, избранным и приватными режимами.
  */
 public final class BrowserController implements Initializable {
-
-  /**
-   * Логгер для вывода информации о действиях в приложении.
-   */
-  private static final Logger LOG = Logger.getLogger(BrowserController.class);
 
   /**
    * Базовые настройки кнопки вкладки.
@@ -69,10 +61,6 @@ public final class BrowserController implements Initializable {
           + "-fx-alignment: center_left; "
           + "-fx-spacing: 40;";
 
-  /**
-   * Переменная, указывающая на глобальный приватный режим.
-   */
-  private boolean globalPrivateMode = false;
 
   @FXML
   public HBox tabBar;
@@ -81,7 +69,7 @@ public final class BrowserController implements Initializable {
   private Button closeAppButton;
 
   @FXML
-  private TabPane tabPane;
+  public TabPane tabPane;
 
   @FXML
   private TextField urlField;
@@ -95,10 +83,37 @@ public final class BrowserController implements Initializable {
   @FXML
   public Button favoriteButton;
 
+  @FXML
+  private void toggleGlobalPrivateMode() {
+    menuController.toggleGlobalPrivateMode(tabPane);
+  }
+
+  @FXML
+  private void toggleSitePrivateMode() {
+    menuController.toggleSitePrivateMode(tabPane);
+  }
+
+  @FXML
+  private void saveHistoryToXML() {
+    menuController.saveHistoryToXML(tabPane);
+  }
+
+  @FXML
+  private void editHtml() {
+    menuController.editHtml(tabPane);
+  }
+
+  @FXML
+  private void showHistory() {
+    menuController.showHistory(tabPane, tabBar, urlField);
+  }
+
   /**
    * Множество избранных URL-адресов.
    */
   private final Set<String> favorites = new LinkedHashSet<>();
+
+  private final MenuController menuController = new MenuController();
 
   /**
    * Инициализация контроллера, настройка действий и обработчиков событий.
@@ -129,11 +144,11 @@ public final class BrowserController implements Initializable {
       while (change.next()) {
         if (change.wasRemoved()) {
           int removedIndex = change.getFrom();
-          LOG.info("Tab closed at index: {}", removedIndex);
+          System.out.println("Tab closed at index: " + removedIndex);
 
           for (int i = removedIndex; i < tabBar.getChildren().size() - 1; i++) {
             HBox box = (HBox) tabBar.getChildren().get(i);
-            int curIdx = (int)box.getUserData() - 1;
+            int curIdx = (int) box.getUserData() - 1;
             box.setUserData(curIdx);
 
             Button btn = (Button) box.getChildren().get(2);
@@ -148,7 +163,8 @@ public final class BrowserController implements Initializable {
         TabController pageTabController = (TabController) newTab.getUserData();
         if (pageTabController != null) {
           String currentUrl = pageTabController.getWebEngine().getLocation();
-          LOG.info("Switched to tab with URL: {}", currentUrl);
+          System.out.println("Switched to tab with URL: " + currentUrl);
+          urlField.setText(currentUrl);
         }
       }
     });
@@ -160,9 +176,7 @@ public final class BrowserController implements Initializable {
   @FXML
   private void loadPageFromTextBar() {
     String input = urlField.getText().trim();
-    LOG.debug("{}", input);
     if (input.isEmpty()) {
-      LOG.warn("URL field is empty");
       return;
     }
 
@@ -171,9 +185,8 @@ public final class BrowserController implements Initializable {
     Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
     if (selectedTab != null) {
       TabController currentTab = (TabController) selectedTab.getUserData();
-      loadPage(input, currentTab);
-    } else {
-      LOG.warn("No selected tab to load the page");
+      loadPage(input, currentTab, tabPane, tabBar, urlField);
+      updateUrlFieldForSelectedTab();
     }
   }
 
@@ -183,28 +196,21 @@ public final class BrowserController implements Initializable {
    * @param url               URL страницы.
    * @param pageTabController Контроллер вкладки.
    */
-  private void loadPage(final String url,
-                        final TabController pageTabController) {
-    if (url == null || url.isEmpty()) {
-      LOG.warn("URL is empty or null");
-      return;
-    }
-
-    if (pageTabController == null) {
-      LOG.warn("Error with current tab");
+  static void loadPage(final String url,
+                       final TabController pageTabController,
+                       final TabPane tabPane,
+                       final HBox tabBar,
+                       final TextField urlField) {
+    if (url == null || url.isEmpty() || pageTabController == null) {
       return;
     }
 
     String formattedUrl = formatUrl(url);
-    LOG.info("Formatted URL: {}", formattedUrl);
 
     pageTabController.getWebEngine().getLoadWorker().exceptionProperty().removeListener(pageTabController.getExceptionListener());
     ChangeListener<Throwable> exceptionListener = (observableValue, oldException, newException) -> {
       if (newException != null) {
-        LOG.error("Error loading URL: {}", formattedUrl, newException);
-
         String yandexSearchUrl = "https://ya.ru/text?q=" + url;
-        LOG.info("Redirecting to Yandex Search: {}", yandexSearchUrl);
         pageTabController.getWebEngine().load(yandexSearchUrl);
       }
     };
@@ -214,13 +220,12 @@ public final class BrowserController implements Initializable {
     pageTabController.getWebEngine().getLoadWorker().stateProperty().removeListener(pageTabController.getStateListener());
 
     int curTabIdx = tabPane.getSelectionModel().getSelectedIndex();
-    
+
     ChangeListener<Worker.State> stateListener = (observable, oldState, newState) -> {
       if (newState == Worker.State.SUCCEEDED) {
         String currentUrl = pageTabController.getWebEngine().getLocation();
         if (isValidUrl(currentUrl) && !Objects.equals(pageTabController.getHistoryController().getCurrent(), currentUrl)) {
           pageTabController.getHistoryController().addEntry(currentUrl);
-          LOG.info("Successfully loaded URL: {}", currentUrl);
 
           String pageTitle = pageTabController.getWebEngine().getTitle();
 
@@ -236,10 +241,6 @@ public final class BrowserController implements Initializable {
           } else {
             pageTabController.getTab().setText("Яндекс");
           }
-
-
-        } else {
-          LOG.warn("Invalid URL, not adding to history: {}", currentUrl);
         }
       }
     };
@@ -247,7 +248,6 @@ public final class BrowserController implements Initializable {
     pageTabController.setStateListener(stateListener);
     pageTabController.getWebEngine().getLoadWorker().stateProperty().addListener(stateListener);
 
-    LOG.info("Loading URL: {}", formattedUrl);
     pageTabController.getWebEngine().load(formattedUrl);
   }
 
@@ -257,7 +257,7 @@ public final class BrowserController implements Initializable {
    * @param url URL для проверки.
    * @return true, если URL валиден, иначе false.
    */
-  private boolean isValidUrl(final String url) {
+  private static boolean isValidUrl(final String url) {
     try {
       new java.net.URI(url);
       return true;
@@ -272,7 +272,7 @@ public final class BrowserController implements Initializable {
    * @param url URL для форматирования.
    * @return отформатированный URL.
    */
-  private String formatUrl(final String url) {
+  private static String formatUrl(final String url) {
     return url.startsWith("http://") || url.startsWith("https://") ? url : "https://" + url;
   }
 
@@ -293,59 +293,126 @@ public final class BrowserController implements Initializable {
    * Добавляет новую вкладку с начальной страницей.
    */
   private void addNewTab() {
-
-    if (tabPane.getTabs().size() == 5) {
+    if (tabPane != null && tabPane.getTabs().size() == 5) {
       addButton.setVisible(false);
       addButton.setDisable(true);
     }
 
-    TabController newTabController = new TabController("https://ya.ru");
-    newTabController.getHistoryController().addEntry("https://ya.ru");
+    TabController newTabController = createTabController("https://ya.ru");
 
     WebEngine webEngine = newTabController.getWebEngine();
     webEngine.setJavaScriptEnabled(true);
 
-    webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-      if (newState == Worker.State.SUCCEEDED) {
-        String pageTitle = webEngine.getTitle();
-
-        Tab newTab = newTabController.getTab();
-
-        if (pageTitle != null) {
-          pageTitle = pageTitle.length() > 10
-              ? pageTitle.substring(0, 10) + "..."
-              : pageTitle;
-          newTab.setText(pageTitle);
-        } else {
-          newTab.setText("Яндекс");
-        }
-      }
-    });
+    addPageTitleListener(webEngine, newTabController);
 
     Tab newTab = newTabController.getTab();
 
-    if (newTab == null) {
-      LOG.info("Unsuccessful tab creation");
-      return;
+    if (newTab != null) {
+      configureTab(newTab);
+      addTabToPane(newTab);
+      addTabToTabBar(newTabController, newTab);
     }
+  }
 
+  /**
+   * Создает новый экземпляр контроллера вкладки с заданным URL.
+   *
+   * @param url URL, который будет использован для создания новой вкладки.
+   * @return Новый экземпляр TabController.
+   */
+  private TabController createTabController(String url) {
+    TabController newTabController = new TabController(url);
+    newTabController.getHistoryController().addEntry(url);
+    return newTabController;
+  }
+
+  /**
+   * Добавляет слушателя изменения состояния загрузки страницы для веб-движка.
+   * При успешной загрузке страницы обновляет заголовок вкладки.
+   *
+   * @param webEngine        Экземпляр WebEngine, связанный с вкладкой.
+   * @param newTabController Контроллер вкладки, для которой добавляется слушатель.
+   */
+  private void addPageTitleListener(WebEngine webEngine, TabController newTabController) {
+    webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
+      if (newState == Worker.State.SUCCEEDED) {
+        updateTabTitle(webEngine, newTabController);
+      }
+    });
+  }
+
+  /**
+   * Обновляет заголовок вкладки в зависимости от заголовка страницы.
+   * Если заголовок слишком длинный, он будет обрезан и добавлены многоточия.
+   *
+   * @param webEngine        Экземпляр WebEngine для получения заголовка страницы.
+   * @param newTabController Контроллер вкладки, для которой обновляется заголовок.
+   */
+  private void updateTabTitle(WebEngine webEngine, TabController newTabController) {
+    String pageTitle = webEngine.getTitle();
+
+    Tab newTab = newTabController.getTab();
+    if (pageTitle != null) {
+      pageTitle = pageTitle.length() > 10
+          ? pageTitle.substring(0, 10) + "..."
+          : pageTitle;
+      newTab.setText(pageTitle);
+    } else {
+      newTab.setText("Яндекс");
+    }
+  }
+
+  /**
+   * Конфигурирует вкладку, устанавливая её стиль.
+   *
+   * @param newTab Вкладка, которую необходимо настроить.
+   */
+  private void configureTab(Tab newTab) {
     newTab.setStyle("-fx-background-color: none; -fx-opacity: 0;");
-    tabPane.getTabs().add(newTab);
-    tabPane.getSelectionModel().select(newTab);
-    LOG.info("Add new tab");
+  }
 
+  /**
+   * Добавляет вкладку в панель вкладок и устанавливает её активной.
+   *
+   * @param newTab Вкладка, которую необходимо добавить в панель вкладок.
+   */
+  private void addTabToPane(Tab newTab) {
+    if (tabPane != null) {
+      tabPane.getTabs().add(newTab);
+      tabPane.getSelectionModel().select(newTab);
+    }
+  }
+
+  /**
+   * Добавляет элемент вкладки (включая текст, кнопку закрытия и другие элементы) в панель вкладок.
+   *
+   * @param newTabController Контроллер вкладки.
+   * @param newTab           Вкладка, которую необходимо добавить в панель вкладок.
+   */
+  private void addTabToTabBar(TabController newTabController, Tab newTab) {
+    HBox newHBoxTab = createTabBarEntry(newTabController, newTab);
+    tabBar.getChildren().add(tabBar.getChildren().size() - 1, newHBoxTab);
+    changeActiveTab(newHBoxTab);
+  }
+
+  /**
+   * Создает элемент панели вкладок с кнопкой закрытия и текстом вкладки.
+   *
+   * @param newTabController Контроллер вкладки.
+   * @param newTab           Вкладка, для которой создается элемент панели.
+   * @return Созданный элемент панели вкладок.
+   */
+  private HBox createTabBarEntry(TabController newTabController, Tab newTab) {
     HBox newHBoxTab = new HBox();
     newHBoxTab.setUserData(tabPane.getTabs().size() - 1);
     newHBoxTab.setStyle(TAB_COMMON_SETTINGS);
     newHBoxTab.setOnMouseClicked(_ -> {
       changeActiveTab(newHBoxTab);
       tabPane.getSelectionModel().select((int) newHBoxTab.getUserData());
-      TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-      urlField.setText(pageTabController.getWebEngine().getLocation());
+      updateUrlFieldForSelectedTab();
     });
 
-    Text text = new Text("Яндекс");
-    text.setStyle("-fx-font-size: 16;");
+    Text text = createTabText();
     newHBoxTab.getChildren().add(text);
 
     HBox box = new HBox();
@@ -355,9 +422,26 @@ public final class BrowserController implements Initializable {
     Button tabCloseButton = getTubButton();
     newHBoxTab.getChildren().add(tabCloseButton);
 
-    tabBar.getChildren().add(tabBar.getChildren().size() - 1, newHBoxTab);
+    return newHBoxTab;
+  }
 
-    changeActiveTab(newHBoxTab);
+  /**
+   * Создает текстовый элемент для вкладки.
+   *
+   * @return Созданный текстовый элемент.
+   */
+  private Text createTabText() {
+    Text text = new Text("Яндекс");
+    text.setStyle("-fx-font-size: 16;");
+    return text;
+  }
+
+  /**
+   * Обновляет поле URL в интерфейсе, устанавливая его значение равным текущему URL выбранной вкладки.
+   */
+  private void updateUrlFieldForSelectedTab() {
+    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+    urlField.setText(pageTabController.getWebEngine().getLocation());
   }
 
   /**
@@ -371,7 +455,8 @@ public final class BrowserController implements Initializable {
       tabBar.getChildren().remove((int) tabCloseButton.getUserData());
       tabPane.getTabs().remove((int) tabCloseButton.getUserData());
 
-      if (tabPane.getSelectionModel().getSelectedIndex() == tabBar.getChildren().size() - 2) {
+      if (tabPane.getSelectionModel().getSelectedIndex() == tabBar.getChildren().size() - 2
+          && !tabPane.getTabs().isEmpty()) {
         changeActiveTab((HBox) tabBar.getChildren().get(tabBar.getChildren().size() - 2));
       }
       addButton.setVisible(true);
@@ -404,12 +489,12 @@ public final class BrowserController implements Initializable {
     if (pageTabController != null) {
       String currentURL = pageTabController.getWebEngine().getLocation();
       if (favorites.add(currentURL)) {
-        LOG.info("Added to favorites url: {}", currentURL);
+        System.out.println("Added to favorites url: " + currentURL);
       } else {
-        LOG.info("This url is already in favorites {}", currentURL);
+        System.out.println("This url is already in favorites: " + currentURL);
       }
     } else {
-      LOG.warn("No active tab to add to favorites");
+      System.out.println("No active tab to add to favorites");
     }
   }
 
@@ -420,7 +505,6 @@ public final class BrowserController implements Initializable {
   @FXML
   private void selectFavorites() {
     if (favorites.isEmpty()) {
-      LOG.warn("No favorites to show");
       return;
     }
 
@@ -435,7 +519,8 @@ public final class BrowserController implements Initializable {
       TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
       pageTabController.getWebEngine().setJavaScriptEnabled(true);
       favoriteUrlButton.setOnAction(_ -> {
-        loadPage(favorite, pageTabController);
+        loadPage(favorite, pageTabController, tabPane, tabBar, urlField);
+        updateUrlFieldForSelectedTab();
         favoriteStage.close();
       });
       favoriteList.getChildren().add(favoriteUrlButton);
@@ -477,13 +562,11 @@ public final class BrowserController implements Initializable {
    */
   private void savePageToZip(final String pageContent) {
     if (pageContent == null || pageContent.isEmpty()) {
-      LOG.error("Error with page content");
       return;
     }
 
     String downloadsDir = getDownloadsDirectory();
     if (downloadsDir == null) {
-      LOG.error("Cannot determine Downloads directory");
       return;
     }
 
@@ -507,9 +590,7 @@ public final class BrowserController implements Initializable {
       zipOutputStream.write(bytes, 0, bytes.length);
       zipOutputStream.closeEntry();
 
-      LOG.info("Page saved to ZIP: {}", zipFilePath);
     } catch (IOException e) {
-      LOG.error("Error while saving to ZIP: ", e);
       throw new RuntimeException(e);
     }
   }
@@ -543,10 +624,8 @@ public final class BrowserController implements Initializable {
     TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
     String previousUrl = pageTabController.getHistoryController().goBack();
     if (previousUrl != null) {
-      LOG.info("Go to the previous URL {}", previousUrl);
       pageTabController.getWebEngine().load(previousUrl);
-    } else {
-      LOG.warn("Doesn't have previous URL");
+      urlField.setText(previousUrl);
     }
   }
 
@@ -560,167 +639,15 @@ public final class BrowserController implements Initializable {
     TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
     String nextUrl = pageTabController.getHistoryController().goForward();
     if (nextUrl != null) {
-      LOG.info("Go to the next URL {}", nextUrl);
       pageTabController.getWebEngine().load(nextUrl);
-    } else {
-      LOG.warn("Doesn't have next URL");
+      urlField.setText(nextUrl);
     }
-  }
-
-  /**
-   * Включает или отключает глобальный режим приватности.
-   * При активации этого режима история браузера не сохраняется.
-   * Меняет стиль интерфейса в зависимости от состояния режима.
-   */
-  @FXML
-  private void toggleGlobalPrivateMode() {
-    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-    if (pageTabController != null) {
-      globalPrivateMode = !globalPrivateMode;
-      HistoryController.setHistoryEnabled(!globalPrivateMode);
-      LOG.info("Global Private Mode: {}", globalPrivateMode ? "Enabled" : "Disabled");
-      Scene mainScene = tabPane.getScene();
-      if (globalPrivateMode) {
-        mainScene.getRoot().setStyle("-fx-background-color: #2F4444; -fx-opacity: 1.0;");
-      } else {
-        mainScene.getRoot().setStyle("");
-      }
-    }
-  }
-
-  /**
-   * Включает или отключает приватный режим для текущего сайта.
-   * Если сайт добавлен в список исключенных, он удаляется из этого списка и наоборот.
-   */
-  @FXML
-  private void toggleSitePrivateMode() {
-    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-    if (pageTabController != null) {
-      String currentUrl = pageTabController.getWebEngine().getLocation();
-      if (HistoryController.isSiteExcluded(currentUrl)) {
-        pageTabController.getHistoryController().removeExcludedSite(currentUrl);
-        LOG.info("Site removed from private mode: {}", currentUrl);
-      } else {
-        pageTabController.getHistoryController().addExcludedSite(currentUrl);
-        LOG.info("Site added to private mode: {}", currentUrl);
-      }
-    }
-  }
-
-  /**
-   * Сохраняет историю посещенных сайтов в XML-файл в директории ресурсов.
-   * Если возникла ошибка при создании каталога или записи файла, выводится сообщение об ошибке.
-   */
-  @FXML
-  private void saveHistoryToResourcesXML() {
-    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-    if (pageTabController != null) {
-      try {
-        File resourcesDir = new File("src/main/resources/xml");
-        if (!resourcesDir.exists() && !resourcesDir.mkdirs()) {
-          LOG.error("Failed to create resources directory");
-          return;
-        }
-
-        File file = new File(resourcesDir, "xml/history.xml");
-        pageTabController.getHistoryController().saveHistoryToXml(file);
-        LOG.info("History saved to XML in resources: {}", file.getAbsolutePath());
-      } catch (IOException e) {
-        LOG.error("Failed to save history to XML in resources", e);
-      }
-    }
-  }
-
-  /**
-   * Открывает редактор HTML-кода для текущей страницы.
-   */
-  @FXML
-  private void viewAndEditHtml() {
-    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-
-    if (pageTabController != null) {
-      pageTabController.getHtmlController().viewAndEditHtml();
-    }
-  }
-
-  /**
-   * Открывает окно для просмотра и редактирования истории посещенных страниц.
-   * Если нет активной вкладки, выводится предупреждение.
-   */
-  @FXML
-  private void showHistoryViewer() {
-    TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-    if (pageTabController == null) {
-      LOG.warn("No active tab to show history");
-      return;
-    }
-
-    Stage historyStage = new Stage();
-    historyStage.initModality(Modality.APPLICATION_MODAL);
-    historyStage.setTitle("History");
-
-    TableView<History.HistoryDto> tableView = new TableView<>();
-
-    TableColumn<History.HistoryDto, String> urlColumn = getStringTableColumn(historyStage);
-
-    TableColumn<History.HistoryDto, String> visitDateColumn = new TableColumn<>("Visited");
-    visitDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimestamp()));
-    visitDateColumn.setPrefWidth(300);
-
-    tableView.getColumns().addAll(urlColumn, visitDateColumn);
-
-    tableView.getItems().addAll(pageTabController.getHistoryController()
-        .getHistoryListGlobal().stream()
-        .map(History.HistoryDto::new)
-        .toList());
-
-    VBox layout = new VBox(10);
-    layout.setPadding(new Insets(10));
-    layout.getChildren().add(tableView);
-
-    Scene scene = new Scene(layout, 600, 400);
-    historyStage.setScene(scene);
-
-    historyStage.show();
-  }
-
-  /**
-   * Создает и возвращает столбец таблицы для отображения URL в истории.
-   * В столбце отображаются ссылки, которые можно кликнуть для перехода на соответствующие страницы.
-   *
-   * @param historyStage окно, в котором будет отображаться таблица.
-   * @return столбец с URL.
-   */
-  private TableColumn<History.HistoryDto, String> getStringTableColumn(final Stage historyStage) {
-    TableColumn<History.HistoryDto, String> urlColumn = new TableColumn<>("URL");
-    urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUrl()));
-    urlColumn.setCellFactory(col -> new TableCell<>() {
-      @Override
-      protected void updateItem(String url, boolean empty) {
-        super.updateItem(url, empty);
-        if (empty || url == null) {
-          setText(null);
-          setGraphic(null);
-        } else {
-          Hyperlink link = new Hyperlink(url);
-          link.setOnAction(_ -> {
-            TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
-            loadPage(url, pageTabController);
-            historyStage.close();
-          });
-          setGraphic(link);
-        }
-      }
-    });
-    urlColumn.setPrefWidth(300);
-    return urlColumn;
   }
 
   /**
    * Закрывает приложение.
    */
   private void closeApp() {
-    LOG.info("Closing application");
     Platform.exit();
   }
 

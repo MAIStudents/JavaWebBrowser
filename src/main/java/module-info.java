@@ -10,4 +10,7 @@ module ru.mai.lessons.rpks {
 
   opens ru.mai.lessons.rpks.controllers to javafx.fxml;
   exports ru.mai.lessons.rpks.controllers;
+
+  exports ru.mai.lessons.rpks.utils;
+  requires com.fasterxml.jackson.databind;
 }

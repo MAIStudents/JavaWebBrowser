@@ -93,13 +93,12 @@
         <menus>
           <Menu mnemonicParsing="false" style="-fx-font-size: 18; -fx-border-radius: 5;" text="≡">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-              <MenuItem mnemonicParsing="false" onAction="#showHistoryViewer" text="History" />
+              <MenuItem mnemonicParsing="false" onAction="#showHistory" text="History" />
               <MenuItem mnemonicParsing="false" onAction="#selectFavorites" text="Favorites" />
               <MenuItem mnemonicParsing="false" onAction="#toggleGlobalPrivateMode" text="Private all" />
               <MenuItem mnemonicParsing="false" onAction="#saveToZip" text="Save to ZIP" />
-              <MenuItem mnemonicParsing="false" onAction="#viewAndEditHtml" text="View and edit HTML" />
-              <MenuItem mnemonicParsing="false" onAction="#saveHistoryToResourcesXML" text="Save all history to XML" />
+              <MenuItem mnemonicParsing="false" onAction="#editHtml" text="View and edit HTML" />
+              <MenuItem mnemonicParsing="false" onAction="#saveHistoryToXML" text="Save all history to XML" />
             </items>
           </Menu>
         </menus>

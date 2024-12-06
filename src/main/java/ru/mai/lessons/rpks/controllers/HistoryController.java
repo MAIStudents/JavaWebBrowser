@@ -2,7 +2,6 @@ package ru.mai.lessons.rpks.controllers;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import ru.mai.lessons.rpks.utils.History;
-import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,16 +16,10 @@ import java.util.*;
  * Содержит методы для добавления записей, навигации по истории, управления исключениями и сохранения истории в файл.
  */
 public final class HistoryController {
-
-  /**
-   * Логгер для записи информации о действиях в контроллере.
-   */
-  private static final Logger log = Logger.getLogger(HistoryController.class);
-
   /**
    * Глобальный список истории для хранения всех записей.
    */
-  private static final List<History> historyListGlobal = new ArrayList<>();
+  private static final List<History> GLOBAL_HISTORY = new ArrayList<>();
 
   /**
    * Локальный список истории для текущего сеанса.
@@ -54,13 +47,10 @@ public final class HistoryController {
    * @param url URL сайта, который был посещен.
    */
   public void addEntry(final String url) {
-    if (!historyEnabled || isSiteExcluded(url)) {
-      return;
-    }
-
-    if (!historyList.isEmpty() && currentIndex >= 0 && currentIndex < historyList.size() &&
+    if (!historyEnabled
+        || isSiteExcluded(url)
+        || !historyList.isEmpty() && currentIndex >= 0 && currentIndex < historyList.size() &&
         Objects.equals(historyList.get(currentIndex).getUrl() + '/', url)) {
-      log.debug("URL {} уже совпадает с текущей записью. Пропуск.", url);
       return;
     }
 
@@ -77,7 +67,7 @@ public final class HistoryController {
 
     historyList.add(new History(url, now, Duration.ZERO));
     currentIndex = historyList.size() - 1;
-    historyListGlobal.add(new History(url, now, Duration.ZERO));
+    GLOBAL_HISTORY.add(new History(url, now, Duration.ZERO));
   }
 
   /**
@@ -86,10 +76,9 @@ public final class HistoryController {
    * @return URL текущей записи, или null, если история пуста.
    */
   public String getCurrent () {
-    if (currentIndex > 0) {
-      return historyList.get(currentIndex).getUrl();
-    }
-    return null;
+    return currentIndex > 0
+        ? historyList.get(currentIndex).getUrl()
+        : null;
   }
 
   /**
@@ -99,10 +88,8 @@ public final class HistoryController {
    */
   public String goBack() {
     while (currentIndex > 0) {
-      currentIndex--;
-      if (!excludedSites.contains(historyList.get(currentIndex).getUrl())) {
-        log.debug("Переход назад к: {}", historyList.get(currentIndex).getUrl());
-        return historyList.get(currentIndex).getUrl();
+      if (!excludedSites.contains(historyList.get(currentIndex - 1).getUrl())) {
+        return historyList.get(currentIndex--).getUrl();
       }
     }
     return null;
@@ -115,10 +102,8 @@ public final class HistoryController {
    */
   public String goForward() {
     while (currentIndex < historyList.size() - 1) {
-      currentIndex++;
-      if (!excludedSites.contains(historyList.get(currentIndex).getUrl())) {
-        log.debug("Переход вперед к: {}", historyList.get(currentIndex).getUrl());
-        return historyList.get(currentIndex).getUrl();
+      if (!excludedSites.contains(historyList.get(currentIndex + 1).getUrl())) {
+        return historyList.get(currentIndex++).getUrl();
       }
     }
     return null;
@@ -181,10 +166,9 @@ public final class HistoryController {
       if (host == null) {
         return null;
       }
-      log.info("Домен {}", host);
       return host.startsWith("www.") ? host.substring(4) : host;
     } catch (URISyntaxException e) {
-      log.error("Не удалось извлечь домен из URL: {}", url, e);
+      System.out.println("Не удалось извлечь домен из URL(" + url + "): " + e);
       return null;
     }
   }
@@ -196,20 +180,11 @@ public final class HistoryController {
    * @throws IOException если возникла ошибка при записи в файл.
    */
   public void saveHistoryToXml(final File file) throws IOException {
-    List<History.HistoryDto> historyDtoList = historyListGlobal.stream()
+    List<History.HistoryDto> historyDtoList = GLOBAL_HISTORY.stream()
         .map(History.HistoryDto::new)
         .toList();
     XmlMapper xmlMapper = new XmlMapper();
     xmlMapper.writeValue(file, historyDtoList);
-  }
-
-  /**
-   * Получает локальный список истории посещений.
-   *
-   * @return копия списка локальной истории.
-   */
-  public List<History> getHistoryList () {
-    return new ArrayList<>(historyList);
   }
 
   /**
@@ -218,6 +193,6 @@ public final class HistoryController {
    * @return копия глобального списка истории.
    */
   public List<History> getHistoryListGlobal () {
-    return new ArrayList<>(historyListGlobal);
+    return new ArrayList<>(GLOBAL_HISTORY);
   }
 }

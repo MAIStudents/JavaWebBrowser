@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Класс для представления истории посещения URL.
  */
-public class History {
+public final class History {
 
   /**
    * URL, связанный с историей.
@@ -23,11 +23,6 @@ public class History {
    * Продолжительность посещения URL.
    */
   private Duration duration;
-
-  /**
-   * Конструктор без параметров для создания пустого объекта истории.
-   */
-  public History() {}
 
   /**
    * Конструктор для создания объекта истории с заданными параметрами.
