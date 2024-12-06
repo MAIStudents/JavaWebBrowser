@@ -117,7 +117,7 @@ public final class MenuController {
     layout.setPadding(new Insets(10));
     layout.getChildren().add(tableView);
 
-    Scene scene = new Scene(layout, 600, 400);
+    Scene scene = new Scene(layout, 300, 200);
     historyStage.setScene(scene);
 
     historyStage.show();
@@ -165,11 +165,11 @@ public final class MenuController {
                                                                final TextField urlField) {
     TableView<History.HistoryDto> tableView = new TableView<>();
     TableColumn<History.HistoryDto, String> urlColumn = getStringTableColumn(historyStage, tabPane, tabBar, urlField);
-    TableColumn<History.HistoryDto, String> visitDateColumn = new TableColumn<>("Visited");
+    TableColumn<History.HistoryDto, String> visitDateColumn = new TableColumn<>("Date");
     visitDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimestamp()));
-    visitDateColumn.setPrefWidth(300);
+    visitDateColumn.setPrefWidth(150);
 
-    tableView.getColumns().addAll(urlColumn, visitDateColumn);
+    tableView.getColumns().addAll(visitDateColumn, urlColumn);
 
     tableView.getItems().addAll(pageTabController.getHistoryController()
         .getHistoryListGlobal().stream()
@@ -195,7 +195,7 @@ public final class MenuController {
     TableColumn<History.HistoryDto, String> urlColumn = new TableColumn<>("URL");
     urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUrl()));
     urlColumn.setCellFactory(col -> createHyperlinkCell(historyStage, tabPane, tabBar, urlField));
-    urlColumn.setPrefWidth(300);
+    urlColumn.setPrefWidth(150);
     return urlColumn;
   }
 
