@@ -29,10 +29,10 @@ public final class TabController {
   /** Движок WebEngine для загрузки и взаимодействия с веб-страницей. */
   private final WebEngine webEngine;
 
-  /** Листенер для обработки ошибок при работе с WebEngine. */
+  /** Слушатель для обработки ошибок при работе с WebEngine. */
   private ChangeListener<Throwable> listener;
 
-  /** Листенер для отслеживания изменения состояния работы WebEngine. */
+  /** Слушатель для отслеживания изменения состояния работы WebEngine. */
   private ChangeListener<Worker.State> stateListener;
 
   /**

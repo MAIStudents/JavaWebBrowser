@@ -13,13 +13,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebEngine;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.mai.lessons.rpks.utils.History;
-import ru.mai.lessons.rpks.utils.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,10 +73,6 @@ public final class BrowserController implements Initializable {
    * Переменная, указывающая на глобальный приватный режим.
    */
   private boolean globalPrivateMode = false;
-
-
-  @FXML
-  private HBox header;
 
   @FXML
   public HBox tabBar;
@@ -139,7 +136,7 @@ public final class BrowserController implements Initializable {
             int curIdx = (int)box.getUserData() - 1;
             box.setUserData(curIdx);
 
-            Button btn = (Button) box.getChildren().get(1);
+            Button btn = (Button) box.getChildren().get(2);
             btn.setUserData(curIdx);
           }
         }
@@ -206,9 +203,9 @@ public final class BrowserController implements Initializable {
       if (newException != null) {
         LOG.error("Error loading URL: {}", formattedUrl, newException);
 
-        String googleSearchUrl = "https://ya.ru/text?q=" + url;
-        LOG.info("Redirecting to Yandex Search: {}", googleSearchUrl);
-        pageTabController.getWebEngine().load(googleSearchUrl);
+        String yandexSearchUrl = "https://ya.ru/text?q=" + url;
+        LOG.info("Redirecting to Yandex Search: {}", yandexSearchUrl);
+        pageTabController.getWebEngine().load(yandexSearchUrl);
       }
     };
 
@@ -216,8 +213,9 @@ public final class BrowserController implements Initializable {
     pageTabController.getWebEngine().getLoadWorker().exceptionProperty().addListener(exceptionListener);
     pageTabController.getWebEngine().getLoadWorker().stateProperty().removeListener(pageTabController.getStateListener());
 
+    int curTabIdx = tabPane.getSelectionModel().getSelectedIndex();
+    
     ChangeListener<Worker.State> stateListener = (observable, oldState, newState) -> {
-
       if (newState == Worker.State.SUCCEEDED) {
         String currentUrl = pageTabController.getWebEngine().getLocation();
         if (isValidUrl(currentUrl) && !Objects.equals(pageTabController.getHistoryController().getCurrent(), currentUrl)) {
@@ -342,11 +340,17 @@ public final class BrowserController implements Initializable {
     newHBoxTab.setOnMouseClicked(_ -> {
       changeActiveTab(newHBoxTab);
       tabPane.getSelectionModel().select((int) newHBoxTab.getUserData());
+      TabController pageTabController = (TabController) tabPane.getSelectionModel().getSelectedItem().getUserData();
+      urlField.setText(pageTabController.getWebEngine().getLocation());
     });
 
-    Text text = new Text("Без названия");
+    Text text = new Text("Яндекс");
     text.setStyle("-fx-font-size: 16;");
     newHBoxTab.getChildren().add(text);
+
+    HBox box = new HBox();
+    HBox.setHgrow(box, Priority.ALWAYS);
+    newHBoxTab.getChildren().add(box);
 
     Button tabCloseButton = getTubButton();
     newHBoxTab.getChildren().add(tabCloseButton);

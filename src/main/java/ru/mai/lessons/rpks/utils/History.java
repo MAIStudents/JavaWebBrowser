@@ -54,30 +54,12 @@ public class History {
   }
 
   /**
-   * Установить URL для истории.
-   *
-   * @param url Новый URL
-   */
-  public void setUrl(final String url) {
-    this.url = url;
-  }
-
-  /**
    * Получить время посещения URL.
    *
    * @return Время посещения URL
    */
   public LocalDateTime getTimestamp() {
     return timestamp;
-  }
-
-  /**
-   * Установить время посещения URL.
-   *
-   * @param timestamp Новое время посещения
-   */
-  public void setTimestamp(final LocalDateTime timestamp) {
-    this.timestamp = timestamp;
   }
 
   /**
@@ -106,17 +88,17 @@ public class History {
     /**
      * URL, связанный с историей.
      */
-    private String url;
+    private final String url;
 
     /**
      * Время посещения, представленное в строковом формате.
      */
-    private String timestamp;
+    private final String timestamp;
 
     /**
      * Продолжительность посещения, представленная в строковом формате.
      */
-    private String duration;
+    private final String duration;
 
     /**
      * Конструктор для создания DTO на основе объекта {@link History}.
@@ -152,48 +134,12 @@ public class History {
     }
 
     /**
-     * Установить URL в DTO.
-     *
-     * @param url Новый URL
-     */
-    public void setUrl(final String url) {
-      this.url = url;
-    }
-
-    /**
      * Получить время посещения из DTO.
      *
      * @return Время посещения в строковом формате
      */
     public String getTimestamp() {
       return timestamp;
-    }
-
-    /**
-     * Установить время посещения в DTO.
-     *
-     * @param timestamp Новое время посещения в строковом формате
-     */
-    public void setTimestamp(final String timestamp) {
-      this.timestamp = timestamp;
-    }
-
-    /**
-     * Получить продолжительность из DTO.
-     *
-     * @return Продолжительность в строковом формате
-     */
-    public String getDuration() {
-      return duration;
-    }
-
-    /**
-     * Установить продолжительность в DTO.
-     *
-     * @param duration Новая продолжительность в строковом формате
-     */
-    public void setDuration(final String duration) {
-      this.duration = duration;
     }
   }
 }

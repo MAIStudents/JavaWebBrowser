@@ -43,23 +43,18 @@ public final class HTMLController {
    * В этом окне пользователь может очистить, применить изменения или загрузить/сохранить HTML-файл.
    */
   public void viewAndEditHtml() {
-    // Получение HTML-кода из WebEngine
     String html = (String) webEngine.executeScript("document.documentElement.outerHTML");
 
-    // Создание модального окна для редактирования
     Stage stage = new Stage();
     stage.initModality(Modality.APPLICATION_MODAL);
     stage.setTitle("View and Edit HTML");
 
-    // Текстовое поле для редактирования HTML
     TextArea textArea = new TextArea(html);
     textArea.setWrapText(false);
 
-    // Кнопка для очистки текста
     Button clearButton = new Button("Clear");
     clearButton.setOnAction(_ -> textArea.clear());
 
-    // Кнопка для применения изменений
     Button applyButton = new Button("Apply Changes");
     applyButton.setOnAction(_ -> {
       String editedHtml = textArea.getText();
@@ -71,23 +66,18 @@ public final class HTMLController {
       stage.close();
     });
 
-    // Кнопка для сохранения в файл
     Button saveToFileButton = getSaveToFileButton(stage, textArea);
 
-    // Кнопка для загрузки из файла
     Button loadFromFileButton = getLoadFromFileButton(stage, textArea);
 
-    // Создание панели для кнопок
     HBox buttonBox = new HBox(10);
     buttonBox.getChildren().addAll(clearButton, applyButton, saveToFileButton, loadFromFileButton);
     buttonBox.setPadding(new javafx.geometry.Insets(10));
 
-    // Создание основного контейнера для окна
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(buttonBox);
     borderPane.setCenter(textArea);
 
-    // Создание сцены и отображение окна
     Scene scene = new Scene(borderPane, 800, 600);
     stage.setScene(scene);
     stage.show();
