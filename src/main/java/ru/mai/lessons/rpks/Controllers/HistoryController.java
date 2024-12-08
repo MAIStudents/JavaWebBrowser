@@ -54,9 +54,7 @@ public class HistoryController implements Initializable {
                         } else {
                             setText(item);
                             setStyle("-fx-cursor: pointer; -fx-text-fill: blue; -fx-underline: true;");
-                            setOnMouseClicked(event -> {
-                                onUrlClicked(item);
-                            });
+                            setOnMouseClicked(event -> onUrlClicked(item));
                         }
                     }
                 };

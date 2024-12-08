@@ -29,10 +29,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -129,16 +126,15 @@ public class WindowController implements Initializable  {
         }
     }
 
-
-    private boolean isPrivateModeEnabled(){
+    private boolean isPrivateModeEnabled() {
         String url =  openedTabs.get(tabPane.getSelectionModel().getSelectedItem()).getUrl();
 
         if (sitesSettings.containsKey(url)) {
             return sitesSettings.get(url).isPrivate();
         }
         return false;
-
     }
+
     public void colorPrivateButton() {
         if (isPrivateModeEnabled()) {
             privateModeButton.setStyle("-fx-background-color: black; -fx-text-fill: white;");
@@ -181,7 +177,7 @@ public class WindowController implements Initializable  {
         colorLikeButton();
     }
 
-    private boolean isSiteLiked(){
+    private boolean isSiteLiked() {
         String url =  openedTabs.get(tabPane.getSelectionModel().getSelectedItem()).getUrl();
 
         if (sitesSettings.containsKey(url)) {
@@ -222,7 +218,7 @@ public class WindowController implements Initializable  {
             Scene scene = new Scene(loader.load());
             historyStage.setScene(scene);
             historyStage.setTitle("История");
-            scene.getStylesheets().add(getClass().getResource(STYLESSHEET_FXML_PATH).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(STYLESSHEET_FXML_PATH)).toExternalForm());
 
             HistoryController historyController = loader.getController();
             historyController.setWindowController(this);
@@ -234,7 +230,7 @@ public class WindowController implements Initializable  {
             historyStage.initModality(Modality.NONE);
             historyStage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
@@ -278,7 +274,7 @@ public class WindowController implements Initializable  {
             stage.initModality(Modality.NONE);
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
@@ -302,16 +298,15 @@ public class WindowController implements Initializable  {
 
             controller.setListener(updatedCode -> {
                 webEngine.loadContent(updatedCode);
-                Platform.runLater(() -> {
-                    tab.setText(oldTabName);
-                });
+                Platform.runLater(() -> tab.setText(oldTabName));
+
             });
 
             editorStage.initModality(Modality.APPLICATION_MODAL);
             editorStage.setTitle("Редактор HTML");
             editorStage.showAndWait();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
@@ -320,17 +315,16 @@ public class WindowController implements Initializable  {
 
         Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
         if (selectedTab == null) {
-            System.out.println("Нет активной вкладки.");
+            Logger.info("Нет активной вкладки.");
             return;
         }
 
         TabHolder tabHolder = openedTabs.get(selectedTab);
         if (tabHolder == null) {
-            System.out.println("Содержимое вкладки не найдено.");
+            Logger.info("Содержимое вкладки не найдено.");
             return;
         }
 
-        String url = tabHolder.getUrl();
         String pageContent = tabHolder.getWebView().getEngine().executeScript("document.documentElement.outerHTML").toString();
 
         FileChooser fileChooser = new FileChooser();
@@ -341,7 +335,9 @@ public class WindowController implements Initializable  {
         );
 
         File file = fileChooser.showSaveDialog(new Stage());
-        if (file == null) return;
+        if (file == null) {
+            return;
+        }
 
         try {
             if (file.getName().endsWith(".html")) {
@@ -354,17 +350,17 @@ public class WindowController implements Initializable  {
                     zos.closeEntry();
                 }
             } else {
-                System.out.println("Неверный формат файла.");
+                Logger.error("Неверный формат файла.");
             }
-            System.out.println("Сохранение завершено: " + file.getAbsolutePath());
+            Logger.info("Сохранение завершено: " + file.getAbsolutePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
 
     public void addToHistory(String url, Long openingTime, Long diffTime) {
-        if (!globalPrivateModeEnabled && !sitesSettings.containsKey(url) || !sitesSettings.get(url).isPrivate()) {
+        if (!globalPrivateModeEnabled && (!sitesSettings.containsKey(url) || !sitesSettings.get(url).isPrivate())) {
             history.add(new HistoryItem(url, timeToFullTimeString(openingTime), timeToTimeString(diffTime)));
         }
     }
@@ -413,14 +409,15 @@ public class WindowController implements Initializable  {
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, history);
             System.out.println("История успешно сохранена в файл: " + file.getAbsolutePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
     private void loadHistoryFromJson(File file) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<HistoryItem> loadedHistory = mapper.readValue(file, new TypeReference<List<HistoryItem>>() {});
+            List<HistoryItem> loadedHistory = mapper.readValue(file, new TypeReference<List<HistoryItem>>() {
+            });
             history.clear();
             history.addAll(loadedHistory);
             Logger.info("Successfully loaded: " + file.getAbsolutePath());
@@ -435,16 +432,18 @@ public class WindowController implements Initializable  {
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, settings);
             System.out.println("Настройки сайтов успешно сохранены в файл: " + file.getAbsolutePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
     }
 
     private List<SiteSettings> loadSiteSettingsFromJson(File file) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(file, new TypeReference<List<SiteSettings>>() {});
+            return mapper.readValue(file, new TypeReference<List<SiteSettings>>() {
+            } );
+
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
             return List.of();
         }
     }

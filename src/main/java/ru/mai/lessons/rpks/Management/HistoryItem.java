@@ -14,7 +14,7 @@ public class HistoryItem {
         this.exitTime = exitTime;
     }
 
-    public HistoryItem() {}
-
+    public HistoryItem() {
+    }
 
 }

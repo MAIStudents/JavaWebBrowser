@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class TabHolder {
     private Long timeStart;
 
-    private Deque<String> visitedUrls= new ArrayDeque<>();
-    private Deque<String> topStack = new ArrayDeque<>();
+    private final Deque<String> visitedUrls = new ArrayDeque<>();
+    private final Deque<String> topStack = new ArrayDeque<>();
 
     private final WindowController parent;
 
@@ -68,7 +68,7 @@ public class TabHolder {
                 return;
             } else  {
                 Long currentTime = System.currentTimeMillis();
-                parent.addToHistory(oldValue, timeStart,currentTime - timeStart);
+                parent.addToHistory(oldValue, timeStart, currentTime - timeStart);
                 timeStart = currentTime;
             }
             if (!oldValue.equals(topStack.peek()) && !onForward.get()) {
@@ -111,9 +111,6 @@ public class TabHolder {
     }
 
 
-    /**
-     * Перезагружает текущую страницу в WebView.
-     */
     public void reloadPage() {
         if (tab == null) {
             Logger.error("Cannot reload: tab is null.");
@@ -125,6 +122,7 @@ public class TabHolder {
             Logger.warn("Cannot reload: no valid URL found.");
         }
     }
+
 
     private static String getDomainName(String url) {
         try {
@@ -139,12 +137,14 @@ public class TabHolder {
             return url;
         }
     }
+
     private void clearForward() {
         while (topStack.peek() != null) {
             visitedUrls.push(topStack.pop());
         }
         parent.rightArrow.setDisable(true);
     }
+
 
     public void goBack() {
         topStack.push(webEngine.getLocation());
@@ -157,6 +157,8 @@ public class TabHolder {
         }
 
     }
+
+
     public void goForward() {
         onForward.set(true);
         updatePage(topStack.pop());

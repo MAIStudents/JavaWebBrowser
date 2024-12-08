@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+
+    <!-- Запрещает использование табуляции вместо пробелов -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- Базовые проверки -->
+    <module name="TreeWalker">
+
+        <!-- Проверка, чтобы за операторами был пробел -->
+        <module name="WhitespaceAround"/>
+
+        <!-- Проверка, чтобы после запятых был пробел -->
+        <module name="WhitespaceAfter"/>
+
+        <!-- Запрещает использование пустых блоков кода -->
+        <module name="EmptyBlock"/>
+
+        <!-- Запрещает несколько выражений на одной строке -->
+        <module name="OneStatementPerLine"/>
+
+        <!-- Проверка, чтобы все блоки использовали фигурные скобки -->
+        <module name="NeedBraces">
+            <property name="allowSingleLineStatement" value="false"/>
+        </module>
+
+        <!-- Проверка правильного расположения открывающих фигурных скобок (Открывающая скобка на той же строке) -->
+        <module name="LeftCurly">
+            <property name="option" value="eol"/>
+        </module>
+
+        <!-- Проверка правильного расположения закрывающих фигурных скобок -->
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+        </module>
+
+    </module>
+</module>

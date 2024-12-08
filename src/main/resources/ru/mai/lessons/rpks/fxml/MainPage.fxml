@@ -23,12 +23,12 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Настройки">
                     <items>
-                  <MenuItem fx:id="history" mnemonicParsing="false" onAction="#showHistory" text="History" />
+                  <MenuItem fx:id="historys" mnemonicParsing="false" onAction="#showHistory" text="История" />
                   <MenuItem fx:id="liked" mnemonicParsing="false" onAction="#showLikedSites" text="Избранное" />
                   <MenuItem fx:id="privates" mnemonicParsing="false" onAction="#showPrivateSites" text="Секретики" />
                         <CustomMenuItem mnemonicParsing="false">
                             <content>
-                                <CheckBox fx:id="globalPrivateModeButton" onAction="#toggleGlobalPrivateMode" style="-fx-text-fill: black;" text="PrivateMode" />
+                                <CheckBox fx:id="globalPrivateModeButton" onAction="#toggleGlobalPrivateMode" style="-fx-text-fill: black;" text="Приватный режим" />
                             </content>
                         </CustomMenuItem>
                     </items>
