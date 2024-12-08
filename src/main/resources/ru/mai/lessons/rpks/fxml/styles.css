@@ -1,0 +1,5 @@
+.url-column-cell {
+    -fx-text-fill: red;
+    -fx-underline: true;
+    -fx-cursor: pointer;
+}

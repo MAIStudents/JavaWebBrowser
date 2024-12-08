@@ -4,17 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6470c859-743c-42ec-966f-a60a1ee6a3df" name="Changes" comment="started browser 1/16">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/CodeEditorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/HistoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/HistoryManagement/BrowserHistory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/HistoryManagement/TabHistory.java" afterDir="false" />
+    <list default="true" id="6470c859-743c-42ec-966f-a60a1ee6a3df" name="Changes" comment="fixed hierarchy, started smth normal">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/LinksViewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Management/HistoryItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Management/SiteSettings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/CodeEditor.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/DisplaySites.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/History.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/MainPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/WindowController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/TabHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Holders/TabHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/MainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/MainPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/CodeEditorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/CodeEditorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/HistoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/WindowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Controllers/WindowController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/HistoryManagement/BrowserHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/HistoryManagement/TabHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Holders/TabHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks/Holders/TabHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/MainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml/MainPage.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +72,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks/fxml" />
       <recent name="$PROJECT_DIR$/src/main/resources/ru/mai/lessons/rpks" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java/ru/mai/lessons/rpks" />
@@ -103,7 +110,11 @@
       <workItem from="1733291940011" duration="753000" />
       <workItem from="1733292818851" duration="142000" />
       <workItem from="1733324595753" duration="3353000" />
-      <workItem from="1733386643135" duration="1092000" />
+      <workItem from="1733386643135" duration="1872000" />
+      <workItem from="1733409890906" duration="7555000" />
+      <workItem from="1733418864335" duration="7348000" />
+      <workItem from="1733490119412" duration="10443000" />
+      <workItem from="1733596990221" duration="5667000" />
     </task>
     <task id="LOCAL-00001" summary="started browser 1/16">
       <option name="closed" value="true" />
@@ -113,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733292954073</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fixed hierarchy, started smth normal">
+      <option name="closed" value="true" />
+      <created>1733387904933</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733387904933</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +151,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="started browser 1/16" />
-    <option name="LAST_COMMIT_MESSAGE" value="started browser 1/16" />
+    <MESSAGE value="fixed hierarchy, started smth normal" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed hierarchy, started smth normal" />
   </component>
 </project>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mai.lessons.rpks.Controllers.LinksViewController"
+      spacing="10" prefWidth="400" prefHeight="300">
+    <ListView fx:id="linksListView" />
+</VBox>
