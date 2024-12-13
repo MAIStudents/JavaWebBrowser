@@ -38,11 +38,12 @@ public class HTMLController {
     Button applyButton = new Button("Apply Changes");
     applyButton.setOnAction(actionEvent -> {
       String editedHtml = textArea.getText();
-      webEngine.executeScript(
-              "document.open();" +
-                      "document.write(`" + editedHtml.replace("`", "\\`") + "`);" +
-                      "document.close();"
-      );
+//      webEngine.executeScript(
+//              "document.open();" +
+//                      "document.write(`" + editedHtml.replace("\\9", "").replace("`", "\\`") + "`);" +
+//                      "document.close();"
+//      );
+      webEngine.loadContent(editedHtml);
       stage.close();
     });
 

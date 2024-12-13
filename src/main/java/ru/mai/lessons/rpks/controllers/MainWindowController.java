@@ -175,13 +175,19 @@ public class MainWindowController implements Initializable {
   }
 
   private void addNewTab() {
-    PageTabController newTabController = new PageTabController("https://www.yandex.ru");
-    newTabController.getHistoryController().addEntry("https://www.yandex.ru");
-    Tab newTab = newTabController.getTab();
-    newTab.setText("Yandex");
-    tabPane.getTabs().add(newTab);
-    tabPane.getSelectionModel().select(newTab);
-    log.info("Add new tab");
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+
+        PageTabController newTabController = new PageTabController("https://www.yandex.ru");
+        newTabController.getHistoryController().addEntry("https://www.yandex.ru");
+        Tab newTab = newTabController.getTab();
+        newTab.setText("Yandex");
+        tabPane.getTabs().add(newTab);
+        tabPane.getSelectionModel().select(newTab);
+        log.info("Add new tab");
+      }
+    });
   }
 
   private void delTab() {
